@@ -2,11 +2,11 @@
 const express = require('express');
 const app = express();
 
-//2- Setear urlencoded para capturar los datos de los formularios
+//2- Setear urlencoded para capturar los datos de los formularios traka
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
-//3 Inovar a dotenv
+//3 Inovar a dotenv traka
 const dotenv= require('dotenv');
 dotenv.config({path:'./env/.env'})
 
