@@ -32,38 +32,8 @@ app.use(session({
 //8 -> Invocar al modulo de conexion de la BD
 const conexion = require('./database/db');
 
-//9 -> Estableciendo las rutas
-app.get('/Login', (req,res) => {
-    res.render ('login');
-})
-
-app.get('/Registro', (req,res) => {
-    res.render ('register');
-})
-
-app.get('/Inicio', (req,res) => {
-    res.render ('inicio');
-})
-
-app.get('/Abonos', (req,res) => {
-    res.render ('abonos');
-})
-
-app.get('/Clientes', (req,res) => {
-    res.render ('clientes');
-})
-
-app.get('/Productos', (req,res) => {
-    res.render ('productos');
-})
-
-app.get('/Vendedores', (req,res) => {
-    res.render ('vendedores');
-})
-
-app.get('/Ventas', (req,res) => {
-    res.render ('ventas');
-})
+//9 -> Invocar enrutador
+app.use('/',require('./router'));
 
 //10 -> Registro
 app.post('/register', async (req,res) => {

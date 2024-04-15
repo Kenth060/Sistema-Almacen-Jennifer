@@ -14,7 +14,7 @@ Conexion.connect( (error) => {
         console.log('El error de conexion es' + error);
         return; 
     }
-    console.log('SIIIUUU TE CONECTASTE A LA BASE DE DATOS');
+    console.log('SIIIUUU TE CONECTASTE A LA BASE DE DATOS :D');
 });
 
 module.exports = Conexion;
