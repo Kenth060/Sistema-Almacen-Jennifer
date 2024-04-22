@@ -15,33 +15,36 @@
   </head>
   <body>
     <%- include('sidebar.ejs') %> 
+
     <section class="home-section">
       <div class="Container px-3">
         <div class="row">
           <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <h2>Datos del Vendedor</h2>
-            <form action="/AddVendedor" method="post">
+            <form action="/UpdateVendedor" method="post">
                 <div class="mb-2">
                   <label for="nombre" class="form-label">Nombres</label>
-                  <input type="text" class="form-control" id="nombre" name="Nombre_vd" placeholder="Nombre y Apellido">
+                  <input type="text" class="form-control" id="Id_cl" name="Id_vd" value="<%= vendedor.Id_Vendedor %>" hidden>
+                  <input type="text" class="form-control" id="Id_cl" name="Id_dir_vd" value="<%= vendedor.Id_Direccion %>" hidden>
+                  <input type="text" class="form-control" id="nombre" name="Nombre_vd" value="<%= vendedor.Nombre %>">
                 </div>
                 <div class="mb-2">
                   <label for="apellido" class="form-label">Apellidos</label>
-                  <input type="text" class="form-control" id="apellido" name="Apellido_vd" placeholder="Apellidos">
+                  <input type="text" class="form-control" id="apellido" name="Apellido_vd" value="<%= vendedor.Apellido %>">
                 </div>
                 <div class="mb-2">
                     <label for="Telefono" class="form-label">Telefono</label>
-                    <input type="number" class="form-control" id="Telefono" name="Telefono_vd" placeholder="Telefono">
+                    <input type="number" class="form-control" id="Telefono" name="Telefono_vd" value="<%= vendedor.Telefono %>">
                   </div>
                   <div class="mb-2">
                     <label for="Cedula" class="form-label">Cedula</label>
-                    <input type="text" class="form-control" id="Cedula" name="Cedula_vd" placeholder="Cedula">
+                    <input type="text" class="form-control" id="Cedula" name="Cedula_vd" value="<%= vendedor.Cedula %>">
                   </div>
                   <div class="mb-1">
-                    <label for="Residencia" class="form-label">DIRECCION</label>
+                    <label for="Residencia" class="form-label">Dirección</label>
                   </div>
                   <select class="form-select" aria-label="Distrito" name="Distrito_vd">
-                    <option selected>Seleccionar distrito</option>
+                    <option selected>Distrito <%= vendedor.Distrito %></option>
                     <option value="I">Distrito I</option>
                     <option value="II">Distrito II</option>
                     <option value="III">Distrito III</option>
@@ -52,29 +55,29 @@
                   </select>
                   <div class="mb-2 dx-2">
                     <label for="Residencia" class="form-label">Zona de Residencia</label>
-                    <input type="text" class="form-control" id="Residencia" name="Residencia_vd" placeholder="Z. Residencia">
+                    <input type="text" class="form-control" id="Residencia" name="Residencia_vd" value="<%= vendedor.Zona_Residencia %>" placeholder="Z. Residencia">
                   </div>
                   <div class="mb-2">
                     <label for="PuntoReferencia" class="form-label">Punto de Referencia</label>
-                    <input type="text" class="form-control" id="PuntoReferencia" name="PuntoReferencia_vd" placeholder="P. Referencia">
+                    <input type="text" class="form-control" id="PuntoReferencia" name="PuntoReferencia_vd" placeholder="P. Referencia" value="<%= vendedor.Punto_Referencia %>" >
                   </div>
                   <div class="mb-2">
                     <label for="Distancia" class="form-label">Distancia</label>
-                    <input type="text" class="form-control" id="Distancia" name="Distancia_vd" placeholder="Distancia">
+                    <input type="text" class="form-control" id="Distancia" name="Distancia_vd" placeholder="Distancia"value="<%= vendedor.Distancia %>" >
                   </div>
                   <div class="mb-2">
                     <label for="casa" class="form-label">Numero de casa</label>
-                    <input type="text" class="form-control" id="casa"  name="Casa_vd" placeholder="N. Casa">
+                    <input type="text" class="form-control" id="casa"  name="Casa_vd" placeholder="N. Casa" value="<%= vendedor.Casa %>" >
                   </div>
                   <div class="d-grid gap-2">
-                    <Button type="submit" class="btn btn-success" title="Guardar">Guardar</Button>
+                    <button type="submit" class="btn btn-success" title="Editar">Editar</button>
                     <Button class="btn btn-secondary" title="Limpiar Campos">Limpiar Campos</button>
                   </div>
                 
               </form>
           </div>
           <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-            <h2>Listado de Vendedores</h2>
+            <h2>Informacion del Vendedor</h2><br>
             <table class="table primary">
                 <thead>
                   <tr>
@@ -82,30 +85,17 @@
                     <th class="centrado">Telefono</th>
                     <th class="centrado">Cedula</th>
                     <th class="centrado">Dirección</th>
-                    <th class="centrado">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <% vendedores[0].forEach((vendedor) => { %>
+
                     <tr>
                       <td class="centrado"> <%= vendedor.Nombre %> <%= vendedor.Apellido %></td>
                       <td class="centrado"><%= vendedor.Cedula %></td>
                       <td class="centrado"><%= vendedor.Telefono %></td>
                       <td class="centrado"><%= vendedor.Direccion %></td>
-                      <td>
-                        <!-- Botones de acciones -->
-                        <a href="/EditVendedor/<%= vendedor.ID %>" class="btn btn-success mb-1" title="Actualizar"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                          <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                          <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                        </svg> </a> 
-                        <a href="#" class="btn btn-danger" title="Eliminar" onclick="confirmDeleteVendedor('<%= vendedor.ID %>')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                        </svg> </a>
-                    </td>
                     </tr>
 
-                  <% }) %> 
 
                   
                   
