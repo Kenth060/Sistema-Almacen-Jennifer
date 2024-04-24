@@ -32,7 +32,7 @@
               <option value="1" selected>Calzado</option>
               <% } else { %>
               <option value="1">Calzado</option>
-              <% } %> <% if ( Categoria == 'Prendas_Vestir') { %>
+              <% } %> <% if ( Categoria == 'Prendas_Vestir' || Categoria == 'Prendas de Vestir') { Categoria= 'Prendas de Vestir' %>
               <option value="2" selected>Prendas de Vestir</option>
               <% } else { %>
               <option value="2">Prendas de Vestir</option>
@@ -44,7 +44,7 @@
               <option value="4" selected>Electrodomesticos</option>
               <% } else { %>
               <option value="4">Electrodomesticos</option>
-              <% } %> <% if ( Categoria == 'Productos_Plasticos') { %>
+              <% } %> <% if ( Categoria == 'Productos_Plasticos' || Categoria == 'Productos Plasticos') { Categoria = 'Productos Plasticos' %>
               <option value="5" selected>Productos Plasticos</option>
               <% } else { %>
               <option value="5">Productos Plasticos</option>
@@ -197,21 +197,7 @@
           </div>
 
           <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-            
-            <% if ( Categoria == 'Calzado') { %>
-              <h2><b>Listado de Calzado</b></h2>
-            <% } else if ( Categoria == 'Prendas_Vestir') { %>
-              <h2><b>Listado de Prendas de Vestir</b></h2>
-            <% } else if ( Categoria == 'Cosmeticos') { %>
-              <h2><b>Listado de Cosmeticos</b></h2>
-            <% } else if ( Categoria == 'Electrodomesticos') { %>
-                <h2><b>Listado de Electrodomesticos</b></h2>
-            <% } else if ( Categoria == 'Productos_Plasticos') { %>
-                <h2><b>Listado de Productos Plasticos</b></h2>
-            <% } %>
-
-
-
+            <h2>Listado de <%= Categoria %></h2>
             <table class="table primary">
               <thead>
                 <tr>
@@ -234,14 +220,18 @@
 
                             <td>
                                 <!-- Botones de acciones -->
-                                <a href="/EditProduct/<%= Categoria %>/Producto/<%= product.Id_Producto %>/Cat/<%= product.IdCat %>')" class="btn btn-success mb-1" title="Actualizar"><svg
+                                <a href="#" class="btn btn-success mb-1" title="Actualizar"
+                                ><svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"
                                     height="16"
                                     fill="currentColor"
                                     class="bi bi-pencil-square"
-                                    viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path
+                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                    />
                                     <path
                                     fill-rule="evenodd"
                                     d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
@@ -251,7 +241,7 @@
                                 href="#"
                                 class="btn btn-danger"
                                 title="Eliminar"
-                                onclick="confirmDelete('<%= Categoria %>','<%= product.Id_Producto %>','<%= product.IdCat %>')"
+                                onclick="confirmDelete('<%= product.Categoria %>','<%= product.Id_Producto %>','<%= product.IdCat %>')"
                                 ><svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"
@@ -295,6 +285,5 @@
       });
     </script>
     <% } %>
-
   </body>
 </html>

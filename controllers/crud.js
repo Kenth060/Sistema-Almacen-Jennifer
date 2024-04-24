@@ -268,19 +268,4 @@ exports.AddProduct = ( req, res) => {
             })
         }
     })
-/*     res.send({
-        Marca:Marca,
-        Existencia:Existencia,
-        Precio:Precio,
-        Color:Color,
-        Tipo:Tipo,
-        Fecha:Fecha,
-        Talla:Talla,
-        Modelo:Modelo,
-        Clasificacion:Clasificacion,
-        Dimensiones:Dimensiones,
-        UnidadMedida:UnidadMedida,
-        Categoria: Categoria
-    }); */
-
 }
