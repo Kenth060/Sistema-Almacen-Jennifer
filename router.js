@@ -21,7 +21,7 @@ router.post('/register', async (req,res) => {
     const name = req.body.name;
     const rol = req.body.rol;
     const pass = req.body.pass;
-    console.log('Abriendo registrar');
+    //console.log('Abriendo registrar');
     let passwordHaash = await bcryptjs.hash(pass ,8 );
 
     conexion.query('INSERT INTO usuarios SET ?', { Usuario:user , Nombre:name , Rol:rol , Contraseña:passwordHaash} , async(error, results)=>{
@@ -210,23 +210,36 @@ router.get('/ShowProducts/:cat', (req,res) => {
         if(error)
         { console.log('Hubo un error al obtener informacion de este Producto, error => '+error);}
         else
-        {  res.render ('showProducts.ejs' , {Producto:results[0][0]}); }
-            //res.send(results[0][0]);}
-        
+        {  
+           res.render ('showProducts.ejs' , {Producto:results,Categoria:cat}); }
+            //res.send(results[0][0]+' '+cat);}
     })
 })
 
-router.get('/DeleteProduct/:cat/:IdProd/:IdCat:', (req,res) => {
+router.get('/DeleteProduct/:cat/Producto/:IdProd/Cat/:IdCat', (req,res) => {
     const id_prod = req.params.IdProd;
     const id_cat = req.params.IdCat;
     const cat = req.params.cat;
 
-    conexion.query('CALL DeleteProducto(?,?,?)',[id_prod,cat,id_cat],(error,results) => {
+   // res.send('Categoria => '+cat+' ID Producto => '+id_prod+' ID Categoria => '+id_cat);
+
+       conexion.query('CALL DeleteProduct(?,?,?)',[id_prod,cat,id_cat],(error,results) => {
         if(error)
-        {   throw error;    }
+        {   console.log('Hubo un error al eliminar el producto => '+error);    }
         else
-        { res.redirect('/ShowProducts/'+cat);}
-    })
+        { 
+            conexion.query('CALL Show'+cat+'()', (error,results) => {
+                if(error)
+                { console.log('Hubo un error al obtener informacion de este Producto, error => '+error);}
+                else
+                {  
+                    res.render ('showProducts.ejs' , {Producto:results[0][0], Categoria:cat}); 
+                    //res.send(results[0][0]);
+                    //res.redirect('/Productos/');
+                }
+            }) 
+        }
+    }) 
 })
 
 
