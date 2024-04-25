@@ -245,7 +245,7 @@ exports.AddProduct = ( req, res) => {
         if(error)
         { 
             console.log('Hubo un error al agregar el producto => '+error);
-            res.render('productos', { clientes:results,
+            res.render('productos', { 
                 alert: true,
                 alertTitle: "No se pudo completar la operacion",
                 alertMessage: "No se pudo agregar el Producto, compruebe los datos e intente nuevamente",
@@ -257,7 +257,7 @@ exports.AddProduct = ( req, res) => {
         }
         else 
         {
-            res.render('productos', { clientes:results,
+            res.render('productos', {
                 alert: true,
                 alertTitle: "Producto agregado",
                 alertMessage: "¡Se agrego el Producto correctamente!",
@@ -269,3 +269,57 @@ exports.AddProduct = ( req, res) => {
         }
     })
 }
+
+exports.UpdateProduct = (req, res) => {
+    const Id_Producto = req.body.Id_Prod;
+    const Categoria = req.body.Categoria_Prod;
+    const Id_Cat = req.body.Id_Cat;
+
+    const p_Cat = req.body.p_cat;
+
+    const Marca = req.body.Marca;
+    const Existencia = req.body.Existencia;
+    const Precio = req.body.Precio;
+    const Color = req.body.Color;
+    const Tipo = req.body.Tipo;
+    const Fecha = req.body.Fecha;
+
+    const Talla = req.body.Talla;
+    const Modelo = req.body.Modelo;
+    const Clasificacion = req.body.Clasificacion;
+    const Dimensiones = req.body.Dimensiones;
+    const UnidadMedida = req.body.Unidad_Medida;
+
+    conexion.query('CALL UpdateProduct(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [Id_Producto,Categoria,Id_Cat,Marca,Existencia,Precio,Color,Tipo,Fecha,Talla,Modelo,Clasificacion,Dimensiones,UnidadMedida],(error,results) => {
+        if(error)
+        { 
+            console.log('Hubo un error al actualizar el producto => '+error);
+/*             res.render('productos', { clientes:results,
+                alert: true,
+                alertTitle: "No se pudo completar la operacion",
+                alertMessage: "No se pudo agregar el Producto, compruebe los datos e intente nuevamente",
+                alertIcon: 'error',
+                showConfirmButton: true,
+                timer: false,
+                ruta:'productos'
+            }) */
+        }
+        else 
+        {
+            console.log('Se actualizo el producto correctamente');
+            res.redirect('/ShowProducts/'+p_Cat);
+
+/*             res.render('productos', { clientes:results,
+                alert: true,
+                alertTitle: "Producto agregado",
+                alertMessage: "¡Se agrego el Producto correctamente!",
+                alertIcon: 'success',
+                showConfirmButton: true,
+                timer: false,
+                ruta:'productos'
+            }) */
+        }
+    })
+
+
+} 

@@ -244,7 +244,7 @@ router.get("/DeleteProduct/:cat/Producto/:IdProd/Cat/:IdCat", (req, res) =>
 
   //res.redirect('/ShowProducts/'+cat);
 
-  //res.send('Categoria => '+cat+' / ID Producto => '+id_prod+' / ID Categoria => '+id_cat);
+  res.send('Categoria => '+cat+' / ID Producto => '+id_prod+' / ID Categoria => '+id_cat);
 
    conexion.query ("CALL DeleteProduct(?,?,?)" , [id_prod, cat, id_cat],(error, results) => 
    {
@@ -263,7 +263,18 @@ router.get("/EditProduct/:cat/Producto/:IdProd/Cat/:IdCat", (req, res) =>
   const id_cat = req.params.IdCat;
   const cat = req.params.cat;
 
-  res.send('Categoria => '+cat+' ID Producto => '+id_prod+' ID Categoria => '+id_cat);
+  //res.send('Categoria => '+cat+' ID Producto => '+id_prod+' ID Categoria => '+id_cat);
+
+  conexion.query("CALL SearchProduct(?,?)", [cat,id_prod], (error, results) => {
+    if (error) 
+    { console.log( "Hubo un error al buscar ese producto, error => " + error ); }
+    else 
+    {
+      res.render("editProducts.ejs", { Producto: results[0][0] , p_cat:cat});
+      //res.send(results[0][0]);
+    }
+      // res.send(results[0][0]);}
+  });
 
 });
 
@@ -274,5 +285,6 @@ router.post("/UpdateClient", crud.UpdateClient);
 router.post("/AddVendedor", crud.AddVendedor);
 router.post("/UpdateVendedor", crud.UpdateVendedor);
 router.post("/AddProduct", crud.AddProduct);
+router.post("/UpdateProduct", crud.UpdateProduct);
 
 module.exports = router;
