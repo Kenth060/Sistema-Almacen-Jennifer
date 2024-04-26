@@ -293,31 +293,40 @@ exports.UpdateProduct = (req, res) => {
     conexion.query('CALL UpdateProduct(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [Id_Producto,Categoria,Id_Cat,Marca,Existencia,Precio,Color,Tipo,Fecha,Talla,Modelo,Clasificacion,Dimensiones,UnidadMedida],(error,results) => {
         if(error)
         { 
-            console.log('Hubo un error al actualizar el producto => '+error);
-/*             res.render('productos', { clientes:results,
-                alert: true,
-                alertTitle: "No se pudo completar la operacion",
-                alertMessage: "No se pudo agregar el Producto, compruebe los datos e intente nuevamente",
-                alertIcon: 'error',
-                showConfirmButton: true,
-                timer: false,
-                ruta:'productos'
-            }) */
+            conexion.query("CALL Show" + p_Cat + "()", (error, results) => 
+            {
+                if (error) 
+                { console.log( "Hubo un error al imprimir la informacion de estos Producto, error => " + error); } 
+                else 
+                { res.render("showProducts.ejs", { Producto: results, Categoria: p_Cat,
+                    alert: true,
+                    alertTitle: "No se pudo completar la operacion",
+                    alertMessage: "No se pudo editar el Producto, compruebe los datos e intente nuevamente",
+                    alertIcon: 'error',
+                    showConfirmButton: true,
+                    timer: false,
+                    ruta:'ShowProducts/'+p_Cat}); }
+            });  
         }
         else 
         {
             console.log('Se actualizo el producto correctamente');
-            res.redirect('/ShowProducts/'+p_Cat);
+            //res.redirect('/ShowProducts/'+p_Cat);
 
-/*             res.render('productos', { clientes:results,
-                alert: true,
-                alertTitle: "Producto agregado",
-                alertMessage: "¡Se agrego el Producto correctamente!",
-                alertIcon: 'success',
-                showConfirmButton: true,
-                timer: false,
-                ruta:'productos'
-            }) */
+            conexion.query("CALL Show" + p_Cat + "()", (error, results) => 
+            {
+                if (error) 
+                { console.log( "Hubo un error al imprimir la informacion de estos Producto, error => " + error); } 
+                else 
+                { res.render("showProducts.ejs", { Producto: results, Categoria: p_Cat,
+                    alert: true,
+                    alertTitle: "Operación Completada",
+                    alertMessage: "Se edito el Producto Correctamente",
+                    alertIcon: 'success',
+                    showConfirmButton: true,
+                    timer: false,
+                    ruta:'ShowProducts/'+p_Cat}); }
+            });  
         }
     })
 

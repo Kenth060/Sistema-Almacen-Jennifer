@@ -40,3 +40,8 @@ function mostrarTablaSegunCategoria1() {
         
     }
 }
+
+function SearchVenta(){
+    const input = document.getElementById('inputSearch');
+
+}
