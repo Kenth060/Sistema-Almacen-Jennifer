@@ -1,6 +1,9 @@
 const conexion = require('../database/db');
 
-exports.AddClient = ( req, res) => {
+exports.AddClient = ( req, res) => 
+{
+    const Tipo = req.body.Tipo_cl;
+
     const Nombre = req.body.Nombre_cl;
     const Apellido = req.body.Apellido_cl;
     const Telefono = req.body.Telefono_cl;
@@ -12,11 +15,13 @@ exports.AddClient = ( req, res) => {
     const Distancia = req.body.Distancia_cl;
     const Casa = req.body.Casa_cl; 
 
-    conexion.query('CALL AddClient(?, ?, ?, ?, ?, ?, ?, ?, ?)', [Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => {
+    conexion.query('CALL InsertarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?)', [Tipo,Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => {
         if(error)
         { 
-            conexion.query('CALL ShowClients()', (error,results)=>{
-                if(error)
+            console.log('Hubo un error al Ingresar al cliente -> '+ error);
+            conexion.query('SELECT * from MostrarClientes', (error,results)=>
+            {
+                if (error)
                 { console.log('Ha ocurrido un error al mostrar los clientes, el error es => '+error); }
                 else
                 {
@@ -31,12 +36,13 @@ exports.AddClient = ( req, res) => {
                     })
                 }
             })
-        
         }
         else 
         {
-            conexion.query('CALL ShowClients()', (error,results)=>{
-                if(error)
+            console.log('Cliente Ingresado Correctamente');
+            conexion.query('SELECT * from MostrarClientes', (error,results) =>
+            {
+                if (error)
                 { console.log('Ha ocurrido un error al mostrar los clientes, el error es => '+error); }
                 else
                 {
@@ -50,7 +56,7 @@ exports.AddClient = ( req, res) => {
                         ruta:'clientes'
                     })
                 }
-            })
+            }) 
         }
     })
 }
@@ -112,7 +118,10 @@ exports.UpdateClient = (req, res) => {
     })
 }
 
-exports.AddVendedor = ( req, res) => {
+exports.AddVendedor = ( req, res) => 
+{
+    const Tipo = req.body.Tipo_vd;
+
     const Nombre = req.body.Nombre_vd;
     const Apellido = req.body.Apellido_vd;
     const Telefono = req.body.Telefono_vd;
@@ -124,15 +133,20 @@ exports.AddVendedor = ( req, res) => {
     const Distancia = req.body.Distancia_vd;
     const Casa = req.body.Casa_vd; 
 
-    conexion.query('CALL AddVendedor(?, ?, ?, ?, ?, ?, ?, ?, ?)', [Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => {
+    conexion.query('CALL InsertarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?)', [Tipo,Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => 
+    {
         if(error)
         { 
             console.log('Hubo un error al añadir =>'+ error);
-            conexion.query('CALL ShowVendedores()', (error,results)=>{
+
+            conexion.query('SELECT * FROM mostrarvendedores', (error,results)=>
+            {
                 if(error)
-                { console.log('Ha ocurrido un error al mostrar los vendedores, el error es => '+error); }
-                else{
-                
+                { 
+                    console.log('Ha ocurrido un error al mostrar los vendedores, el error es => '+error); 
+                }
+                else
+                {
                     res.render('vendedores', { vendedores:results,
                         alert: true,
                         alertTitle: "No se pudo completar la operacion",
@@ -142,14 +156,14 @@ exports.AddVendedor = ( req, res) => {
                         timer: false,
                         ruta:'vendedores'
                     })
-
                 }
             })
         
         }
         else 
         {
-            conexion.query('CALL ShowVendedores()', (error,results)=>{
+            conexion.query('SELECT * FROM mostrarvendedores', (error,results)=>
+            {
                 if(error)
                 { console.log('Ha ocurrido un error al mostrar los clientes, el error es => '+error); }
                 else
@@ -332,3 +346,20 @@ exports.UpdateProduct = (req, res) => {
 
 
 } 
+
+exports.SearchCliente = (req,res) => {
+    const nombre = req.body.nombreSearch;
+    const consulta = "SELECT * FROM mostrarclientes WHERE Nombre LIKE '"+nombre+"%'";
+    console.log('Buscando Cliente '+nombre + '\n QUERY=> '+ consulta);
+
+     conexion.query(consulta, (error, results) => 
+    {
+      if (error) 
+      { console.log( "Hubo un error al buscar a ese cliente, error => " + error );} 
+      else 
+      { 
+        res.render("clientes", { clientes: results });
+        console.log('encontrado ' + results);
+      }
+    });   
+}

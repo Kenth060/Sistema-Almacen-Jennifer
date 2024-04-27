@@ -27,7 +27,8 @@
             <form action="/AddVendedor" method="post">
                 <div class="mb-2">
                   <label for="nombre" class="form-label">Nombres</label>
-                  <input type="text" class="form-control" id="nombre" name="Nombre_vd" placeholder="Nombre y Apellido">
+                  <input type="text" class="form-control" id="Tipo" name="Tipo_vd" placeholder="Tipo" value="Vendedor" hidden>
+                  <input type="text" class="form-control" id="nombre" name="Nombre_vd" placeholder="Nombres">
                 </div>
                 <div class="mb-2">
                   <label for="apellido" class="form-label">Apellidos</label>
@@ -103,12 +104,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% vendedores[0].forEach((vendedor) => { %>
+                  <% vendedores.forEach((vendedor) => { %>
                     <tr>
-                      <td class="centrado"> <%= vendedor.Nombre %> <%= vendedor.Apellido %></td>
+                      <td class="centrado"> <%= vendedor.Nombre %></td>
                       <td class="centrado"><%= vendedor.Cedula %></td>
                       <td class="centrado"><%= vendedor.Telefono %></td>
-                      <td class="centrado"><%= vendedor.Direccion %></td>
+                      <td class="centrado"><%= vendedor.Dirección %></td>
                       <td>
                         <!-- Botones de acciones -->
                         <a href="/EditVendedor/<%= vendedor.ID %>" class="btn btn-success mb-1" title="Actualizar"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">

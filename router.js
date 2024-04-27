@@ -122,17 +122,17 @@ router.get("/Abonos", (req, res) => {
 });
 
 router.get("/Clientes", (req, res) => {
-  conexion.query("CALL ShowClients()", (error, results) => {
-    if (error) {
-      console.log(
-        "Ha ocurrido un error al mostrar los clientes, el error es => " + error
-      );
-    } else {
-      res.render("clientes", { clientes: results });
-      // res.send(results);
-    }
+
+  conexion.query("SELECT * from MostrarClientes", (error, results) => 
+  {
+    if (error) 
+    { console.log( "Ha ocurrido un error al mostrar los clientes, el error es => " + error ); } 
+    else 
+    { res.render("clientes", { clientes: results }); }
   });
+
 });
+
 
 router.get("/Productos", (req, res) => {
   res.render("productos");
@@ -142,17 +142,14 @@ router.get("/ShowProducts", (req, res) => {
   res.render("showProducts");
 });
 
-router.get("/Vendedores", (req, res) => {
-  conexion.query("CALL ShowVendedores()", (error, results) => {
-    if (error) {
-      console.log(
-        "Ha ocurrido un error al mostrar los vendedores, el error es => " +
-          error
-      );
-    } else {
-      res.render("vendedores", { vendedores: results });
-      // res.send(results);
-    }
+router.get("/Vendedores", (req, res) => 
+{
+  conexion.query("SELECT * FROM mostrarvendedores", (error, results) => 
+  {
+    if (error) 
+    { console.log( "Ha ocurrido un error al mostrar los vendedores, el error es => " + error ); } 
+    else 
+    { res.render("vendedores", { vendedores: results }); }
   });
 });
 
@@ -170,6 +167,28 @@ router.get("/Ventas", (req, res) => {
 
 });
 
+/* FUNCIONES */
+/* router.get("/SearchCliente/:nombre", (req, res) => {
+  const nombre = req.params.id;
+
+  busqueda = "'"+nombre+"%'";
+  console.log('Buscando Cliente '+nombre + ' o '+ busqueda);
+  conexion.query("SELECT * FROM mostrarclientes WHERE Nombre LIKE ?",[nombre], (error, results) => 
+  {
+    if (error) 
+    { console.log( "Hubo un error al buscar a ese cliente, error => " + error );} 
+    else 
+    { 
+      //res.render("clientes", { clientes: results });
+      res.send(results);
+      console.log('encontrado');
+    }
+  });  
+
+
+});
+ */
+/* 
 router.get("/EditClient/:id", (req, res) => {
   const id = req.params.id;
 
@@ -286,7 +305,8 @@ router.get("/EditProduct/:cat/Producto/:IdProd/Cat/:IdCat", (req, res) =>
       // res.send(results[0][0]);}
   });
 
-});
+}); */
+
 
 
 const crud = require("./controllers/crud");
@@ -296,5 +316,7 @@ router.post("/AddVendedor", crud.AddVendedor);
 router.post("/UpdateVendedor", crud.UpdateVendedor);
 router.post("/AddProduct", crud.AddProduct);
 router.post("/UpdateProduct", crud.UpdateProduct);
+
+router.post("/SearchCliente",crud.SearchCliente);
 
 module.exports = router;
