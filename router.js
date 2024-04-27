@@ -154,14 +154,14 @@ router.get("/Vendedores", (req, res) =>
 });
 
 router.get("/Ventas", (req, res) => {
-  //res.render("ventas");
+  res.render("ventas");
 
   conexion.query("SELECT * from ventas", (error, results) => {
     if (error) 
     { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
     else 
     {  res.render("ventas", { ventas: results });
-      //res.send(results);
+      res.send(results);
     }
   });
 
