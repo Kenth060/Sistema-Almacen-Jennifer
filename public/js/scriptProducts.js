@@ -139,9 +139,6 @@ else if(opcionSeleccionada === '0')
   Dimensioneslb.style.display='none';
 }
 
-
-
-
 document.getElementById('categoria').addEventListener('change',function()
 {
     var opcionSeleccionada = this.value;
@@ -261,85 +258,8 @@ document.getElementById('categoria').addEventListener('change',function()
     }
   });
 
-/*   function MostrarForm1() {
-    document.getElementById('formContado').style.display = 'block'; // Muestra el formulario de venta al contado
-    document.getElementById('formCredito').style.display = 'none';  // Oculta el formulario de venta al crédito
-}
 
-function MostrarForm2() {
-    document.getElementById('formCredito').style.display = 'block'; // Muestra el formulario de venta al crédito
-    document.getElementById('formContado').style.display = 'none';  // Oculta el formulario de venta al contado
-}
-
-//NWEE
-
-
-function mostrarTablaSegunCategoria1() {
-    // Ocultar todas las tablas
-    document.getElementById('tablaCalzado').style.display = 'none';
-    document.getElementById('tablaPrendas').style.display = 'none';
-    document.getElementById('tablaCosmeticos').style.display = 'none';
-    document.getElementById('tablaElectrodomesticos').style.display = 'none';
-    document.getElementById('tablaPPlasticos').style.display = 'none';
-
-    // Obtener la categoría seleccionada
-    var seleccion = document.getElementById('categoriaSelect1').value;
-
-    // Mostrar la tabla correspondiente
-    switch (seleccion) {
-        case '1': 
-            document.getElementById('tablaCalzado').style.display = 'block';
-            break;
-        case '2': 
-            document.getElementById('tablaPrendas').style.display = 'block';
-            break;
-        case '3': 
-            document.getElementById('tablaCosmeticos').style.display = 'block';
-            break;
-        case '4': 
-            document.getElementById('tablaElectrodomesticos').style.display = 'block';
-            break;
-        case '5': 
-            document.getElementById('tablaPPlasticos').style.display = 'block';
-            break;
-        
-    }
-}
-
-function mostrarTablaSegunCategoria2() {
-  // Ocultar todas las tablas
-  document.getElementById('tablaCalzado').style.display = 'none';
-  document.getElementById('tablaPrendas').style.display = 'none';
-  document.getElementById('tablaCosmeticos').style.display = 'none';
-  document.getElementById('tablaElectrodomesticos').style.display = 'none';
-  document.getElementById('tablaPPlasticos').style.display = 'none';
-
-  // Obtener la categoría seleccionada
-  var seleccion = document.getElementById('categoriaSelect2').value;
-
-  // Mostrar la tabla correspondiente
-  switch (seleccion) {
-      case '1': 
-          document.getElementById('tablaCalzado').style.display = 'block';
-          break;
-      case '2': 
-          document.getElementById('tablaPrendas').style.display = 'block';
-          break;
-      case '3': 
-          document.getElementById('tablaCosmeticos').style.display = 'block';
-          break;
-      case '4': 
-          document.getElementById('tablaElectrodomesticos').style.display = 'block';
-          break;
-      case '5': 
-          document.getElementById('tablaPPlasticos').style.display = 'block';
-          break;
-      
-  }
-}
- */
-
-function confirmDelete(Categoria,id_prod,idcat) {
+function confirmDelete(id_prod, cat) {
   Swal.fire({
       title: '¿Estás seguro?',
       text: 'Esta acción eliminará permanentemente el Producto. ¿Estás seguro?',
@@ -352,7 +272,7 @@ function confirmDelete(Categoria,id_prod,idcat) {
   }).then((result) => {
       if (result.isConfirmed) {
           // Si el usuario confirma, redirecciona a la ruta de eliminar cliente
-          window.location.href = '/DeleteProduct/' + Categoria+'/Producto/'+id_prod+'/Cat/'+idcat;
+          window.location.href = '/DeleteProduct/' + id_prod + '/cat/'+cat;
       }
   });
 }

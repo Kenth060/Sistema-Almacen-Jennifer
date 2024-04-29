@@ -16,18 +16,15 @@
   <body>
     <%- include('sidebar.ejs') %> 
 
-    <% if(cliente) {%>
-
-        <section class="home-section">
-            <div class="Container px-3">
-              <div class="row">
-                <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+    <section class="home-section">
+      <div class="Container px-3">
+        <div class="row">
+          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <h3>Datos del cliente</h3>
-                  <form action="/UpdateClient" method="post">
+                    <form action="/UpdateClient" method="post">
                       <div class="mb-2">
                         <label for="Nombre" class="form-label">Nombres</label>
-                        <input type="text" class="form-control" id="Id_cl" name="Id_cl" value="<%= cliente.Id_Cliente %>" hidden>
-                        <input type="text" class="form-control" id="Id_cl" name="Id_dir_cl" value="<%= cliente.Id_Direccion %>" hidden>
+                        <input type="text" class="form-control" id="Id_cl" name="Id_cl" value="<%= cliente.Id_Persona %>" hidden>
                         <input type="text" class="form-control" id="Nombre" name="Nombre_cl" value="<%= cliente.Nombre %>">
                       </div>
                       <div class="mb-2">
@@ -46,14 +43,35 @@
                           <label for="Residencia" class="form-label">Dirección</label>
                         </div>
                         <select id="Distrito" name="Distrito_cl" class="form-select mb-2" aria-label="Distrito">
-                          <option selected><%= cliente.Distrito %></option>
-                          <option value="I">I</option>
-                          <option value="II">II</option>
-                          <option value="III">III</option>
-                          <option value="IV">IV</option>
-                          <option value="V">V</option>
-                          <option value="VI">VI</option>
-                          <option value="VII">VII</option>
+                          <option>Seleccionar Distrito</option>
+
+                          <% if (cliente.Distrito == 'I') { %>
+                            <option value="I" selected>Distrito I</option>
+                          <% } else { %> <option value="I">Distrito I</option> <% } %> 
+      
+                          <% if (cliente.Distrito == 'II') { %>
+                            <option value="II" selected>Distrito II</option>
+                          <% } else { %> <option value="II">Distrito II</option><% } %> 
+      
+                          <% if (cliente.Distrito == 'III') { %>
+                            <option value="III" selected>Distrito III</option>
+                          <% } else { %> <option value="III">Distrito III</option> <% } %> 
+                          
+                          <% if (cliente.Distrito == 'IV') { %>
+                            <option value="IV" selected>Distrito IV</option>
+                          <% } else { %> <option value="IV">Distrito IV</option> <% } %> 
+      
+                          <% if (cliente.Distrito == 'V') { %>
+                            <option value="V" selected>Distrito V</option>
+                          <% } else { %> <option value="V">Distrito V</option> <% } %> 
+      
+                          <% if (cliente.Distrito == 'VI') { %>
+                            <option value="VI" selected>Distrito VI</option>
+                          <% } else { %> <option value="VI">Distrito VI</option> <% } %>  
+      
+                          <% if (cliente.Distrito == 'VII') { %>
+                            <option value="VII" selected>Distrito VII</option>
+                          <% } else { %> <option value="VII">Distrito VII</option> <% } %>  
                         </select>
                         <div class="mb-2 dx-2">
                           <label for="Residencia" class="form-label">Zona de Residencia</label>
@@ -71,16 +89,15 @@
                           <label for="Casa" class="form-label">Numero de casa</label>
                           <input type="text" class="form-control" id="Casa" name="Casa_cl" value="<%= cliente.Casa %>">
                         </div>
-                        <div class="d-grid gap-2">
+                        <div class="d-grid gap-2 mb-5">
                           <button type="submit" class="btn btn-success" title="Editar">Editar</button>
-                          <button class="btn btn-secondary" title="Limpiar Campos">Limpiar Campos</button>
                         </div>
                       
                     </form>
-                </div>
+          </div>
 
-                <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-                  <h2>Informacion del cliente</h2>
+          <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                  <h2>Información del Cliente</h2>
                   <table class="table primary">
                       <thead>
                         <tr>
@@ -95,17 +112,17 @@
                         <td class="centrado"> <%= cliente.Nombre %> <%= cliente.Apellido %></td>
                         <td class="centrado"><%= cliente.Cedula %></td>
                         <td class="centrado"><%= cliente.Telefono %></td>
-                        <td class="centrado"><%= cliente.Direccion %></td>
-                        <td class="centrado"><%= cliente.Credito %></td>
-      
+                        <td class="centrado">Distrito <%= cliente.Distrito %>,<%= cliente.Zona_Residencia %>,<%= cliente.Punto_Referencia %> <%= cliente.Distancia %>, <%= cliente.Casa %></td>
+
+                        <td class="centrado">C$ <%= cliente.Credito_Disponible %></td>
                       </tbody>
                   </table>
-                </div>
-              </div>
-            </div>
-          </section>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <% } %>
+
 
     <script src="/resources/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

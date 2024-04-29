@@ -37,7 +37,7 @@
 
               <div class="col-md-6">
                 <label for="Existencia" class="form-label">Existencia del producto</label>
-                <input type="number" class="form-control" id="Existencia" name="Existencia">
+                <input type="number" class="form-control" id="Existencia" name="Existencia" required>
               </div>
 
               <div class="col-md-6">
@@ -50,41 +50,41 @@
                 <input type="text" class="form-control" id="Color" name="Color" required>
               </div>  
 
-                <div class="col-md-6">
+              <div class="col-md-6">
                   <label for="Tipo" class="form-label">Tipo de producto</label>
                   <input type="text" class="form-control" id="Tipo" name="Tipo" required>
-                </div>
+              </div>
 
-                <div class="col-md-6">
-                  <label for="FechaIngreso" class="form-label">Fecha de Ingreso</label>
-                  <input type="date" class="form-control" id="FechaIngreso" name="Fecha" required>
-                </div>
+              <div class="col-md-6">
+                <label for="FechaIngreso" class="form-label">Fecha de Ingreso</label>
+                <input type="date" class="form-control" id="FechaIngreso" name="Fecha" required>
+              </div>
 
-                <div class="col-md-6">
-                  <label for="Talla" id="Tallalb" class="form-label">Talla del producto</label>
-                  <input type="text" class="form-control" id="Talla" name="Talla">
-                </div>
+              <div class="col-md-6">
+                <label for="Talla" id="Tallalb" class="form-label">Talla del producto</label>
+                <input type="text" class="form-control" id="Talla" name="Talla">
+              </div>
 
-                <div class="col-md-6">
-                  <label for="Modelo" id="Modelolb" class="form-label">Modelo del producto</label>
-                  <input type="text" class="form-control" id="Modelo" name="Modelo">
-                </div>
+              <div class="col-md-6">
+                <label for="Modelo" id="Modelolb" class="form-label">Modelo del producto</label>
+                <input type="text" class="form-control" id="Modelo" name="Modelo">
+              </div>
 
-                <div class="col-md-6">
-                  <label for="Clasificacion" id="Clasificacionlb" class="form-label">Clasificacion</label>
-                  <input type="text" class="form-control" id="Clasificacion" name="Clasificacion">
+              <div class="col-md-6">
+                <label for="Clasificacion" id="Clasificacionlb" class="form-label">Clasificacion</label>
+                <input type="text" class="form-control" id="Clasificacion" name="Clasificacion">
 
-                  <label for="Dimensiones" id="Dimensioneslb" class="form-label">Dimensiones</label>
-                  <input type="text" class="form-control" id="Dimensiones" name="Dimensiones">
+                <label for="Dimensiones" id="Dimensioneslb" class="form-label">Dimensiones</label>
+                <input type="text" class="form-control" id="Dimensiones" name="Dimensiones">
 
-                  <label for="UnidadMedida" id="UnidadMedidalb" class="form-label">Unidad de Medida</label>
-                  <input type="text" class="form-control" id="UnidadMedida" name="Unidad_Medida">
-                </div>
+                <label for="UnidadMedida" id="UnidadMedidalb" class="form-label">Unidad de Medida</label>
+                <input type="text" class="form-control" id="UnidadMedida" name="Unidad_Medida">
+              </div>
 
-                <div class="d-grid gap-2">
-                  <Button type="submit" class="btn btn-success">Guardar</Button>
-                  <Button class="btn btn-secondary" onclick="">Limpiar Campos</button>
-                </div>
+              <div class="d-grid gap-2">
+                <button title="Guardar Producto" type="submit" class="btn btn-success">Guardar Producto</button>
+                <button title="Limpiar Campos" class="btn btn-secondary" onclick="Limpiar()">Limpiar Campos</button>
+              </div>
             </form>
          </div>
 
@@ -160,7 +160,7 @@
               showConfirmButton: true,
               timer: false
           }).then(() => {
-              window.location = '/<%= ruta %>'
+              window.location = '/ShowProducts/<%= cat %>'
           })
       </script>
   <% } %>

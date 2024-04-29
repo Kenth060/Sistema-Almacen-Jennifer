@@ -24,8 +24,7 @@
             <form action="/UpdateVendedor" method="post">
                 <div class="mb-2">
                   <label for="nombre" class="form-label">Nombres</label>
-                  <input type="text" class="form-control" id="Id_cl" name="Id_vd" value="<%= vendedor.Id_Vendedor %>" hidden>
-                  <input type="text" class="form-control" id="Id_cl" name="Id_dir_vd" value="<%= vendedor.Id_Direccion %>" hidden>
+                  <input type="text" class="form-control" id="Id_cl" name="Id_vd" value="<%= vendedor.Id_Persona %>" hidden>
                   <input type="text" class="form-control" id="nombre" name="Nombre_vd" value="<%= vendedor.Nombre %>">
                 </div>
                 <div class="mb-2">
@@ -44,14 +43,35 @@
                     <label for="Residencia" class="form-label">Dirección</label>
                   </div>
                   <select class="form-select" aria-label="Distrito" name="Distrito_vd">
-                    <option selected>Distrito <%= vendedor.Distrito %></option>
-                    <option value="I">Distrito I</option>
-                    <option value="II">Distrito II</option>
-                    <option value="III">Distrito III</option>
-                    <option value="IV">Distrito IV</option>
-                    <option value="V">Distrito V</option>
-                    <option value="VI">Distrito VI</option>
-                    <option value="VII">Distrito VII</option>
+                    <option>Seleccionar Distrito</option>
+
+                    <% if (vendedor.Distrito == 'I') { %>
+                      <option value="I" selected>Distrito I</option>
+                    <% } else { %> <option value="I">Distrito I</option> <% } %> 
+
+                    <% if (vendedor.Distrito == 'II') { %>
+                      <option value="II" selected>Distrito II</option>
+                    <% } else { %> <option value="II">Distrito II</option><% } %> 
+
+                    <% if (vendedor.Distrito == 'III') { %>
+                      <option value="III" selected>Distrito III</option>
+                    <% } else { %> <option value="III">Distrito III</option> <% } %> 
+                    
+                    <% if (vendedor.Distrito == 'IV') { %>
+                      <option value="IV" selected>Distrito IV</option>
+                    <% } else { %> <option value="IV">Distrito IV</option> <% } %> 
+
+                    <% if (vendedor.Distrito == 'V') { %>
+                      <option value="V" selected>Distrito V</option>
+                    <% } else { %> <option value="V">Distrito V</option> <% } %> 
+
+                    <% if (vendedor.Distrito == 'VI') { %>
+                      <option value="VI" selected>Distrito VI</option>
+                    <% } else { %> <option value="VI">Distrito VI</option> <% } %>  
+
+                    <% if (vendedor.Distrito == 'VII') { %>
+                      <option value="VII" selected>Distrito VII</option>
+                    <% } else { %> <option value="VII">Distrito VII</option> <% } %>  
                   </select>
                   <div class="mb-2 dx-2">
                     <label for="Residencia" class="form-label">Zona de Residencia</label>
@@ -69,9 +89,8 @@
                     <label for="casa" class="form-label">Numero de casa</label>
                     <input type="text" class="form-control" id="casa"  name="Casa_vd" placeholder="N. Casa" value="<%= vendedor.Casa %>" >
                   </div>
-                  <div class="d-grid gap-2">
+                  <div class="d-grid gap-2 mb-3">
                     <button type="submit" class="btn btn-success" title="Editar">Editar</button>
-                    <Button class="btn btn-secondary" title="Limpiar Campos">Limpiar Campos</button>
                   </div>
                 
               </form>
@@ -93,7 +112,7 @@
                       <td class="centrado"> <%= vendedor.Nombre %> <%= vendedor.Apellido %></td>
                       <td class="centrado"><%= vendedor.Cedula %></td>
                       <td class="centrado"><%= vendedor.Telefono %></td>
-                      <td class="centrado"><%= vendedor.Direccion %></td>
+                      <td class="centrado">Distrito <%= vendedor.Distrito %>,<%= vendedor.Zona_Residencia %>,<%= vendedor.Punto_Referencia %> <%= vendedor.Distancia %>, <%= vendedor.Casa %></td>
                     </tr>
 
 

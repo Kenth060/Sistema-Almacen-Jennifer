@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Clientes Comercial Jennifer</title>
     <!-- FA pencil-->
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
@@ -72,11 +72,12 @@
                   </div>
                   <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-success" title="Guardar">Guardar</button>
-                    <button class="btn btn-secondary" title="Limpiar Campos">Limpiar Campos</button>
+                    <button class="btn btn-secondary" title="Limpiar Campos" onclick="Limpiar()">Limpiar Campos</button>
                   </div>
                 
-              </form>
+            </form>
           </div>
+
           <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
             <h2>Listado de clientes</h2>
             <nav class="navbar bg-body-tertiary">
@@ -92,40 +93,34 @@
                 <thead>
                   <tr>
                     <th class="centrado">Nombre completo</th>
-                    <th class="centrado">Cedula</th>
-                    <th class="centrado">Telefono</th>
+                    <th class="centrado">Cédula</th>
+                    <th class="centrado">Teléfono</th>
                     <th class="centrado">Dirección</th>
-                    <th class="centrado">Credito Disponible</th>
+                    <th class="centrado">Crédito Disponible</th>
                     <th class="centrado">Acciones</th>
                   </tr>
                 </thead>
-                  <tbody>
-                    <% clientes.forEach((client) => { %>
-                      <tr>
-                        <td class="centrado"> <%= client.Nombre %></td>
-                        <td class="centrado"><%= client.Cedula %></td>
-                        <td class="centrado"><%= client.Telefono %></td>
-                        <td class="centrado"><%= client.Dirección %></td>
-                        <td class="centrado">C$ <%= client.Credito_Disponible %></td>
-                        <td>
-                          <!-- Botones de acciones -->
-                          <a href="/EditClient/<%= client.Id_Cliente %>" class="btn btn-success mb-1" title="Actualizar"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                          </svg></a> 
-                          <a href="#" class="btn btn-danger" title="Eliminar" onclick="confirmDelete('<%= client.ID %>')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                          </svg></a>
-                        </td>
-                      </tr>
-  
-                    <% }) %> 
-  
-                    
-                    
-                  </tbody>
-                
+                <tbody>
+                  <% clientes.forEach((client) => { %>
+                  <tr>
+                    <td class="centrado"> <%= client.Nombre %></td>
+                    <td class="centrado"><%= client.Cedula %></td>
+                    <td class="centrado"><%= client.Telefono %></td>
+                    <td class="centrado"><%= client.Dirección %></td>
+                    <td class="centrado">C$ <%= client.Credito_Disponible %></td>
+                    <td>
+                      <!-- Botones de acciones -->
+                      <a href="/EditClient/<%= client.Id_Cliente %>" class="btn btn-success mb-1" title="Actualizar"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                      <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                      <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/></svg></a> 
+                          
+                      <a href="#" class="btn btn-danger" title="Eliminar" onclick="confirmDelete('<%= client.Id_Cliente %>')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                      <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg></a>
+                    </td>
+                  </tr>
+                  <% }) %> 
+                </tbody> 
             </table>
           </div>
         </div>

@@ -1,4 +1,5 @@
-function confirmDelete(clientID) {
+function confirmDelete(clientID) 
+{
     Swal.fire({
         title: '¿Estás seguro?',
         text: 'Esta acción eliminará permanentemente al cliente. ¿Estás seguro?',
@@ -14,4 +15,19 @@ function confirmDelete(clientID) {
             window.location.href = '/DeleteClient/' + clientID;
         }
     });
+}
+
+function Limpiar()
+{
+    document.getElementById('Nombre').value='';
+    document.getElementById('Apellido').value='';
+    document.getElementById('Telefono').value='';
+    document.getElementById('Cedula').value='';
+    document.getElementById('Residencia').value='';
+    document.getElementById('PuntoReferencia').value='';
+    document.getElementById('Distancia').value='';
+    document.getElementById('Casa').value='';
+    const SelectDistrito = document.getElementById('Distrito');
+
+    SelectDistrito.selectedIndex = 0;
 }

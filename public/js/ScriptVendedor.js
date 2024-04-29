@@ -16,3 +16,17 @@ function confirmDeleteVendedor(VendedorID) {
     });
 }
 
+function Limpiar()
+{
+    document.getElementById('nombre').value='';
+    document.getElementById('apellido').value='';
+    document.getElementById('Telefono').value='';
+    document.getElementById('Cedula').value='';
+    document.getElementById('Residencia').value='';
+    document.getElementById('PuntoReferencia').value='';
+    document.getElementById('Distancia').value='';
+    document.getElementById('casa').value='';
+    const SelectDistrito = document.getElementById('selectDistritoVd');
+
+    SelectDistrito.selectedIndex = 0;
+}

@@ -14,31 +14,31 @@
       <div class="Container px-3">
         <div class="row">
           <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <h3><b>Registro de productos</b></h3>
+            <h3><b>Actualizar Producto</b></h3>
             <br />
-            <div class="mb-3">
-              <label for="text" class="form-label"><b>Seleccione la categoria del producto a añadir</b></label>
+            <div class="mb-1">
+              <label for="text" class="form-label"><b>Categoria del producto</b></label>
             </div>
 
             <select class="form-select" aria-label="Seleccione una categoria" id="categoria" required>
               <option value="0">Seleccione una categoria</option>
-              <% if ( Producto.Nombre_Categoria == 'Calzado') { %>
+              <% if ( Producto.Categoria == 'Calzado') { %>
               <option value="1" selected>Calzado</option>
               <% } else { %>
               <option value="1">Calzado</option>
-              <% } %> <% if ( Producto.Nombre_Categoria == 'Prendas_Vestir' || Producto.Nombre_Categoria == 'Prendas de Vestir') { Categoria= 'Prendas de Vestir' %>
+              <% } %> <% if ( Producto.Categoria == 'Prendas de Vestir') { %>
               <option value="2" selected>Prendas de Vestir</option>
               <% } else { %>
               <option value="2">Prendas de Vestir</option>
-              <% } %> <% if ( Producto.Nombre_Categoria == 'Cosmeticos') { %>
+              <% } %> <% if ( Producto.Categoria == 'Cosmeticos') { %>
               <option value="3" selected>Cosmeticos</option>
               <% } else { %>
               <option value="3">Cosmeticos</option>
-              <% } %> <% if ( Producto.Nombre_Categoria == 'Electrodomesticos') { %>
+              <% } %> <% if ( Producto.Categoria == 'Electrodomesticos') { %>
               <option value="4" selected>Electrodomesticos</option>
               <% } else { %>
               <option value="4">Electrodomesticos</option>
-              <% } %> <% if ( Producto.Nombre_Categoria == 'Productos_Plasticos' || Producto.Nombre_Categoria == 'Productos Plasticos') { Categoria = 'Productos Plasticos' %>
+              <% } %> <% if ( Producto.Categoria == 'Productos_Plasticos' ||  Producto.Categoria == 'Productos Plasticos' ) { %>
               <option value="5" selected>Productos Plasticos</option>
               <% } else { %>
               <option value="5">Productos Plasticos</option>
@@ -50,9 +50,7 @@
                 <label for="Marca" id="Marcalb" class="form-label">Marca</label>
                 <input type="text" class="form-control" id="Marca" name="Marca" required value="<%= Producto.Marca %>"/>
                 <input type="text" class="form-control" id="Id_Prod" name="Id_Prod"  value="<%= Producto.Id_Producto %>" hidden />
-                <input type="text" class="form-control" id="Id_Cat" name="Id_Cat"  value="<%= Producto.Id_Categoria %>" hidden/>
-                <input type="text" class="form-control" id="p_cat" name="p_cat"  value="<%= p_cat %>" hidden/>
-                <input type="text" class="form-control" id="Categoria_Prod" name="Categoria_Prod"  value="<%= Producto.Nombre_Categoria %>" hidden />
+                <input type="text" class="form-control" id="Categoria_Prod" name="Categoria_Prod"  value="<%= Producto.Categoria %>" hidden />
               </div>
 
               <div class="col-md-6">
@@ -98,18 +96,17 @@
                 <input type="text" class="form-control" id="Dimensiones" name="Dimensiones" value="<%= Producto.Dimensiones %>"/>
 
                 <label for="UnidadMedida" id="UnidadMedidalb" class="form-label">Unidad de Medida</label>
-                <input type="text" class="form-control" id="UnidadMedida" name="Unidad_Medida" value="<%= Producto.Unidad_de_Medida %>"/>
+                <input type="text" class="form-control" id="UnidadMedida" name="Unidad_Medida" value="<%= Producto.Unidad_Medida %>"/>
               </div>
 
               <div class="d-grid gap-2">
-                <Button type="submit" class="btn btn-success">Editar</Button>
-                <Button class="btn btn-secondary">Limpiar Campos</Button>
+                <button type="submit" class="btn btn-success">Editar</button>
               </div>
             </form>
           </div>
 
           <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-            <h2>Listado de <%= Producto.Nombre_Categoria %></h2>
+            <h2>Listado de <%= Producto.Categoria %></h2>
             <table class="table primary">
               <thead>
                 <tr>
@@ -121,7 +118,7 @@
               </thead>
                 <tbody>
                   <tr>
-                    <td class="centrado"><%= Producto.Productos %></td>
+                    <td class="centrado"><%= Producto.Descripcion %></td>
                     <td class="centrado"><%= Producto.Precio %></td>
                     <td class="centrado"><%= Producto.Existencia %></td>
                     <td class="centrado"><%= Producto.Fecha_Ingreso %></td>
@@ -147,7 +144,7 @@
         showConfirmButton: true,
         timer: false,
       }).then(() => {
-        window.location = "/<%= ruta %>";
+        window.location = '/ShowProducts/<%= cat %>'
       });
     </script>
     <% } %>

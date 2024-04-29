@@ -61,9 +61,9 @@ exports.AddClient = ( req, res) =>
     })
 }
 
-exports.UpdateClient = (req, res) => {
+exports.UpdateClient = (req, res) => 
+{
     const Id_Cliente = req.body.Id_cl;
-    const Id_Dir = req.body.Id_dir_cl;
     const Nombre = req.body.Nombre_cl;
     const Apellido = req.body.Apellido_cl;
     const Telefono = req.body.Telefono_cl;
@@ -75,10 +75,13 @@ exports.UpdateClient = (req, res) => {
     const Distancia = req.body.Distancia_cl;
     const Casa = req.body.Casa_cl; 
 
-    conexion.query('CALL UpdateClient(?,?,?, ?, ?, ?, ?, ?, ?, ?, ?)', [Id_Cliente,Nombre,Apellido,Cedula,Telefono,Id_Dir,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => {
+    conexion.query('CALL EditarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?)', [Id_Cliente,Cedula,Nombre,Apellido,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => 
+    {
         if(error)
         { 
-            conexion.query('CALL ShowClients()', (error,results)=>{
+            console.log('Ha ocurrido un error al editar al cliente, el error es => '+error);
+            conexion.query('SELECT * from MostrarClientes', (error,results)=>
+            {
                 if(error)
                 { console.log('Ha ocurrido un error al mostrar los clientes, el error es => '+error); }
                 else
@@ -98,7 +101,7 @@ exports.UpdateClient = (req, res) => {
         }
         else 
         {
-            conexion.query('CALL ShowClients()', (error,results)=>{
+            conexion.query("SELECT * from MostrarClientes", (error,results)=>{
                 if(error)
                 { console.log('Ha ocurrido un error al mostrar los clientes, el error es => '+error); }
                 else
@@ -183,9 +186,9 @@ exports.AddVendedor = ( req, res) =>
     })
 }
 
-exports.UpdateVendedor = (req, res) => {
+exports.UpdateVendedor = (req, res) =>
+{
     const Id_Vendedor = req.body.Id_vd;
-    const Id_Dir = req.body.Id_dir_vd;
     const Nombre = req.body.Nombre_vd;
     const Apellido = req.body.Apellido_vd;
     const Telefono = req.body.Telefono_vd;
@@ -197,10 +200,14 @@ exports.UpdateVendedor = (req, res) => {
     const Distancia = req.body.Distancia_vd;
     const Casa = req.body.Casa_vd; 
 
-    conexion.query('CALL UpdateVendedor(?,?,?, ?, ?, ?, ?, ?, ?, ?, ?)', [Id_Vendedor,Nombre,Apellido,Cedula,Telefono,Id_Dir,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => {
+    conexion.query("CALL EditarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?)", [Id_Vendedor,Cedula,Nombre,Apellido,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => 
+    {
         if(error)
         { 
-            conexion.query('CALL ShowVendedores()', (error,results)=>{
+            console.log('Hubo un error al Editar al Vendedor => ' +error);
+
+            conexion.query("SELECT * from MostrarVendedores", (error,results)=>
+            {
                 if(error)
                 { console.log('Ha ocurrido un error al mostrar los vendedores, el error es => '+error); }
                 else
@@ -220,7 +227,8 @@ exports.UpdateVendedor = (req, res) => {
         }
         else 
         {
-            conexion.query('CALL ShowVendedores()', (error,results)=>{
+            conexion.query("SELECT * from MostrarVendedores", (error,results) =>
+            {
                 if(error)
                 { console.log('Ha ocurrido un error al mostrar los vendedores, el error es => '+error); }
                 else
@@ -237,10 +245,11 @@ exports.UpdateVendedor = (req, res) => {
                 }
             })
         }
-    })
+    })  
 } 
 
-exports.AddProduct = ( req, res) => {
+exports.AddProduct = ( req, res) => 
+{
     const Marca = req.body.Marca;
     const Existencia = req.body.Existencia;
     const Precio = req.body.Precio;
@@ -255,10 +264,11 @@ exports.AddProduct = ( req, res) => {
     const Dimensiones = req.body.Dimensiones;
     const UnidadMedida = req.body.Unidad_Medida;
 
-    conexion.query('CALL AddProduct(?,?,?,?,?,?,?,?,?,?,?,?)', [Marca,Existencia,Precio,Color,Tipo,Talla,Modelo,Clasificacion,Dimensiones,UnidadMedida,Categoria,Fecha],(error,results) => {
+    conexion.query('CALL InsertarProductos(?,?,?,?,?,?,?,?,?,?,?,?)', [Marca,Existencia,Precio,Color,Tipo,Categoria,Talla,Modelo,Clasificacion,Dimensiones,UnidadMedida,Fecha],(error,results) => {
         if(error)
         { 
             console.log('Hubo un error al agregar el producto => '+error);
+
             res.render('productos', { 
                 alert: true,
                 alertTitle: "No se pudo completar la operacion",
@@ -266,7 +276,7 @@ exports.AddProduct = ( req, res) => {
                 alertIcon: 'error',
                 showConfirmButton: true,
                 timer: false,
-                ruta:'productos'
+                cat: Categoria
             })
         }
         else 
@@ -278,18 +288,16 @@ exports.AddProduct = ( req, res) => {
                 alertIcon: 'success',
                 showConfirmButton: true,
                 timer: false,
-                ruta:'productos'
+                cat: Categoria
             })
         }
     })
 }
 
-exports.UpdateProduct = (req, res) => {
+exports.UpdateProduct = (req, res) => 
+{
     const Id_Producto = req.body.Id_Prod;
     const Categoria = req.body.Categoria_Prod;
-    const Id_Cat = req.body.Id_Cat;
-
-    const p_Cat = req.body.p_cat;
 
     const Marca = req.body.Marca;
     const Existencia = req.body.Existencia;
@@ -304,49 +312,41 @@ exports.UpdateProduct = (req, res) => {
     const Dimensiones = req.body.Dimensiones;
     const UnidadMedida = req.body.Unidad_Medida;
 
-    conexion.query('CALL UpdateProduct(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [Id_Producto,Categoria,Id_Cat,Marca,Existencia,Precio,Color,Tipo,Fecha,Talla,Modelo,Clasificacion,Dimensiones,UnidadMedida],(error,results) => {
+    conexion.query('CALL update_producto(?,?,?,?,?,?,?,?,?,?,?,?)', [Id_Producto,Marca,Existencia,Precio,Color,Tipo,Fecha,Talla,Modelo,Clasificacion,Dimensiones,UnidadMedida],(error,results) => {
         if(error)
         { 
-            conexion.query("CALL Show" + p_Cat + "()", (error, results) => 
-            {
-                if (error) 
-                { console.log( "Hubo un error al imprimir la informacion de estos Producto, error => " + error); } 
-                else 
-                { res.render("showProducts.ejs", { Producto: results, Categoria: p_Cat,
-                    alert: true,
-                    alertTitle: "No se pudo completar la operacion",
-                    alertMessage: "No se pudo editar el Producto, compruebe los datos e intente nuevamente",
-                    alertIcon: 'error',
-                    showConfirmButton: true,
-                    timer: false,
-                    ruta:'ShowProducts/'+p_Cat}); }
-            });  
+            console.log('Hubo un error al actualizar el producto => '+error);
+
+            res.render("productos", {
+                alert: true,
+                alertTitle: "No se pudo completar la operacion",
+                alertMessage: "No se pudo editar el Producto, compruebe los datos e intente nuevamente",
+                alertIcon: 'error',
+                showConfirmButton: true,
+                timer: false,
+                cat: Categoria 
+            }); 
         }
         else 
         {
             console.log('Se actualizo el producto correctamente');
-            //res.redirect('/ShowProducts/'+p_Cat);
 
-            conexion.query("CALL Show" + p_Cat + "()", (error, results) => 
-            {
-                if (error) 
-                { console.log( "Hubo un error al imprimir la informacion de estos Producto, error => " + error); } 
-                else 
-                { res.render("showProducts.ejs", { Producto: results, Categoria: p_Cat,
-                    alert: true,
-                    alertTitle: "Operación Completada",
-                    alertMessage: "Se edito el Producto Correctamente",
-                    alertIcon: 'success',
-                    showConfirmButton: true,
-                    timer: false,
-                    ruta:'ShowProducts/'+p_Cat}); }
-            });  
+            res.render("productos", {
+                alert: true,
+                alertTitle: "Operación Completada",
+                alertMessage: "Se edito el Producto Correctamente",
+                alertIcon: 'success',
+                showConfirmButton: true,
+                timer: false,
+                cat: Categoria
+            });
         }
     })
 
 
 } 
 
+/*
 exports.SearchCliente = (req,res) => {
     const nombre = req.body.nombreSearch;
     const consulta = "SELECT * FROM mostrarclientes WHERE Nombre LIKE '"+nombre+"%'";
@@ -362,4 +362,4 @@ exports.SearchCliente = (req,res) => {
         console.log('encontrado ' + results);
       }
     });   
-}
+} */

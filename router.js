@@ -7,16 +7,16 @@ const conexion = require("./database/db");
 const bcryptjs = require("bcryptjs");
 
 //Estableciendo las rutas
-router.get("/Login", (req, res) => {
+router.get ("/Login", (req, res) => {
   res.render("login");
 });
 
-router.get("/register", (req, res) => {
+router.get ("/register", (req, res) => {
   res.render("register");
 });
 
 //10 -> Registro
-router.post("/register", async (req, res) => {
+router.post ("/register", async (req, res) => {
   const user = req.body.user;
   const name = req.body.name;
   const rol = req.body.rol;
@@ -46,7 +46,7 @@ router.post("/register", async (req, res) => {
 });
 
 //11 -> Autenticacion
-router.post("/auth", async (req, res) => {
+router.post ("/auth", async (req, res) => {
   const user = req.body.user;
   const pass = req.body.pass;
 
@@ -99,7 +99,7 @@ router.post("/auth", async (req, res) => {
 });
 
 // 12-> Auth pages
-router.get("/", (req, res) => {
+router.get ("/", (req, res) => {
   if (req.session.loggedin) {
     res.render("inicio", {
       login: true,
@@ -113,15 +113,16 @@ router.get("/", (req, res) => {
   }
 });
 
-router.get("/Inicio", (req, res) => {
+
+router.get ("/Inicio", (req, res) => {
   res.render("inicio");
 });
 
-router.get("/Abonos", (req, res) => {
+router.get ("/Abonos", (req, res) => {
   res.render("abonos");
 });
 
-router.get("/Clientes", (req, res) => {
+router.get ("/Clientes", (req, res) => {
 
   conexion.query("SELECT * from MostrarClientes", (error, results) => 
   {
@@ -133,13 +134,30 @@ router.get("/Clientes", (req, res) => {
 
 });
 
-
-router.get("/Productos", (req, res) => {
-  res.render("productos");
+router.get ("/DeleteClient/:ID", (req, res) => 
+{
+  const id = req.params.ID;
+  conexion.query( "DELETE FROM persona where Id_Persona = ?", [id], (error, results) =>
+   {
+      if (error) 
+      { throw error; } 
+      else 
+      { res.redirect("/Clientes"); }
+  });
 });
 
-router.get("/ShowProducts", (req, res) => {
-  res.render("showProducts");
+router.get("/EditClient/:ID", (req, res) => 
+{
+  const id = req.params.ID;
+
+  conexion.query("SELECT * FROM persona where Id_Persona = ?", [id], (error, results) => 
+  {
+    if (error) 
+    { console.log("Hubo un error al obtener informacion de ese cliente, error => " + error ); }
+    else 
+    { res.render("editClient.ejs", { cliente: results[0] }); }
+    //{ res.send(results[0]);}
+  });
 });
 
 router.get("/Vendedores", (req, res) => 
@@ -153,10 +171,40 @@ router.get("/Vendedores", (req, res) =>
   });
 });
 
+router.get("/DeleteVendedor/:ID", (req, res) => 
+{
+  const id = req.params.ID;
+
+  conexion.query ("DELETE FROM persona where Id_Persona = ?", [id], (error, results) => 
+  {
+      if (error)
+      { throw error;} 
+      else 
+      { res.redirect("/Vendedores");}
+    });
+});
+
+router.get("/EditVendedor/:ID", (req, res) => {
+  const id = req.params.ID;
+
+  conexion.query("SELECT * FROM persona where Id_Persona = ?", [id], (error, results) => 
+  {
+    if (error) 
+    { console.log( "Hubo un error al obtener informacion de ese vendedor, error => " + error); } 
+    else 
+    {res.render("editvendedor.ejs", { vendedor: results[0] });}
+    // res.send(results[0][0]);}
+  });
+});
+
+router.get("/Productos", (req, res) => {
+  res.render("productos");
+});
+
 router.get("/Ventas", (req, res) => {
   res.render("ventas");
 
-  conexion.query("SELECT * from ventas", (error, results) => {
+/*   conexion.query("SELECT * from ventas", (error, results) => {
     if (error) 
     { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
     else 
@@ -164,8 +212,84 @@ router.get("/Ventas", (req, res) => {
       res.send(results);
     }
   });
+ */
+});
+
+router.get("/ShowProducts/:categoria", (req, res) => {
+  const categoria = req.params.categoria;
+  //res.send(categoria);
+  
+  conexion.query ('CALL MostrarProductos(?)',[categoria], (error, results) => 
+  {
+    if (error) 
+    { console.log( "Hubo un error al Mostrar estos Producto, error => " + error); } 
+    else 
+    {
+      const productosFormateados = results[0].map(producto => 
+          {
+            const fecha = new Date(producto.Fecha_Ingreso);
+            const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+            const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+            
+            return {
+              ...producto,
+              Fecha_Ingreso: fechaFormateada
+            };
+          });
+
+          //res.send(productosFormateados);
+      res.render("showProducts.ejs", { Producto: productosFormateados, Categoria: categoria }); 
+    }   
+  });   
 
 });
+
+router.get("/DeleteProduct/:IdProd/cat/:cat", (req, res) =>   
+{
+  const cat = req.params.cat;
+  const id_prod = req.params.IdProd;
+
+   conexion.query ("DELETE FROM productos where Id_Producto = ?" , [id_prod],(error, results) => 
+   {
+      if (error) 
+      { console.log("Hubo un error al eliminar el producto => " + error); } 
+      else 
+      { res.redirect('/ShowProducts/'+cat); }
+    });  
+});
+
+router.get("/EditProduct/:Cat/p/:IdProd", (req, res) => 
+{
+  const id_prod = req.params.IdProd;
+  const  cat = req.params.Cat
+
+  conexion.query("CALL BuscarProducto(?,?)", [cat,id_prod], (error, results) => 
+  {
+    if (error) 
+    { console.log( "Hubo un error al buscar ese producto, error => " + error ); }
+    else 
+    { 
+      const productosFormateados = results[0].map( producto => 
+        {
+          const fecha = new Date(producto.Fecha_Ingreso);
+          const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+          const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+          
+          return {
+            ...producto,
+            Fecha_Ingreso: fechaFormateada
+          };
+        });
+
+        //res.send(productosFormateados);
+      res.render("editProducts.ejs", { Producto: productosFormateados[0]});
+    }
+  });
+
+}); 
+
+
+
 
 /* FUNCIONES */
 /* router.get("/SearchCliente/:nombre", (req, res) => {
@@ -189,123 +313,15 @@ router.get("/Ventas", (req, res) => {
 });
  */
 /* 
-router.get("/EditClient/:id", (req, res) => {
-  const id = req.params.id;
 
-  conexion.query("CALL SearchClient(?)", [id], (error, results) => {
-    if (error) {
-      console.log(
-        "Hubo un error al obtener informacion de ese cliente, error => " + error
-      );
-    } else {
-      res.render("editClient.ejs", { cliente: results[0][0] });
-    }
-    // res.send(results[0][0]);}
-  });
-});
+*/
 
-router.get("/DeleteClient/:ID", (req, res) => {
-  const id = req.params.ID;
-  conexion.query(
-    "DELETE FROM cliente where Id_Cliente = ?",
-    [id],
-    (error, results) => {
-      if (error) {
-        throw error;
-      } else {
-        res.redirect("/Clientes");
-      }
-    }
-  );
-});
 
-router.get("/EditVendedor/:id", (req, res) => {
-  const id = req.params.id;
 
-  conexion.query("CALL SearchVendedor(?)", [id], (error, results) => {
-    if (error) {
-      console.log(
-        "Hubo un error al obtener informacion de ese vendedor, error => " +
-          error
-      );
-    } else {
-      res.render("editvendedor.ejs", { vendedor: results[0][0] });
-    }
-    // res.send(results[0][0]);}
-  });
-});
 
-router.get("/DeleteVendedor/:ID", (req, res) => {
-  const id = req.params.ID;
-  conexion.query(
-    "DELETE FROM vendedor where Id_Vendedor = ?",
-    [id],
-    (error, results) => {
-      if (error) {
-        throw error;
-      } else {
-        res.redirect("/Vendedores");
-      }
-    }
-  );
-});
 
-router.get("/ShowProducts/:cat", (req, res) => {
-  const cat = req.params.cat;
-  //res.send(cat);
-  
-  conexion.query("CALL Show" + cat + "()", (error, results) => 
-    {
-        if (error) 
-        { console.log( "Hubo un error al obtener informacion de este Producto, error => " + error); } 
-        else 
-        { res.render("showProducts.ejs", { Producto: results, Categoria: cat }); }
-        //res.send(cat);}
-    }); 
 
-});
 
-router.get("/DeleteProduct/:cat/Producto/:IdProd/Cat/:IdCat", (req, res) => 
-{
-  const id_prod = req.params.IdProd;
-  const id_cat = req.params.IdCat;
-  const cat = req.params.cat;
-
-  //res.redirect('/ShowProducts/'+cat);
-
-  res.send('Categoria => '+cat+' / ID Producto => '+id_prod+' / ID Categoria => '+id_cat);
-
-   conexion.query ("CALL DeleteProduct(?,?,?)" , [id_prod, cat, id_cat],(error, results) => 
-   {
-      if (error) 
-      { console.log("Hubo un error al eliminar el producto => " + error); } 
-      else 
-      {
-       res.redirect('/ShowProducts/'+cat);
-      }
-    });  
-});
-
-router.get("/EditProduct/:cat/Producto/:IdProd/Cat/:IdCat", (req, res) => 
-{
-  const id_prod = req.params.IdProd;
-  const id_cat = req.params.IdCat;
-  const cat = req.params.cat;
-
-  //res.send('Categoria => '+cat+' ID Producto => '+id_prod+' ID Categoria => '+id_cat);
-
-  conexion.query("CALL SearchProduct(?,?)", [cat,id_prod], (error, results) => {
-    if (error) 
-    { console.log( "Hubo un error al buscar ese producto, error => " + error ); }
-    else 
-    {
-      res.render("editProducts.ejs", { Producto: results[0][0] , p_cat:cat});
-      //res.send(results[0][0]);
-    }
-      // res.send(results[0][0]);}
-  });
-
-}); */
 
 
 
@@ -314,9 +330,11 @@ router.post("/AddClient", crud.AddClient);
 router.post("/UpdateClient", crud.UpdateClient);
 router.post("/AddVendedor", crud.AddVendedor);
 router.post("/UpdateVendedor", crud.UpdateVendedor);
-router.post("/AddProduct", crud.AddProduct);
-router.post("/UpdateProduct", crud.UpdateProduct);
 
-router.post("/SearchCliente",crud.SearchCliente);
+router.post("/AddProduct", crud.AddProduct);
+
+router.post("/UpdateProduct", crud.UpdateProduct);
+/*
+router.post("/SearchCliente",crud.SearchCliente); */
 
 module.exports = router;
