@@ -1,80 +1,180 @@
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
   <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Clientes Comercial Jennifer</title>
     <!-- FA pencil-->
-    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link
+      rel="stylesheet"
+      href="path/to/font-awesome/css/font-awesome.min.css"
+    />
     <!-- Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"rel="stylesheet"integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"crossorigin="anonymous"/>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
     <!-- Boxicons -->
-    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"rel="stylesheet"/>
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <!--Estilo CSS-->
     <link rel="stylesheet" href="/resources/css/style.css" />
   </head>
   <body>
-    <%- include('sidebar.ejs') %> 
-    
+    <%- include('sidebar.ejs') %>
+
     <section class="home-section">
       <div class="Container px-3">
         <div class="row">
           <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <h3>Registrar Cliente</h3>
 
-            <form action="/AddClient" method="post">
-                <div class="mb-2">
-                  <label for="Nombre" class="form-label">Nombres</label>
-                  <input type="text" class="form-control" id="Tipo" name="Tipo_cl" placeholder="Tipo" value="Cliente" hidden>
-                  <input type="text" class="form-control" id="Nombre" name="Nombre_cl" placeholder="Nombres" required>
-                </div>
+            <form action="/AddClient" method="post" class="needs-validation" novalidate>
+              <div class="mb-2 position-relative">
+                <label for="Nombre" class="form-label">Nombres</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="Tipo"
+                  name="Tipo_cl"
+                  placeholder="Tipo"
+                  value="Cliente"
+                  hidden
+                />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="Nombre"
+                  name="Nombre_cl"
+                  placeholder="Nombres"
+                  required
+                />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Nombre</div>
+              </div>
 
-                <div class="mb-2">
-                  <label for="Apellido" class="form-label">Apellidos</label>
-                  <input type="text" class="form-control" id="Apellido" name="Apellido_cl" placeholder="Apellidos" required>
-                </div>
-                <div class="mb-2">
-                    <label for="Telefono" class="form-label">Telefono</label>
-                    <input type="number" class="form-control" id="Telefono" name="Telefono_cl" placeholder="Telefono" required>
-                  </div>
-                  <div class="mb-2">
-                    <label for="Cedula" class="form-label">Cedula</label>
-                    <input type="text" class="form-control" id="Cedula" name="Cedula_cl" placeholder="Cedula" required>
-                  </div>
-                  <div class="mb-1">
-                    <label for="Residencia" class="form-label">Dirección</label>
-                  </div>
-                  <select id="Distrito" name="Distrito_cl" class="form-select mb-2" aria-label="Distrito" required>
-                    <option selected>Seleccionar distrito</option>
-                    <option value="I">I</option>
-                    <option value="II">II</option>
-                    <option value="III">III</option>
-                    <option value="IV">IV</option>
-                    <option value="V">V</option>
-                    <option value="VI">VI</option>
-                    <option value="VII">VII</option>
-                  </select>
-                  <div class="mb-2 dx-2">
-                    <label for="Residencia" class="form-label">Zona de Residencia</label>
-                    <input type="text" class="form-control" id="Residencia" name="Residencia_cl" placeholder="Zona de Residencia" required>
-                  </div>
-                  <div class="mb-2">
-                    <label for="PuntoReferencia" class="form-label">Punto de Referencia</label>
-                    <input type="text" class="form-control" id="PuntoReferencia" name="PuntoReferencia_cl" placeholder="Punto de Referencia" required>
-                  </div>
-                  <div class="mb-2">
-                    <label for="Distancia" class="form-label">Distancia</label>
-                    <input type="text" class="form-control" id="Distancia" name="Distancia_cl" placeholder="Distancia">
-                  </div>
-                  <div class="mb-2">
-                    <label for="Casa" class="form-label">Numero de casa</label>
-                    <input type="text" class="form-control" id="Casa" name="Casa_cl" placeholder="N. Casa" required>
-                  </div>
-                  <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-success" title="Guardar">Guardar</button>
-                    <button class="btn btn-secondary" title="Limpiar Campos" onclick="Limpiar()">Limpiar Campos</button>
-                  </div>
-                
+              <div class="mb-2 position-relative">
+                <label for="Apellido" class="form-label">Apellidos</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="Apellido"
+                  name="Apellido_cl"
+                  placeholder="Apellidos"
+                  required
+                />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Apellido</div>
+              </div>
+              <div class="mb-2 position-relative">
+                <label for="Telefono" class="form-label">Telefono</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="Telefono"
+                  name="Telefono_cl"
+                  placeholder="Telefono"
+                  required
+                />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario número teléfonico</div>
+              </div>
+              <div class="mb-2 position-relative">
+                <label for="Cedula" class="form-label">Cedula</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="Cedula"
+                  name="Cedula_cl"
+                  placeholder="Cedula"
+                  required
+                />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario número de cédula</div>
+              </div>
+              <div class="mb-1 position-relative">
+                <label for="Distrito_cl" class="form-label">Dirección</label>
+                <select
+                  id="Distrito"
+                  name="Distrito_cl"
+                  class="form-select mb-2 position-relative"
+                  aria-label="Distrito"
+                  required
+                >
+                  <option selected disabled value="">Seleccionar Distrito...</option>
+                  <option value="I">I</option>
+                  <option value="II">II</option>
+                  <option value="III">III</option>
+                  <option value="IV">IV</option>
+                  <option value="V">V</option>
+                  <option value="VI">VI</option>
+                  <option value="VII">VII</option>
+                </select>
+              <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Distrito</div>
+              </div>
+              
+              <div class="mb-2 dx-2 position-relative">
+                <label for="Residencia" class="form-label"
+                  >Zona de Residencia</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="Residencia"
+                  name="Residencia_cl"
+                  placeholder="Zona de Residencia"
+                  required
+                />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario la zona de residencia</div>
+              </div>
+              <div class="mb-2 position-relative">
+                <label for="PuntoReferencia" class="form-label"
+                  >Punto de Referencia</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="PuntoReferencia"
+                  name="PuntoReferencia_cl"
+                  placeholder="Punto de Referencia"
+                  required
+                />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Solicitamos un punto de Referencia</div>
+              </div>
+              <div class="mb-2">
+                <label for="Distancia" class="form-label">Distancia</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="Distancia"
+                  name="Distancia_cl"
+                  placeholder="Distancia"
+                />
+              </div>
+              <div class="mb-2 position-relative">
+                <label for="Casa" class="form-label">Numero de casa</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="Casa"
+                  name="Casa_cl"
+                  placeholder="N. Casa"
+                  required
+                />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el número de Casa</div>
+              </div>
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success" title="Guardar">
+                  Guardar
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  title="Limpiar Campos"
+                  onclick="Limpiar()"
+                >
+                  Limpiar Campos
+                </button>
+              </div>
             </form>
           </div>
 
@@ -83,68 +183,198 @@
             <nav class="navbar bg-body-tertiary">
               <div class="container-fluid">
                 <a class="navbar-brand">Buscar cliente</a>
-                <form action="/SearchCliente" method="post" class="d-flex" role="search">
-                  <input id="search" name="nombreSearch" class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search" onkeyup="SearchCliente()">
-                  <button class="btn btn-outline-success" type="submit">Buscar</button>
+                <form
+                  action="/SearchCliente"
+                  method="post"
+                  class="d-flex"
+                  role="search"
+                >
+                  <input
+                    id="search"
+                    name="nombreSearch"
+                    class="form-control me-2"
+                    type="search"
+                    placeholder="Buscar..."
+                    aria-label="Search"
+                    onkeyup="SearchCliente()"
+                  />
+                  <button class="btn btn-outline-success" type="submit">
+                    Buscar
+                  </button>
                 </form>
               </div>
             </nav>
             <table class="table primary">
-                <thead>
-                  <tr>
-                    <th class="centrado">Nombre completo</th>
-                    <th class="centrado">Cédula</th>
-                    <th class="centrado">Teléfono</th>
-                    <th class="centrado">Dirección</th>
-                    <th class="centrado">Crédito Disponible</th>
-                    <th class="centrado">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% clientes.forEach((client) => { %>
-                  <tr>
-                    <td class="centrado"> <%= client.Nombre %></td>
-                    <td class="centrado"><%= client.Cedula %></td>
-                    <td class="centrado"><%= client.Telefono %></td>
-                    <td class="centrado"><%= client.Dirección %></td>
-                    <td class="centrado">C$ <%= client.Credito_Disponible %></td>
-                    <td>
-                      <!-- Botones de acciones -->
-                      <a href="/EditClient/<%= client.Id_Cliente %>" class="btn btn-success mb-1" title="Actualizar"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                      <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                      <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/></svg></a> 
-                          
-                      <a href="#" class="btn btn-danger" title="Eliminar" onclick="confirmDelete('<%= client.Id_Cliente %>')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                      <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg></a>
-                    </td>
-                  </tr>
-                  <% }) %> 
-                </tbody> 
+              <thead>
+                <tr>
+                  <th class="centrado">Nombre completo</th>
+                  <th class="centrado">Cédula</th>
+                  <th class="centrado">Teléfono</th>
+                  <th class="centrado">Dirección</th>
+                  <th class="centrado">Crédito Disponible</th>
+                  <th class="centrado">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% clientes.forEach((client) => { %>
+                <tr>
+                  <td class="centrado"><%= client.Nombre %></td>
+                  <td class="centrado"><%= client.Cedula %></td>
+                  <td class="centrado"><%= client.Telefono %></td>
+                  <td class="centrado"><%= client.Dirección %></td>
+                  <td class="centrado">C$ <%= client.Credito_Disponible %></td>
+                  <td>
+                    <!-- Botones de acciones -->
+                    <a
+                      href="/EditClient/<%= client.Id_Cliente %>"
+                      class="btn btn-success mb-1"
+                      title="Actualizar"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-pencil-square"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                        /></svg
+                    ></a>
+
+                    <a
+                      href="#"
+                      class="btn btn-danger"
+                      title="Eliminar"
+                      onclick="confirmDelete('<%= client.Id_Cliente %>')"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-trash"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
+                        />
+                        <path
+                          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
+                        /></svg
+                    ></a>
+
+                    <button
+                      type="button"
+                      class="btn btn-success RecordCrediticio"
+                      title="RecordCrediticio"
+                      onclick=" mostrarPanelRecordCrediticio()"
+                    >
+                      <i class="fa-solid fa-money-check-dollar"></i>
+                    </button>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
             </table>
           </div>
         </div>
+        <div
+        id="panelRecordCrediticio"
+        class="panel-flotante"
+        style="display: none"
+      >
+        <div class="panel-content ">
+          <h4>Record Crediticio</h4>
+          <nav class="navbar bg-body-tertiary"></nav>
+          <div style="max-height: 200px; overflow-y: auto">
+            <div>
+              <table class="table primary px-3">
+                <thead>
+                  <tr>
+                    <th class="centrado">Nombre del cliente</th>
+                    <th class="centrado">Fecha de venta</th>
+                    <th class="centrado">Tipo de venta</th>
+                    <th class="centrado">Cantidad total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="centrado">Norlan</td>
+                    <td class="centrado">2024-04-20</td>
+                    <td class="centrado">Venta al credito</td>
+                    <td class="centrado">C$2500.00</td>
+                    <td class="centrado">
+                  </tr>
+                  <tr>
+                    <td class="centrado">Norlan</td>
+                    <td class="centrado">2024-04-20</td>
+                    <td class="centrado">Venta al contado</td>
+                    <td class="centrado">C$20,000.00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-danger"
+            onclick="cerrarPanelRecordCrediticio()"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
       </div>
     </section>
 
     <script src="/resources/js/ScriptClient.js"></script>
     <script src="/resources/js/script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <% if (typeof alert != "undefined")  { %>
-      <script>
-          Swal.fire({
-              title: '<%= alertTitle %>',
-              text: '<%= alertMessage %>',
-              icon: '<%= alertIcon %>',
-              showConfirmButton: true,
-              timer: false
-          }).then(() => {
-              window.location = '/<%= ruta %>'
-          })
-      </script>
-  <% } %>
+    <!-- codigo js para las validaciones-->
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (() => {
+        'use strict'
+  
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+  
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+  
+            form.classList.add('was-validated')
+          }, false)
+        })
+      })()
+    </script>
 
+    <% if (typeof alert != "undefined") { %>
+    <script>
+      Swal.fire({
+        title: "<%= alertTitle %>",
+        text: "<%= alertMessage %>",
+        icon: "<%= alertIcon %>",
+        showConfirmButton: true,
+        timer: false,
+      }).then(() => {
+        window.location = "/<%= ruta %>";
+      });
+    </script>
+    <% } %>
   </body>
 </html>

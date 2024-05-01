@@ -17,143 +17,161 @@
     <link rel="stylesheet" href="resources/css/style.css" />
   </head>
   <body>
-    <%- include('sidebar.ejs') %> 
+    <%- include('sidebar.ejs') %>
     <section class="home-section">
-      <div class="Container">
-        <div class="Container px-3 py-1 contenedorventas">
-          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <h2 class="centrado">Por favor busque la venta a la cual</h2>
-            <h2 class="centrado"> desea hacer el abono</h2>
-          </div>
-        </div>
+      <div class="Container px-3">
         <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <div class="px-3 py-2">
-              <h4 style="display: flex; justify-content: space-between;">Listado de ventas al crédito
-                <button type="button" class="btn btn-success" title="Abonar" onclick="mostrarPanelHistorialAbonos()"><i class="fa-solid fa-list"></i>Listar historial de abonos</button>
-              </h4>
-            </div>
-            <div id="panelHistorialAbonos" class="panel-flotante" style="display: none;">
-              <div class="panel-content">
-                <h4>Historial de abonos</h4>
-                <nav class="navbar bg-body-tertiary">
-                  <div class="container-fluid">
-                    <a class="navbar-brand px-3">Buscar nombre del cliente</a>
-                    <form class="d-flex" role="search">
-                      <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
-                      <button class="btn btn-outline-success" type="submit">Buscar</button>
-                    </form>
-                  </div>
-                </nav>
-                <div style="max-height: 300px; overflow-y: auto;">
-                  <table class="table primary">
-                    <thead>
-                      <tr>
-                        <th class="centrado">Nombre del cliente</th>
-                        <th class="centrado">Nombre del vendedor</th>
-                        <th class="centrado">Fecha del abono realizado</th>
-                        <th class="centrado">Monto abonado</th>
-                        <th class="centrado">Saldo restante</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="centrado">Cliente A</td>
-                        <td class="centrado">Vendedor X</td>
-                        <td class="centrado">2024-04-20</td>
-                        <td class="centrado">$100.00</td>
-                        <td class="centrado">$150.00</td>
-                      </tr>
-                      <tr>
-                        <td class="centrado">Cliente B</td>
-                        <td class="centrado">Vendedor Y</td>
-                        <td class="centrado">2024-04-15</td>
-                        <td class="centrado">$200.00</td>
-                        <td class="centrado">$300.00</td>
-                      </tr>
-                      <tr>
-                        <td class="centrado">Cliente C</td>
-                        <td class="centrado">Vendedor Z</td>
-                        <td class="centrado">2024-04-10</td>
-                        <td class="centrado">$50.00</td>
-                        <td class="centrado">$750.00</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <button type="button" class="btn btn-danger" onclick="cerrarPanelHistorialAbonos()">Cerrar</button>
+          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+            <h2>Datos del abono</h2>
+            <form>
+              <div class="mb-3">
+                <label for="nombrecliente" class="form-label"
+                  >Nombre del cliente</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nombrecliente"
+                  placeholder="Cliente"
+                />
               </div>
-            </div>
+              <div class="mb-3">
+                <label for="nombrevendedor" class="form-label"
+                  >Nombre del vendedor</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="nombrevendedor"
+                  placeholder="Vendedor"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="fecha_abono" class="form-label"
+                  >Fecha de abono</label
+                >
+                <input type="date" class="form-control" id="fecha_abono" />
+              </div>
+              <div class="mb-3 dx-2">
+                <label for="abono" class="form-label">Monto a abonar</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="abono"
+                  placeholder="Monto de abono"
+                />
+              </div>
+              <div class="d-grid gap-2">
+                <Button class="btn btn-success">Guardar</Button>
+                <Button class="btn btn-secondary">Limpiar Campos</Button>
+              </div>
+            </form>
+          </div>
+          <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+            <h2>Listado de ventas para Abonar</h2>
             <nav class="navbar bg-body-tertiary">
               <div class="container-fluid">
-                <a class="navbar-brand px-3">Buscar una venta al credito</a>
+                <a class="navbar-brand">Buscar venta</a>
                 <form class="d-flex" role="search">
-                  <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Buscar</button>
+                  <input
+                    class="form-control me-2"
+                    type="search"
+                    placeholder="Buscar..."
+                    aria-label="Search"
+                  />
+                  <button class="btn btn-outline-success" type="submit">
+                    Buscar
+                  </button>
                 </form>
               </div>
             </nav>
-            <table class="table primary px-3">
+            <table class="table primary">
               <thead>
                 <tr>
-                  <th class="centrado">Nombre del cliente</th>
-                  <th class="centrado">Nombrede vendedor</th>
-                  <th class="centrado">Fecha de venta</th>
+                  <th class="centrado">Cliente</th>
+                  <th class="centrado">Vendedor</th>
                   <th class="centrado">Plazo de compra</th>
                   <th class="centrado">Frecuencia de abono</th>
-                  <th class="centrado">Cantidad total</th>
-                  <th class="centrado">Saldo restante</th>
+                  <th class="centrado">Precio Total</th>
+                  <th class="centrado">Total abonado</th>
                   <th class="centrado">Acciones</th>
                 </tr>
               </thead>
+
               <tbody>
                 <tr>
-                  <td class="centrado">Cliente A</td>
-                  <td class="centrado">Vendedor X</td>
-                  <td class="centrado">2024-04-20</td>
-                  <td class="centrado">30 días</td>
-                  <td class="centrado">Semanal</td>
-                  <td class="centrado">$500.00</td>
-                  <td class="centrado">$250.00</td>
+                  <td class="centrado">Norlan Gonzalez</td>
+                  <td class="centrado">Kenneth</td>
+                  <td class="centrado">2 mese</td>
+                  <td class="centrado">semanal</td>
+                  <td class="centrado">5000</td>
+                  <td class="centrado">C2500</td>
                   <td class="centrado">
-                    <button type="button" class="btn btn-success" title="Abonar" onclick= "mostrarPanelAbono()"><i class="fa-solid fa-money-check-dollar"></i></button>
-                    <button type="button" class="btn btn-danger px-3" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-                    
+                    <!-- Botones de acciones -->
+                    <button
+                      type="button"
+                      class="btn btn-primary mb-2"
+                      title="Abonar"
+                    >
+                      <img src="/resources/images/abonar.png" style="height: 25px;width: 30px;" alt="Abonar">
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-warning"
+                      title="Detalles de abonos"
+                      onclick="mostrarPanelHistorialAbonosUnico()"
+                    >
+                      <img src="/resources/images/abonoDetalle.png" style="height: 25px;width: 30px;" alt="Detalles de abonos">
+                    </button>
                   </td>
                 </tr>
               </tbody>
             </table>
-            <div id="panelAbono" class="panel-flotante" style="display: none">
-              <div class="panel-content">
-                <h4>Realizar abono</h4>
-                <form class="row g-3 py-3">
-                  <div class="col-md-6">
-                    <label for="Nombre_cliente" class="form-label">Nombre del Cliente</label>
-                    <input type="text" class="form-control" id="Nombre_cliente">
-
-                    <label for="Nombre_vendedor" class="form-label">Nombre del Vendedor</label>
-                    <input type="text" class="form-control" id="Nombre_vendedor">
-                  </div>
-
-                  <div class="col-md-6">
-                    <label for="Fecha_Abono" class="form-label">Fecha del abono</label>
-                    <input type="date" class="form-control" id="Fecha_Abono">
-
-                    <label for="Monto_Abono" class="form-label">Monto a Abonar</label>
-                    <input type="number" class="form-control" id="Monto_Abono">
-                  </div>
-                  
-                  <button type="submit" class="btn btn-success">Guardar</button>
-                  <button type="button" class="btn btn-danger" onclick="cerrarPanelAbono()">Cancelar</button>
-                </form>
-              </div>
-            </div>                       
           </div>
         </div>
-        
+        <div
+          id="panelHistorialAbonosUnico"
+          class="panel-flotante"
+          style="display: none"
+        >
+          <div class="panel-content">
+            <h4>Historial de abonos</h4>
+            <nav class="navbar bg-body-tertiary">
+            </nav>
+            <div style="max-height: 300px; overflow-y: auto">
+              <table class="table primary">
+                <thead>
+                  <tr>
+                    <th class="centrado">Nombre del cliente</th>
+                    <th class="centrado">Nombre del vendedor</th>
+                    <th class="centrado">Fecha del abono realizado</th>
+                    <th class="centrado">Monto abonado</th>
+                    <th class="centrado">Saldo restante</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="centrado">Cliente B</td>
+                    <td class="centrado">Vendedor Y</td>
+                    <td class="centrado">2024-04-15</td>
+                    <td class="centrado">$200.00</td>
+                    <td class="centrado">$300.00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="cerrarPanelHistorialAbonosUnico()"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
       </div>
     </section>
-    
+
     <script src="resources/js/script.js"></script>
     <script src="/resources/js/ScriptAbonos.js"></script>
   </body>

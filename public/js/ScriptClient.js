@@ -31,3 +31,13 @@ function Limpiar()
 
     SelectDistrito.selectedIndex = 0;
 }
+
+function mostrarPanelRecordCrediticio() {
+    var panel = document.getElementById("panelRecordCrediticio");
+    panel.style.display = "block";
+  }
+
+  function cerrarPanelRecordCrediticio() {
+    var panel = document.getElementById("panelRecordCrediticio");
+    panel.style.display = "none";
+  }

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="resources/css/style.css" />
   </head>
   <body>
-    <%- include('sidebar.ejs') %> 
+    <%- include('sidebar.ejs') %>
 
     <section class="home-section">
       <div class="Container">
@@ -526,8 +526,50 @@
                           <td class="centrado"><%= Venta.Fecha_Venta %></td>
                           <td class="centrado">C$ <%= Venta.Total_Venta %></td>
                           <td class="centrado">
+<<<<<<< HEAD
                             <button type="button" class="btn btn-success info-venta" data-tipo="credito" title="Informacion de la venta"><i class="fa-solid fa-money-check-dollar"></i></button>
                             <button type="button" class="btn btn-danger px-3" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+=======
+                            <button
+                              type="button"
+                              class="btn btn-success info-venta"
+                              title="Informacion de la venta"
+                              onclick="mostrarDetallesVenta()"
+                            >
+                              <i class="fa-solid fa-money-check-dollar"></i>
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-danger px-3"
+                              title="Eliminar"
+                            >
+                              <i class="fa-solid fa-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="centrado">Norlan</td>
+                          <td class="centrado">Daniel</td>
+                          <td class="centrado">2024-04-20</td>
+                          <td class="centrado">Venta al contado</td>
+                          <td class="centrado">C$20,000.00</td>
+                          <td class="centrado">
+                            <button
+                              type="button"
+                              class="btn btn-success info-venta"
+                              title="Informacion de la venta"
+                              onclick="mostrarDetallesVenta()"
+                            >
+                              <i class="fa-solid fa-money-check-dollar"></i>
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-danger px-3"
+                              title="Eliminar"
+                            >
+                              <i class="fa-solid fa-trash"></i>
+                            </button>
+>>>>>>> 53df3d97c24c8ddff855a39f904c16915722aa53
                           </td>
                         </tr>
 
@@ -590,11 +632,16 @@
               </div>
 
               <div
+<<<<<<< HEAD
                 id="panelDetalleVentasContado"
+=======
+                id="panelDetalleVentas"
+>>>>>>> 53df3d97c24c8ddff855a39f904c16915722aa53
                 class="panel-flotante"
                 style="display: none"
               >
                 <div class="panel-content">
+<<<<<<< HEAD
                   <h4>Historial de abonos</h4>
 
                   <div style="max-height: 300px; overflow-y: auto">
@@ -665,16 +712,91 @@
                           <td class="centrado">450 C$</td>
                         </tbody>
                       </table>
+=======
+                  <h4>Detalles de venta</h4>
+                  <nav class="navbar bg-body-tertiary"></nav>
+                  <div style="max-height: 300px; overflow-y: auto">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <table class="table" id="tablacliente">
+                          <thead>
+                            <tr>
+                              <th class="centrado">Cliente</th>
+                              <th class="centrado">Vendedor</th>
+                              <th></th>
+                              <th class="centrado">Fecha</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="centrado">Mateo</td>
+                              <td class="centrado">Jonathan</td>
+                              <td></td>
+                              <td class="centrado">13/04/2024</td>
+                            </tr>
+                            <thead>
+                              <tr>
+                                <th class="centrado">Producto</th>
+                                <th class="centrado">
+                                  Cantidad Producto
+                                </th>
+                                <th class="centrado">Precio</th>
+                                
+                              </tr>
+                            </thead>
+                          </tbody>
+
+                          <tbody>
+                            <tr>
+                              <td class="centrado">Zapatos</td>
+                              <td class="centrado">3</td>
+                              <td class="centrado">150 C$</td>
+                              <td class="centrado">
+                                <div class="centrado">
+                                  <div
+                                    class="d-flex justify-content-center align-items-center"
+                                  >
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                          <thead>
+                            <th></th>
+                            <th></th>
+                            <th class="centrado">Cantidad Total</th>
+                            <th></th>
+                            
+                          </thead>
+                          <tbody>
+                            <td></td>
+                            <td></td>
+                            <td class="centrado">450 C$</td>
+                            <td></td>
+                            
+                          </tbody>
+                        </table>
+                      </div>
+                      
+>>>>>>> 53df3d97c24c8ddff855a39f904c16915722aa53
                     </div>
                   </div>
                   <button
                     type="button"
                     class="btn btn-danger"
+<<<<<<< HEAD
                     onclick="cerrarPanelHistorialAbonos()"
                   >
                     Cerrar
                   </button>
                 </div> 
+=======
+                    onclick="cerrarDetallesVenta()"
+                  >
+                    Cerrar
+                  </button>
+                </div>
+>>>>>>> 53df3d97c24c8ddff855a39f904c16915722aa53
               </div>
             </div>
           </div>

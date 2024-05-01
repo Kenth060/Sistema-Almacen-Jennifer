@@ -122,6 +122,7 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, Button)
     var cantidad = input_cantidad.value;
     var tabla = document.getElementById("tablacliente").getElementsByTagName('tbody')[1];
 
+<<<<<<< HEAD
     var nuevaFila = document.createElement("tr");
     var celdaProducto = document.createElement("td");
     var celdaCantidad = document.createElement("td");
@@ -210,3 +211,16 @@ function EliminarProducto(boton,id) {
 
     productosSeleccionados = productosSeleccionados.filter(producto => producto.IdProducto !== id);
 }
+=======
+}
+
+function mostrarDetallesVenta() {
+    var panel = document.getElementById("panelDetalleVentas");
+    panel.style.display = "block";
+  }
+
+  function cerrarDetallesVenta() {
+    var panel = document.getElementById("panelDetalleVentas");
+    panel.style.display = "none";
+  }
+>>>>>>> 53df3d97c24c8ddff855a39f904c16915722aa53

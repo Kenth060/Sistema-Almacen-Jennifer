@@ -21,3 +21,17 @@ function mostrarPanelAbono() {
     panel.style.display = "none";
   }
   //FIN MOSTRAR HISTORIAL
+
+
+
+  //MOSTAR HISTORIAL DE ABONOS
+  function mostrarPanelHistorialAbonosUnico() {
+    var panel = document.getElementById("panelHistorialAbonosUnico");
+    panel.style.display = "block";
+  }
+
+  function cerrarPanelHistorialAbonosUnico() {
+    var panel = document.getElementById("panelHistorialAbonosUnico");
+    panel.style.display = "none";
+  }
+  //FIN MOSTRAR HISTORIAL
