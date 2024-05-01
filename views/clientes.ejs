@@ -33,8 +33,8 @@
           <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <h3>Registrar Cliente</h3>
 
-            <form action="/AddClient" method="post">
-              <div class="mb-2">
+            <form action="/AddClient" method="post" class="needs-validation" novalidate>
+              <div class="mb-2 position-relative">
                 <label for="Nombre" class="form-label">Nombres</label>
                 <input
                   type="text"
@@ -53,9 +53,10 @@
                   placeholder="Nombres"
                   required
                 />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Nombre</div>
               </div>
 
-              <div class="mb-2">
+              <div class="mb-2 position-relative">
                 <label for="Apellido" class="form-label">Apellidos</label>
                 <input
                   type="text"
@@ -65,8 +66,9 @@
                   placeholder="Apellidos"
                   required
                 />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Apellido</div>
               </div>
-              <div class="mb-2">
+              <div class="mb-2 position-relative">
                 <label for="Telefono" class="form-label">Telefono</label>
                 <input
                   type="number"
@@ -76,8 +78,9 @@
                   placeholder="Telefono"
                   required
                 />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario número teléfonico</div>
               </div>
-              <div class="mb-2">
+              <div class="mb-2 position-relative">
                 <label for="Cedula" class="form-label">Cedula</label>
                 <input
                   type="text"
@@ -87,27 +90,30 @@
                   placeholder="Cedula"
                   required
                 />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario número de cédula</div>
               </div>
-              <div class="mb-1">
-                <label for="Residencia" class="form-label">Dirección</label>
+              <div class="mb-1 position-relative">
+                <label for="Distrito_cl" class="form-label">Dirección</label>
+                <select
+                  id="Distrito"
+                  name="Distrito_cl"
+                  class="form-select mb-2 position-relative"
+                  aria-label="Distrito"
+                  required
+                >
+                  <option selected disabled value="">Seleccionar Distrito...</option>
+                  <option value="I">I</option>
+                  <option value="II">II</option>
+                  <option value="III">III</option>
+                  <option value="IV">IV</option>
+                  <option value="V">V</option>
+                  <option value="VI">VI</option>
+                  <option value="VII">VII</option>
+                </select>
+              <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Distrito</div>
               </div>
-              <select
-                id="Distrito"
-                name="Distrito_cl"
-                class="form-select mb-2"
-                aria-label="Distrito"
-                required
-              >
-                <option selected>Seleccionar distrito</option>
-                <option value="I">I</option>
-                <option value="II">II</option>
-                <option value="III">III</option>
-                <option value="IV">IV</option>
-                <option value="V">V</option>
-                <option value="VI">VI</option>
-                <option value="VII">VII</option>
-              </select>
-              <div class="mb-2 dx-2">
+              
+              <div class="mb-2 dx-2 position-relative">
                 <label for="Residencia" class="form-label"
                   >Zona de Residencia</label
                 >
@@ -119,8 +125,9 @@
                   placeholder="Zona de Residencia"
                   required
                 />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario la zona de residencia</div>
               </div>
-              <div class="mb-2">
+              <div class="mb-2 position-relative">
                 <label for="PuntoReferencia" class="form-label"
                   >Punto de Referencia</label
                 >
@@ -132,6 +139,7 @@
                   placeholder="Punto de Referencia"
                   required
                 />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Solicitamos un punto de Referencia</div>
               </div>
               <div class="mb-2">
                 <label for="Distancia" class="form-label">Distancia</label>
@@ -143,7 +151,7 @@
                   placeholder="Distancia"
                 />
               </div>
-              <div class="mb-2">
+              <div class="mb-2 position-relative">
                 <label for="Casa" class="form-label">Numero de casa</label>
                 <input
                   type="text"
@@ -153,6 +161,7 @@
                   placeholder="N. Casa"
                   required
                 />
+                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el número de Casa</div>
               </div>
               <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-success" title="Guardar">
@@ -330,6 +339,29 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- codigo js para las validaciones-->
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (() => {
+        'use strict'
+  
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+  
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+  
+            form.classList.add('was-validated')
+          }, false)
+        })
+      })()
+    </script>
 
     <% if (typeof alert != "undefined") { %>
     <script>

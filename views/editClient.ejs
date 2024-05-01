@@ -21,65 +21,73 @@
         <div class="row">
           <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <h3>Datos del cliente</h3>
-                    <form action="/UpdateClient" method="post">
+                    <form action="/UpdateClient" method="post" class="needs-validation position-relative" novalidate>
                       <div class="mb-2">
                         <label for="Nombre" class="form-label">Nombres</label>
                         <input type="text" class="form-control" id="Id_cl" name="Id_cl" value="<%= cliente.Id_Persona %>" hidden>
-                        <input type="text" class="form-control" id="Nombre" name="Nombre_cl" value="<%= cliente.Nombre %>">
+                        <input type="text" class="form-control" id="Nombre" name="Nombre_cl" value="<%= cliente.Nombre %>" required>
+                        <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Nombre</div>
                       </div>
                       <div class="mb-2">
                         <label for="Apellido" class="form-label">Apellidos</label>
-                        <input type="text" class="form-control" id="Apellido" name="Apellido_cl" value="<%= cliente.Apellido %>">
+                        <input type="text" class="form-control" id="Apellido" name="Apellido_cl" value="<%= cliente.Apellido %>" required>
+                        <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Apellido</div>
                       </div>
                       <div class="mb-2">
                           <label for="Telefono" class="form-label">Telefono</label>
-                          <input type="number" class="form-control" id="Telefono" name="Telefono_cl" value="<%= cliente.Telefono %>">
+                          <input type="number" class="form-control" id="Telefono" name="Telefono_cl" value="<%= cliente.Telefono %>" required>
+                          <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Número teléfonico</div>
                         </div>
                         <div class="mb-2">
                           <label for="Cedula" class="form-label">Cedula</label>
-                          <input type="text" class="form-control" id="Cedula" name="Cedula_cl" value="<%= cliente.Cedula %>">
+                          <input type="text" class="form-control" id="Cedula" name="Cedula_cl" value="<%= cliente.Cedula %>" required>
+                          <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el número de cédula</div>
                         </div>
                         <div class="mb-1">
-                          <label for="Residencia" class="form-label">Dirección</label>
+                          <label for="Distrito_cl" class="form-label">Dirección</label>
+                          <select id="Distrito" name="Distrito_cl" class="form-select mb-2" aria-label="Distrito" required>
+                            <option selected disabled value="">Seleccionar Distrito...</option>
+  
+                            <% if (cliente.Distrito == 'I') { %>
+                              <option value="I" selected>Distrito I</option>
+                            <% } else { %> <option value="I">Distrito I</option> <% } %> 
+        
+                            <% if (cliente.Distrito == 'II') { %>
+                              <option value="II" selected>Distrito II</option>
+                            <% } else { %> <option value="II">Distrito II</option><% } %> 
+        
+                            <% if (cliente.Distrito == 'III') { %>
+                              <option value="III" selected>Distrito III</option>
+                            <% } else { %> <option value="III">Distrito III</option> <% } %> 
+                            
+                            <% if (cliente.Distrito == 'IV') { %>
+                              <option value="IV" selected>Distrito IV</option>
+                            <% } else { %> <option value="IV">Distrito IV</option> <% } %> 
+        
+                            <% if (cliente.Distrito == 'V') { %>
+                              <option value="V" selected>Distrito V</option>
+                            <% } else { %> <option value="V">Distrito V</option> <% } %> 
+        
+                            <% if (cliente.Distrito == 'VI') { %>
+                              <option value="VI" selected>Distrito VI</option>
+                            <% } else { %> <option value="VI">Distrito VI</option> <% } %>  
+        
+                            <% if (cliente.Distrito == 'VII') { %>
+                              <option value="VII" selected>Distrito VII</option>
+                            <% } else { %> <option value="VII">Distrito VII</option> <% } %>  
+                          </select>
+                          <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Distrito</div>
                         </div>
-                        <select id="Distrito" name="Distrito_cl" class="form-select mb-2" aria-label="Distrito">
-                          <option>Seleccionar Distrito</option>
-
-                          <% if (cliente.Distrito == 'I') { %>
-                            <option value="I" selected>Distrito I</option>
-                          <% } else { %> <option value="I">Distrito I</option> <% } %> 
-      
-                          <% if (cliente.Distrito == 'II') { %>
-                            <option value="II" selected>Distrito II</option>
-                          <% } else { %> <option value="II">Distrito II</option><% } %> 
-      
-                          <% if (cliente.Distrito == 'III') { %>
-                            <option value="III" selected>Distrito III</option>
-                          <% } else { %> <option value="III">Distrito III</option> <% } %> 
-                          
-                          <% if (cliente.Distrito == 'IV') { %>
-                            <option value="IV" selected>Distrito IV</option>
-                          <% } else { %> <option value="IV">Distrito IV</option> <% } %> 
-      
-                          <% if (cliente.Distrito == 'V') { %>
-                            <option value="V" selected>Distrito V</option>
-                          <% } else { %> <option value="V">Distrito V</option> <% } %> 
-      
-                          <% if (cliente.Distrito == 'VI') { %>
-                            <option value="VI" selected>Distrito VI</option>
-                          <% } else { %> <option value="VI">Distrito VI</option> <% } %>  
-      
-                          <% if (cliente.Distrito == 'VII') { %>
-                            <option value="VII" selected>Distrito VII</option>
-                          <% } else { %> <option value="VII">Distrito VII</option> <% } %>  
-                        </select>
+                        
                         <div class="mb-2 dx-2">
                           <label for="Residencia" class="form-label">Zona de Residencia</label>
-                          <input type="text" class="form-control" id="Residencia" name="Residencia_cl" value="<%= cliente.Zona_Residencia %>">
+                          <input type="text" class="form-control" id="Residencia" name="Residencia_cl" value="<%= cliente.Zona_Residencia %>" required>
+                          <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario la zona de residencia</div>
                         </div>
                         <div class="mb-2">
                           <label for="PuntoReferencia" class="form-label">Punto de Referencia</label>
-                          <input type="text" class="form-control" id="PuntoReferencia" name="PuntoReferencia_cl" value="<%= cliente.Punto_Referencia %>">
+                          <input type="text" class="form-control" id="PuntoReferencia" name="PuntoReferencia_cl" value="<%= cliente.Punto_Referencia %>" required>
+                          <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el punto de referencia</div>
                         </div>
                         <div class="mb-2">
                           <label for="Distancia" class="form-label">Distancia</label>
@@ -87,7 +95,8 @@
                         </div>
                         <div class="mb-2">
                           <label for="Casa" class="form-label">Numero de casa</label>
-                          <input type="text" class="form-control" id="Casa" name="Casa_cl" value="<%= cliente.Casa %>">
+                          <input type="text" class="form-control" id="Casa" name="Casa_cl" value="<%= cliente.Casa %>" required>
+                          <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el número de Casa</div>
                         </div>
                         <div class="d-grid gap-2 mb-5">
                           <button type="submit" class="btn btn-success" title="Editar">Editar</button>
@@ -127,6 +136,29 @@
     <script src="/resources/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- codigo js para las validaciones-->
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+          }, false)
+        })
+      })()
+    </script>
     <% if (typeof alert != "undefined")  { %>
       <script>
           Swal.fire({
