@@ -119,3 +119,13 @@ function SearchVenta(){
     const input = document.getElementById('inputSearch');
 
 }
+
+function mostrarDetallesVenta() {
+    var panel = document.getElementById("panelDetalleVentas");
+    panel.style.display = "block";
+  }
+
+  function cerrarDetallesVenta() {
+    var panel = document.getElementById("panelDetalleVentas");
+    panel.style.display = "none";
+  }
