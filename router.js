@@ -202,18 +202,54 @@ router.get("/Productos", (req, res) => {
 });
 
 router.get("/Ventas", (req, res) => {
-  res.render("ventas");
+  //res.render("ventas");
 
-/*   conexion.query("SELECT * from ventas", (error, results) => {
+  conexion.query("SELECT * from mostrarventas", (error, results) => 
+  {
     if (error) 
     { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
     else 
-    {  res.render("ventas", { ventas: results });
-      res.send(results);
+    {  
+      const Ventas = results.map(venta => 
+        {
+          const fecha = new Date(venta.Fecha_Venta);
+          const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+          const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+          
+          return {
+            ...venta,
+            Fecha_Venta: fechaFormateada
+          };
+        });
+
+        conexion.query('SELECT * from productos', (error, results) => 
+        {
+          if (error)
+          {console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+          else 
+          {
+            const Products = results.map( producto => 
+              {
+                const fecha = new Date(producto.Fecha_Ingreso);
+                const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                
+                return {
+                  ...producto,
+                  Fecha_Ingreso: fechaFormateada
+                };
+              });
+
+            //res.send(Products);
+            res.render("ventas", { ventas: Ventas, productos: Products });
+          }
+        })
     }
+    
   });
- */
+ 
 });
+
 
 router.get("/ShowProducts/:categoria", (req, res) => {
   const categoria = req.params.categoria;
@@ -321,19 +357,15 @@ router.get("/EditProduct/:Cat/p/:IdProd", (req, res) =>
 
 
 
-
-
-
-
 const crud = require("./controllers/crud");
 router.post("/AddClient", crud.AddClient);
 router.post("/UpdateClient", crud.UpdateClient);
 router.post("/AddVendedor", crud.AddVendedor);
 router.post("/UpdateVendedor", crud.UpdateVendedor);
-
 router.post("/AddProduct", crud.AddProduct);
-
 router.post("/UpdateProduct", crud.UpdateProduct);
+
+router.post("/AddVenta",crud.AddVenta);
 /*
 router.post("/SearchCliente",crud.SearchCliente); */
 

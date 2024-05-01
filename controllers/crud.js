@@ -346,6 +346,17 @@ exports.UpdateProduct = (req, res) =>
 
 } 
 
+exports.AddVenta = (req,res) => 
+{
+    const DatosVenta = req.body;
+
+    DatosVenta.Productos.forEach((detalle_producto) => { 
+        console.log("Producto Agregado");
+        console.log("Detalle del Producto");
+        console.log("Id del Producto => "+ detalle_producto.IdProducto +"\n Cantidad => "+ detalle_producto.Cantidad+"\n Precio => "+detalle_producto.Precio);
+    })
+}
+
 /*
 exports.SearchCliente = (req,res) => {
     const nombre = req.body.nombreSearch;
