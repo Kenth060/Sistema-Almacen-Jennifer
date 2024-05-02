@@ -294,6 +294,27 @@ exports.AddProduct = ( req, res) =>
     })
 }
 
+exports.AddVenta = ( req, res) => 
+{
+    res.render('inicio');
+    const DatosVenta = req.body;
+
+    console.log(DatosVenta);
+    
+          /*   res.render('productos', { 
+                alert: true,
+                alertTitle: "No se pudo completar la operacion",
+                alertMessage: "No se pudo agregar el Producto, compruebe los datos e intente nuevamente",
+                alertIcon: 'error',
+                showConfirmButton: true,
+                timer: false,
+                cat: Categoria
+            })
+        } */
+        
+}
+
+
 exports.UpdateProduct = (req, res) => 
 {
     const Id_Producto = req.body.Id_Prod;
@@ -346,16 +367,153 @@ exports.UpdateProduct = (req, res) =>
 
 } 
 
-exports.AddVenta = (req,res) => 
+/* exports.AddVenta = (req,res) => 
 {
     const DatosVenta = req.body;
+
+    console.log(DatosVenta);
+
+    conexion.query('CALL InsertarVenta(?,?,?,?,?,?,?,?)',[DatosVenta.Id_Venta, DatosVenta.Tipo_Venta, DatosVenta.Cliente, DatosVenta.Vendedor, DatosVenta.Fecha_Venta, DatosVenta.Total, DatosVenta.Plazo , DatosVenta.Frecuencia_Abonos ], (error,results) =>
+    {
+        if(error)
+        { 
+            console.log('Hubo un error al agregar la Venta => '+error);
+
+            /* conexion.query("SELECT * from mostrarventas", (error, results) => 
+            {
+                if (error) 
+                { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+                else 
+                {  
+                    const Ventas = results.map(venta => 
+                    {
+                        const fecha = new Date(venta.Fecha_Venta);
+                        const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                        const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                    
+                        return {
+                            ...venta,
+                            Fecha_Venta: fechaFormateada
+                        };
+                    });
+
+                    conexion.query('SELECT * from productos', (error, results) => 
+                    {
+                        if (error)
+                        {console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+                        else 
+                        {
+                            const Products = results.map( producto => 
+                            {
+                                const fecha = new Date(producto.Fecha_Ingreso);
+                                const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                                const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                                
+                                return {
+                                ...producto,
+                                Fecha_Ingreso: fechaFormateada
+                                };
+                            });
+
+                        
+                            res.render("ventas", { 
+                                ventas: Ventas, 
+                                productos: Products,
+                                alert: true,
+                                alertTitle: "Operacion Incompleta",
+                                alertMessage: "La venta no ha podido ser agregada, revise los datos y trate nuevamente",
+                                alertIcon: 'error',
+                                showConfirmButton: true,
+                                timer: false,
+                                ruta:'ventas'
+                            });
+                        }
+                    })
+                }
+    
+            }); 
+
+            res.redirect('/Ventas');
+
+        }
+        else
+        {
+            console.log('Venta Agregada');
+            DatosVenta.Productos.forEach((detalle_producto) => 
+            { 
+                conexion.query('CALL InsertarDetallesVenta(?,?,?,?)',[DatosVenta.Id_Venta, detalle_producto.IdProducto, detalle_producto.Cantidad, detalle_producto.Precio], (error,results) =>
+                {
+                    if(error)
+                    {console.log('Hubo un error al agregar el producto a la venta => '+error);}
+                    else
+                    {console.log('Producto Agregado Correctamente :D');}
+                })
+            });
+
+            /* conexion.query("SELECT * from mostrarventas", (error, results) => 
+            {
+                if (error) 
+                { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+                else 
+                {  
+                    const Ventas = results.map(venta => 
+                    {
+                        const fecha = new Date(venta.Fecha_Venta);
+                        const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                        const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                    
+                        return {
+                            ...venta,
+                            Fecha_Venta: fechaFormateada
+                        };
+                    });
+
+                    conexion.query('SELECT * from productos', (error, results) => 
+                    {
+                        if (error)
+                        {console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+                        else 
+                        {
+                            const Products = results.map( producto => 
+                            {
+                                const fecha = new Date(producto.Fecha_Ingreso);
+                                const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                                const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                                
+                                return {
+                                ...producto,
+                                Fecha_Ingreso: fechaFormateada
+                                };
+                            });
+
+                        
+                            res.render("ventas", { ventas: Ventas, productos: Products,
+                                alert: true,
+                                alertTitle: "Venta Agregada",
+                                alertMessage: "La venta ha sido registrada con exito",
+                                alertIcon: 'success',
+                                showConfirmButton: true,
+                                timer: false,
+                                ruta:'ventas'});
+                        }
+                    })
+                }
+    
+            }); 
+        }
+
+    })
+
+/*     console.log('FACTURA DE VENTA AL '+DatosVenta.Tipo_Venta+'\nCliente=> '+DatosVenta.Cliente+'\nVendedor => '+DatosVenta.Vendedor+'\nFECHA => '+ DatosVenta.Fecha_Venta);
 
     DatosVenta.Productos.forEach((detalle_producto) => { 
         console.log("Producto Agregado");
         console.log("Detalle del Producto");
         console.log("Id del Producto => "+ detalle_producto.IdProducto +"\n Cantidad => "+ detalle_producto.Cantidad+"\n Precio => "+detalle_producto.Precio);
     })
-}
+
+    console.log("EL TOTAL DE LA VENTA FUE => "+ DatosVenta.Total); 
+} */
 
 /*
 exports.SearchCliente = (req,res) => {

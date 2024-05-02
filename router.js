@@ -324,7 +324,51 @@ router.get("/EditProduct/:Cat/p/:IdProd", (req, res) =>
 
 }); 
 
+router.get('/buscar-cliente', (req, res) => 
+{
+  const cedula = req.query.cedula;
 
+  conexion.query("Select * from persona where Tipo_Persona='Cliente' and  Cedula = ? ", [cedula], (error , results) => 
+  {
+    if(error)
+    {console.log('Hubo un error al buscar al cliente con Cedula: '+ cedula +' el error es => '+ error)}
+    else
+    {
+      if(results.length != 0)
+      {
+        const nombre = results[0].Nombre + ' ' + results[0].Apellido;
+        res.json({ nombreCliente: nombre }); 
+      }
+      else 
+      {res.json({ nombreCliente: 'No se encontro al Cliente' }); }
+    }
+  })
+
+
+});
+
+router.get('/buscar-vendedor', (req, res) => 
+{
+  const cedula = req.query.cedula;
+
+  conexion.query("Select * from persona where Tipo_Persona='Vendedor' and  Cedula = ? ", [cedula], (error , results) => 
+  {
+    if(error)
+    {console.log('Hubo un error al buscar al vendedor con Cedula: '+ cedula +' el error es => '+ error)}
+    else
+    {
+      if(results.length != 0)
+      {
+        const nombre = results[0].Nombre + ' ' + results[0].Apellido;
+        res.json({ nombreVendedor: nombre }); 
+      }
+      else 
+      {res.json({ nombreVendedor: 'No se encontro al Vendedor' }); }
+    }
+  })
+
+
+});
 
 
 /* FUNCIONES */
@@ -354,9 +398,6 @@ router.get("/EditProduct/:Cat/p/:IdProd", (req, res) =>
 
 
 
-
-
-
 const crud = require("./controllers/crud");
 router.post("/AddClient", crud.AddClient);
 router.post("/UpdateClient", crud.UpdateClient);
@@ -364,8 +405,8 @@ router.post("/AddVendedor", crud.AddVendedor);
 router.post("/UpdateVendedor", crud.UpdateVendedor);
 router.post("/AddProduct", crud.AddProduct);
 router.post("/UpdateProduct", crud.UpdateProduct);
-
 router.post("/AddVenta",crud.AddVenta);
+
 /*
 router.post("/SearchCliente",crud.SearchCliente); */
 

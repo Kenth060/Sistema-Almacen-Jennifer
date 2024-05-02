@@ -51,20 +51,36 @@
                           <div class="row">
                             <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
                               <h6 class="px-2"> Por favor seleccione el tipo de venta</h6>
-                              <select class="form-select" id="TipoDeVenta_Select" onchange="mostrarFormulario()">
+                              <select class="form-select" id="TipoDeVenta_Select" onchange="TipoVenta()">
                                 <option selected>Seleccione una venta</option>
                                 <option value="Contado">Venta Contado</option>
                                 <option value="Credito">Venta Credito</option>
                               </select>
 
                               <!-- Formulario para Venta Contado -->
+                              <!-- 
                               <div id="formularioContado" style="display: none">
                                 <form class="px-3">
-                                  <label for="CedulaCliente" lass="form-label" >Digite la Cedula del cliente</label>
-                                  <input class="form-control" list="datalistOptions" id="CedulaCliente" placeholder="Escribe para buscar..."/>
 
+                                  <label for="CedulaCliente" class="form-label mt-2" >Digite la Cedula del cliente</label>
+                                  <div class="input-group mb-3">
+                                    <input class="form-control" id="CedulaCliente" placeholder="Escribe para buscar..."/>
+                                    <button class="btn btn-outline-success" type="button" id="btnBuscarCliente" onclick="BuscarCliente()"><i class='bx bx-search'></i></button>
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <p class="text-success" id="client_name" hidden></p>
+                                  </div>
+            
                                   <label for="CedulaVendedor" class="form-label" >Digite la Cedula del vendedor</label>
-                                  <input  class="form-control" list="datalistOptions" id="CedulaVendedor" placeholder="Escribe para buscar..."/>
+                                  <div class="input-group mb-3">
+                                    <input  class="form-control" list="datalistOptions" id="CedulaVendedor" placeholder="Escribe para buscar..."/>
+                                    <button class="btn btn-outline-success" type="button" id="btnBuscarVendedor" onclick="BuscarVendedor()"><i class='bx bx-search'></i></button>
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <p class="text-success" id="vendedor_name" hidden></p>
+                                  </div>
 
                                   <div class="mb-3">
                                     <label for="Fecha_Venta" class="form-label">Ingrese la fecha de venta</label>
@@ -99,76 +115,57 @@
                                     </select>
                                   </div>
                                 </form>
-                              </div>
+                              </div> -->
 
                               <!-- Formulario para Venta Credito -->
                               <div id="formularioCredito" style="display: none">
                                 <form class="px-3">
-                                  <label
-                                    for="exampleDataList"
-                                    class="form-label"
-                                    >Digite el nombre del cliente</label
-                                  >
-                                  <input
-                                    class="form-control"
-                                    list="datalistOptions"
-                                    id="exampleDataList"
-                                    placeholder="Escribe para buscar..."
-                                  />
-                                  <datalist id="datalistOptions">
-                                    <option value="San Francisco"></option>
-                                    <option value="New York"></option>
-                                    <option value="San Francisco"></option>
-                                    <option value="New York"></option>
-                                    <option value="Seattle"></option>
-                                    <option value="Los Angeles"></option>
-                                    <option
-                                      value="Kenneth Fabian Silva Hernandez"
-                                    ></option>
-                                  </datalist>
 
-                                  <label
-                                    for="exampleDataList"
-                                    class="form-label"
-                                    >Digite el nombre del vendedor</label
-                                  >
-                                  <input
-                                    class="form-control"
-                                    list="datalistOptions"
-                                    id="exampleDataList"
-                                    placeholder="Escribe para buscar..."
-                                  />
-                                  <datalist id="datalistOptions">
-                                    <option
-                                      value="Kenneth Fabian Silva Hernandez"
-                                    ></option>
-                                  </datalist>
-
-                                  <div class="mb-3">
-                                    <label for="Fecha_Venta" class="form-label"
-                                      >Ingrese la fecha de venta</label
-                                    >
-                                    <input
-                                      type="date"
-                                      class="form-control"
-                                      id="Fecha_Venta"
-                                      placeholder="Ingrese la fecha"
-                                    />
+                                  <label for="CedulaCliente" class="form-label mt-2" >Digite la Cedula del cliente</label>
+                                  <div class="input-group mb-3">
+                                    <input class="form-control" id="CedulaCliente" placeholder="Escribe para buscar..."/>
+                                    <button class="btn btn-outline-success" type="button" id="btnBuscarCliente" onclick="BuscarCliente()"><i class='bx bx-search'></i></button>
                                   </div>
+
                                   <div class="mb-3">
-                                    <label for="text" class="form-label"
-                                      >Seleccionar categoria a la cual se le va
-                                      añadir el producto</label
-                                    >
-                                    <select
-                                      class="form-select"
-                                      id="categoriaSelect1"
-                                      onchange="mostrarTablaSegunCategoria1()"
-                                    >
-                                      <label for="Categoria" class="form-label"
-                                        >Seleccione la categoria del prodcuto
-                                        que desea</label
-                                      >
+                                    <p class="text-success" id="client_name" hidden></p>
+                                  </div>
+            
+                                  <label for="CedulaVendedor" class="form-label" >Digite la Cedula del vendedor</label>
+                                  <div class="input-group mb-3">
+                                    <input  class="form-control" list="datalistOptions" id="CedulaVendedor" placeholder="Escribe para buscar..."/>
+                                    <button class="btn btn-outline-success" type="button" id="btnBuscarVendedor" onclick="BuscarVendedor()"><i class='bx bx-search'></i></button>
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <p class="text-success" id="vendedor_name" hidden></p>
+                                  </div>
+                                     
+                                  <div class="mb-3">
+                                    <label for="Fecha_Venta" class="form-label">Ingrese la fecha de venta</label>
+                                    <input type="date" class="form-control" id="Fecha_Venta" placeholder="Ingrese la fecha"/>
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <label for="plazo_compra" id="lb_plazo_compra" class="form-label">Plazo de Compra</label>
+                                    <input type="text" class="form-control" id="plazo_compra" placeholder="Ingrese plazo de compra"/>
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <label for="FrecuenciaAbono" class="form-label" id="lb_FrecuenciaAbono" >Seleccionar la frecuencia de abonos</label>
+                                    <select class="form-select" id="FrecuenciaAbono" aria-label="">
+                                      <label for="FrecuenciaAbono" class="form-label">Seleccione la frecuencia de abonos</label>
+                                      <option selected value=""> Seleccione una opcion</option>
+                                      <option value="Semanal">Semanal</option>
+                                      <option value="Quincenal">Quincenal</option>
+                                      <option value="Mensual">Mensual</option>
+                                    </select>
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <label for="text" class="form-label">Seleccionar categoria del producto a añadir</label>
+                                    <select class="form-select" id="categoriaSelect1" onchange="mostrarTablaSegunCategoria1()">
+                                      <label for="Categoria" class="form-label">Seleccione la categoria del producto que desea</label>
                                       <option selected>
                                         Seleccione una categoria
                                       </option>
@@ -184,35 +181,9 @@
                                         Productos Plasticos
                                       </option>
                                     </select>
+                                  </div>
 
-                                    <label for="text" class="form-label"
-                                      >Seleccionar la frecuencia de
-                                      abonos</label
-                                    >
-                                    <select class="form-select" aria-label="">
-                                      <label for="Categoria" class="form-label"
-                                        >Seleccione la frecuencia de
-                                        abonos</label
-                                      >
-                                      <option selected>
-                                        Seleccione una opcion
-                                      </option>
-                                      <option value="1">Semanal</option>
-                                      <option value="2">Quincenal</option>
-                                      <option value="3">Mensual</option>
-                                    </select>
-                                  </div>
-                                  <div class="mb-3">
-                                    <label for="plazo_compra" class="form-label"
-                                      >Indique el plazo de compra</label
-                                    >
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      id="plazo_compra"
-                                      placeholder="Ingrese plazo de compra"
-                                    />
-                                  </div>
+                                  
                                 </form>
                               </div>
                             </div>
@@ -247,8 +218,8 @@
                                             <td class="centrado"></td>
                                             <td class="row px-2">
                                               <!-- Botones de acciones -->
-                                              <input id="CantProduct" type="number" class="centrado mb-2"/>
-                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Modelo %>','<%= producto.Precio %>', this)" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                             <!--  <input id="CantProduct" type="number" class="centrado mb-2"/> -->
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Modelo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio %>', this)" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -284,9 +255,7 @@
 
                                               <!-- Botones de acciones -->
                                               <!-- <input type="number" class="centrado mb-2"/> -->
-                                              <button type="button" class="btn btn-success px-3" title="Añadir">
-                                                <i class="fa-solid fa-cart-plus"></i>
-                                              </button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio %>', this)" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -318,10 +287,8 @@
                                             <td class="centrado">C$ <%= producto.Precio %></td>
                                             <td class="row px-4 centrado">
                                               <!-- Botones de acciones -->
-                                              <input type="number"class="centrado mb-2"/>
-                                              <button type="button" class="btn btn-success px-3" title="Añadir Producto">
-                                                <i class="fa-solid fa-cart-plus"></i>
-                                              </button>
+                                              <!-- <input type="number"class="centrado mb-2"/> -->
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Clasificacion %> <%= producto.Tipo %> <%= producto.Marca %> <%= producto.Color %> ','<%= producto.Precio %>', this)" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -356,9 +323,7 @@
                                             <td class="row px-4 centrado">
                                               <!-- Botones de acciones -->
                                               <!-- <input type="number" class="centrado mb-2"/> -->
-                                              <button type="button" class="btn btn-success px-3" title="Añadir">
-                                                <i class="fa-solid fa-cart-plus"></i>
-                                              </button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> <%= producto.Modelo %> Color <%= producto.Color %>','<%= producto.Precio %>', this)" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -393,9 +358,7 @@
                                             <td class="row px-4 centrado">
                                               <!-- Botones de acciones -->
                                               <!-- <input type="number" class="centrado mb-2"/> -->
-                                              <button type="button" class="btn btn-success px-3" title="Añadir">
-                                                <i class="fa-solid fa-cart-plus"></i>
-                                              </button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %>','<%= producto.Precio %>', this)" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -414,6 +377,12 @@
                             <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
                               <table class="table" id="tablacliente">
                                 <thead>
+                                  <tr>
+                                    <th id="IdVenta" class="centrado">N° Venta:</th>
+                                    <th class="centrado"></th>
+                                    <th></th>
+                                    <th class="centrado"></th>
+                                  </tr>
                                   <tr>
                                     <th class="centrado">Cliente</th>
                                     <th class="centrado">Vendedor</th>
@@ -439,18 +408,6 @@
                                 </tbody>
 
                                 <tbody>
-                                  <tr>
-                                    <td class="centrado">Zapatos</td>
-                                    <td class="centrado">3</td>
-                                    <td class="centrado">150 C$</td>
-                                    <td class="centrado">
-                                      <div class="centrado">
-                                        <div class="d-flex justify-content-center align-items-center">
-                                          <button type="button" class="btn btn-danger px-3" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-                                        </div>
-                                      </div>
-                                    </td>
-                                  </tr>
                                 </tbody>
                                 <thead>
                                   <th></th>
@@ -462,7 +419,7 @@
                                   <td></td>
                                   <td></td>
                                   <td></td>
-                                  <td class="centrado">450 C$</td>
+                                  <td class="centrado" id="celda_total">C$ 0</td>
                                 </tbody>
                               </table>
 
@@ -526,10 +483,6 @@
                           <td class="centrado"><%= Venta.Fecha_Venta %></td>
                           <td class="centrado">C$ <%= Venta.Total_Venta %></td>
                           <td class="centrado">
-<<<<<<< HEAD
-                            <button type="button" class="btn btn-success info-venta" data-tipo="credito" title="Informacion de la venta"><i class="fa-solid fa-money-check-dollar"></i></button>
-                            <button type="button" class="btn btn-danger px-3" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-=======
                             <button
                               type="button"
                               class="btn btn-success info-venta"
@@ -545,31 +498,6 @@
                             >
                               <i class="fa-solid fa-trash"></i>
                             </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="centrado">Norlan</td>
-                          <td class="centrado">Daniel</td>
-                          <td class="centrado">2024-04-20</td>
-                          <td class="centrado">Venta al contado</td>
-                          <td class="centrado">C$20,000.00</td>
-                          <td class="centrado">
-                            <button
-                              type="button"
-                              class="btn btn-success info-venta"
-                              title="Informacion de la venta"
-                              onclick="mostrarDetallesVenta()"
-                            >
-                              <i class="fa-solid fa-money-check-dollar"></i>
-                            </button>
-                            <button
-                              type="button"
-                              class="btn btn-danger px-3"
-                              title="Eliminar"
-                            >
-                              <i class="fa-solid fa-trash"></i>
-                            </button>
->>>>>>> 53df3d97c24c8ddff855a39f904c16915722aa53
                           </td>
                         </tr>
 
@@ -632,16 +560,12 @@
               </div>
 
               <div
-<<<<<<< HEAD
-                id="panelDetalleVentasContado"
-=======
                 id="panelDetalleVentas"
->>>>>>> 53df3d97c24c8ddff855a39f904c16915722aa53
+
                 class="panel-flotante"
                 style="display: none"
               >
                 <div class="panel-content">
-<<<<<<< HEAD
                   <h4>Historial de abonos</h4>
 
                   <div style="max-height: 300px; overflow-y: auto">
@@ -712,7 +636,6 @@
                           <td class="centrado">450 C$</td>
                         </tbody>
                       </table>
-=======
                   <h4>Detalles de venta</h4>
                   <nav class="navbar bg-body-tertiary"></nav>
                   <div style="max-height: 300px; overflow-y: auto">
@@ -778,25 +701,21 @@
                         </table>
                       </div>
                       
->>>>>>> 53df3d97c24c8ddff855a39f904c16915722aa53
                     </div>
                   </div>
                   <button
                     type="button"
                     class="btn btn-danger"
-<<<<<<< HEAD
                     onclick="cerrarPanelHistorialAbonos()"
                   >
                     Cerrar
                   </button>
                 </div> 
-=======
-                    onclick="cerrarDetallesVenta()"
+                    <!-- onclick="cerrarDetallesVenta()"
                   >
-                    Cerrar
+                    Cerrar -->
                   </button>
                 </div>
->>>>>>> 53df3d97c24c8ddff855a39f904c16915722aa53
               </div>
             </div>
           </div>
@@ -804,7 +723,24 @@
       </div>
     </section>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <% if (typeof alert != "undefined") { %>
+      <script>
+        Swal.fire({
+          title: "<%= alertTitle %>",
+          text: "<%= alertMessage %>",
+          icon: "<%= alertIcon %>",
+          showConfirmButton: true,
+          timer: false,
+        }).then(() => {
+          window.location = "/<%= ruta %>";
+        });
+      </script>
+      <% } %>
+
     <script src="/resources/js/script.js"></script>
     <script src="/resources/js/ScriptVentas.js"></script>
+    
   </body>
 </html>
