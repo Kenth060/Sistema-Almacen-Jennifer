@@ -152,6 +152,7 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, Button)
   var celdaCantidad = document.createElement("td");
   var celdaPrecio = document.createElement("td");
   var celdaBoton = document.createElement("td")
+  var celdaSubtotal = document.createElement("td")
 
   var inputCantidad = document.createElement("input");
   inputCantidad.type = "number";
@@ -165,6 +166,7 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, Button)
     var nuevaCantidad = parseInt(inputCantidad.value);
     actualizarCantidadProductoEnArreglo(Id_Producto, nuevaCantidad);
     actualizarTotalEnTabla();
+    celdaSubtotal.textContent = 'C$' + Precio*inputCantidad.value;
   };
 
   var BotonEliminar = document.createElement("button");
@@ -192,12 +194,15 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, Button)
     celdaCantidad.appendChild(inputCantidad);
     celdaPrecio.textContent = 'C$ '+Precio;
     celdaBoton.appendChild(BotonEliminar);
+    celdaSubtotal.textContent = 'C$' + Precio*inputCantidad.value;
 
     // Agregar las celdas a la fila
     nuevaFila.appendChild(celdaProducto);
     nuevaFila.appendChild(celdaCantidad);
     nuevaFila.appendChild(celdaPrecio);
+    nuevaFila.appendChild(celdaSubtotal);
     nuevaFila.appendChild(celdaBoton);
+    
 
     // Agregar la fila a la tabla
     tabla.appendChild(nuevaFila);
@@ -224,74 +229,86 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, Button)
 
 function AñadirVenta()
 {
-    const Cliente = document.getElementById('CedulaCliente').value;
-    const Vendedor = document.getElementById('CedulaVendedor').value;
-    const tipo_venta = document.getElementById('TipoDeVenta_Select').value;
-    const Fecha_Venta = document.getElementById('Fecha_Venta').value;
-    const Total_venta_td = document.getElementById('celda_total').innerText;
-    const Plazo = document.getElementById('plazo_compra').value;
-    const Frecuencia_Abonos = document.getElementById('FrecuenciaAbono').value;
+  const Cliente = document.getElementById('CedulaCliente').value;
+  const Vendedor = document.getElementById('CedulaVendedor').value;
+  const tipo_venta = document.getElementById('TipoDeVenta_Select').value;
+  const Fecha_Venta = document.getElementById('Fecha_Venta').value;
+  const Total_venta_td = document.getElementById('celda_total').innerText;
+  const Plazo = document.getElementById('plazo_compra').value;
+  const Frecuencia_Abonos = document.getElementById('FrecuenciaAbono').value;
 
-    const Total_venta = parseFloat(Total_venta_td.replace("C$", "").trim());
+  const Total_venta = parseFloat(Total_venta_td.replace("C$", "").trim());
+  
+  const DatosVenta = 
+  {
+    Tipo_Venta:tipo_venta,
+    Cliente:Cliente,
+    Vendedor:Vendedor,
+    Fecha_Venta:Fecha_Venta,
+    Productos: productosSeleccionados,
+    Plazo: Plazo,
+    Frecuencia_Abonos: Frecuencia_Abonos,
+    Total: Total_venta,
+    Id_Venta:ID_Venta
+  }
 
     
-    const DatosVenta = {
-        Tipo_Venta:tipo_venta,
-        Cliente:Cliente,
-        Vendedor:Vendedor,
-        Fecha_Venta:Fecha_Venta,
-        Productos: productosSeleccionados,
-        Plazo: Plazo,
-        Frecuencia_Abonos: Frecuencia_Abonos,
-        Total: Total_venta,
-        Id_Venta:ID_Venta
-    }
-
-
-
-fetch('/AddVenta', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(DatosVenta)
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('La solicitud ha fallado');
-    }
-    return response.json();
-  })
-  .then(data => 
-  {
-    if (data.success)
-    {
-      Swal.fire({
-                icon: 'success',
-                title: '¡Éxito!',
-                text: 'Venta agregada correctamente',
-                confirmButtonText: 'Aceptar'})
-            .then(() => { window.location.reload();});
-    } 
-    else 
-    {
-      Swal.fire({
-        icon: 'error',
-        title: 'No se pudo ingresar la venta',
-        text: 'Hubo un error al ingresar la venta, verifique los datos e intentelo nuevamente x',
-        confirmButtonText: 'Aceptar'
-      })
-    }
-  })
-  .catch(error => 
+  if (productosSeleccionados.length == 0)
   {
     Swal.fire({
-      icon: 'error',
-      title: 'No se pudo ingresar la venta',
-      text: 'Hubo un error al ingresar la venta, verifique los datos e intentelo nuevamente',
-      confirmButtonText: 'Aceptar'
-    })
-  });
+      title: "No ha agregado Productos",
+      text: "No ha agregado ningun producto a la venta, por favor agregue productos e intentelo nuevamente",
+      icon: 'warning',
+      showConfirmButton: true,
+      timer: false,
+    });
+  }
+  else  
+  {
+    fetch('/AddVenta', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(DatosVenta)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('La solicitud ha fallado');
+        }
+        return response.json();
+      })
+      .then(data => 
+      {
+        if (data.success)
+        {
+          Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: 'Venta agregada correctamente',
+                    confirmButtonText: 'Aceptar'})
+                .then(() => { window.location.reload();});
+        } 
+        else 
+        {
+          Swal.fire({
+            icon: 'error',
+            title: 'No se pudo ingresar la venta',
+            text: 'Hubo un error al ingresar la venta, verifique los datos e intentelo nuevamente x',
+            confirmButtonText: 'Aceptar'
+          })
+        }
+      })
+      .catch(error => 
+      {
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudo ingresar la venta',
+          text: 'Hubo un error al ingresar la venta, verifique los datos e intentelo nuevamente',
+          confirmButtonText: 'Aceptar'
+        })
+      });
+  }
  
 
 
@@ -311,15 +328,46 @@ function EliminarProducto(boton,id) {
 }
 
 
-function mostrarDetallesVenta() {
-    var panel = document.getElementById("panelDetalleVentas");
-    panel.style.display = "block";
-  }
+function mostrarDetallesVenta(Id_Venta, Cliente, Vendedor, Fecha , Total) 
+{
+  var panel = document.getElementById("panelDetalleVentas");
+  panel.style.display = "block";
 
-function cerrarDetallesVenta() {
+  document.getElementById("DetalleTitle").innerText = 'Detalles de la Venta N° '+Id_Venta;
+  document.getElementById("ClienteDetalle").textContent = Cliente;
+  document.getElementById("VendedorDetalle").textContent = Vendedor;
+  document.getElementById("FechaDetalle").textContent = Fecha;
+  document.getElementById("TotalDetalle").textContent = 'C$ '+Total;
+  
+  fetch(`/buscar-detalleventa?id=${encodeURIComponent(Id_Venta)}`)
+  .then(response => response.json())
+  .then(data => 
+  {
+    const Detalles = data.DetallesVenta;
+    Detalles.forEach((Detalle) => 
+    {
+      AddProductoTabla (Detalle.Producto,Detalle.Cant_Vendida,Detalle.Precio_Unitario,Detalle.Sub_Total)
+    })
+
+  })
+  .catch(error => console.error('Error:', error)); 
+
+
+
+
+}
+
+function cerrarDetallesVenta() 
+{
     var panel = document.getElementById("panelDetalleVentas");
     panel.style.display = "none";
-  }
+    
+    var tabla = document.getElementById("tablaDetalleVenta").getElementsByTagName('tbody')[1];
+    
+    while (tabla.firstChild) 
+    { tabla.removeChild(tabla.firstChild);}
+    
+}
 
 function actualizarCantidadProductoEnArreglo(idProducto, nuevaCantidad) 
 {
@@ -360,6 +408,7 @@ function BuscarCliente()
       {
         NameLabel.className = "text-success";
         NameLabel.innerText = 'Cliente: '+data.nombreCliente;
+        document.getElementById('ClienteFactura').textContent = data.nombreCliente;
       }
   })
   .catch(error => console.error('Error:', error));
@@ -385,6 +434,7 @@ function BuscarVendedor()
       {
         NameLabel.className = "text-success";
         NameLabel.innerText = 'Vendedor: '+data.nombreVendedor;
+        document.getElementById('VendedorFactura').textContent =  data.nombreVendedor;
       }
   })
   .catch(error => console.error('Error:', error));
@@ -397,5 +447,37 @@ function generarIdVenta()
   return idVenta;
 }
 
+function AddProductoTabla (Producto,Cantidad,Precio,SubTotal)
+{
+  var tabla = document.getElementById("tablaDetalleVenta").getElementsByTagName('tbody')[1];
 
+  var nuevaFila = document.createElement("tr");
+  var celda_Producto = document.createElement("td");
+  var celda_Cantidad = document.createElement("td");
+  var celda_Precio = document.createElement("td");
+  var celda_Subtotal = document.createElement("td")
+  var celda_Vacia = document.createElement("td")
+
+  // Agregar contenido a las celdas
+  celda_Producto.textContent = Producto;
+  celda_Cantidad.textContent = Cantidad;
+  celda_Precio.textContent = 'C$ '+Precio;
+  celda_Subtotal.textContent = 'C$ '+ SubTotal;
   
+  // Agregar las celdas a la fila
+  nuevaFila.appendChild(celda_Producto);
+  nuevaFila.appendChild(celda_Cantidad);
+  nuevaFila.appendChild(celda_Vacia);
+  nuevaFila.appendChild(celda_Precio);
+  nuevaFila.appendChild(celda_Subtotal);
+  
+  // Agregar la fila a la tabla
+  tabla.appendChild(nuevaFila);
+}
+
+function ActualizarFecha()
+{
+  const InputFecha = document.getElementById('FechatablaFactura');
+
+  InputFecha.textContent = document.getElementById('Fecha_Venta').value;
+}

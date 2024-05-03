@@ -294,26 +294,6 @@ exports.AddProduct = ( req, res) =>
     })
 }
 
-exports.AddVenta = ( req, res) => 
-{
-    const DatosVenta = req.body;
-
-    console.log(DatosVenta);
-    
-          /*   res.render('productos', { 
-                alert: true,
-                alertTitle: "No se pudo completar la operacion",
-                alertMessage: "No se pudo agregar el Producto, compruebe los datos e intente nuevamente",
-                alertIcon: 'error',
-                showConfirmButton: true,
-                timer: false,
-                cat: Categoria
-            })
-        } */
-        
-}
-
-
 exports.UpdateProduct = (req, res) => 
 {
     const Id_Producto = req.body.Id_Prod;
@@ -397,17 +377,95 @@ exports.AddVenta = (req,res) =>
         }
 
     })
-/* 
-    console.log('FACTURA DE VENTA AL '+DatosVenta.Tipo_Venta+'\nCliente=> '+DatosVenta.Cliente+'\nVendedor => '+DatosVenta.Vendedor+'\nFECHA => '+ DatosVenta.Fecha_Venta);
 
-    DatosVenta.Productos.forEach((detalle_producto) => { 
-        console.log("Producto Agregado");
-        console.log("Detalle del Producto");
-        console.log("Id del Producto => "+ detalle_producto.IdProducto +"\n Cantidad => "+ detalle_producto.Cantidad+"\n Precio => "+detalle_producto.Precio);
+} 
+
+exports.AddAbono = (req,res) => 
+{
+    const ID_Venta = req.body.Id_Venta_Abono;
+    const Monto = req.body.Monto_Abono;
+    const Fecha = req.body.Fecha_Abono;
+
+    conexion.query('INSERT INTO abonos (Id_Venta,Monto_Abonado,Fecha_Abono) VALUES (?,?,?)', [ID_Venta,Monto,Fecha], (error,results) =>
+    {
+        if(error)
+        { 
+            console.log('Hubo un error al registrar el abono => '+error); 
+
+            conexion.query("SELECT * from showventascredito  ", (error, results) => 
+                {
+                  if (error) 
+                  { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+                  else 
+                  {  
+                    const Ventas = results.map(venta => 
+                        {
+                          const fecha = new Date(venta.Fecha_Venta);
+                          const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                          const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                          
+                          return {
+                            ...venta,
+                            Fecha_Venta: fechaFormateada
+                          };
+                        });
+                
+                    res.render("abonos",{ Ventas_Credito:Ventas,
+                        alert: true,
+                        alertTitle: "No se pudo completar la operacion",
+                        alertMessage: `No se pudo agregar al abono a la venta N° ${ID_Venta}, compruebe los datos e intente nuevamente`,
+                        alertIcon: 'error',
+                        showConfirmButton: true,
+                        timer: false,
+                        ruta:'clientes'
+                    });
+                  }
+                    
+                });
+
+        }
+        else
+        {
+            console.log('Abono Agregado');
+            console.log("Abono Venta N° "+ID_Venta+'\nMONTO => '+Monto+'\nFecha => '+Fecha);
+
+            conexion.query("SELECT * from showventascredito  ", (error, results) => 
+                {
+                  if (error) 
+                  { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+                  else 
+                  {  
+                    const Ventas = results.map(venta => 
+                        {
+                          const fecha = new Date(venta.Fecha_Venta);
+                          const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                          const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                          
+                          return {
+                            ...venta,
+                            Fecha_Venta: fechaFormateada
+                          };
+                    });
+                
+                    res.render("abonos",{ Ventas_Credito:Ventas,
+                        alert: true,
+                        alertTitle: "Abono Agregado",
+                        alertMessage: `El abono a la venta N° ${ID_Venta} ha sido agregado correctamente`,
+                        alertIcon: 'success',
+                        showConfirmButton: true, 
+                        timer: false,
+                        ruta:'abonos'
+                    });
+                  }
+                    
+                });
+        }
+
     })
 
-    console.log("EL TOTAL DE LA VENTA FUE => "+ DatosVenta.Total);  */
-} 
+    
+
+}
 
 /* 
 exports.SearchCliente = (req,res) => {

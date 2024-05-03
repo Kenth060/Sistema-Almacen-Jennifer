@@ -119,7 +119,30 @@ router.get ("/Inicio", (req, res) => {
 });
 
 router.get ("/Abonos", (req, res) => {
-  res.render("abonos");
+  
+  conexion.query("SELECT * from showventascredito  ", (error, results) => 
+  {
+    if (error) 
+    { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+    else 
+    {  
+      const Ventas = results.map(venta => 
+          {
+            const fecha = new Date(venta.Fecha_Venta);
+            const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+            const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+            
+            return {
+              ...venta,
+              Fecha_Venta: fechaFormateada
+            };
+      });
+  
+      res.render("abonos",{ Ventas_Credito:Ventas });
+    }
+      
+  });
+
 });
 
 router.get ("/Clientes", (req, res) => {
@@ -134,7 +157,7 @@ router.get ("/Clientes", (req, res) => {
 
 });
 
-router.get ("/DeleteClient/:ID", (req, res) => 
+/* router.get ("/DeleteClient/:ID", (req, res) => 
 {
   const id = req.params.ID;
   conexion.query( "DELETE FROM persona where Id_Persona = ?", [id], (error, results) =>
@@ -144,7 +167,7 @@ router.get ("/DeleteClient/:ID", (req, res) =>
       else 
       { res.redirect("/Clientes"); }
   });
-});
+}); */
 
 router.get("/EditClient/:ID", (req, res) => 
 {
@@ -171,7 +194,7 @@ router.get("/Vendedores", (req, res) =>
   });
 });
 
-router.get("/DeleteVendedor/:ID", (req, res) => 
+/* router.get("/DeleteVendedor/:ID", (req, res) => 
 {
   const id = req.params.ID;
 
@@ -183,6 +206,7 @@ router.get("/DeleteVendedor/:ID", (req, res) =>
       { res.redirect("/Vendedores");}
     });
 });
+ */
 
 router.get("/EditVendedor/:ID", (req, res) => {
   const id = req.params.ID;
@@ -202,7 +226,7 @@ router.get("/Productos", (req, res) => {
 });
 
 router.get("/Ventas", (req, res) => {
-  //res.render("ventas");
+  const tipoVenta = req.query.tipoVenta;
 
   conexion.query("SELECT * from mostrarventas", (error, results) => 
   {
@@ -241,7 +265,7 @@ router.get("/Ventas", (req, res) => {
               });
 
             //res.send(Products);
-            res.render("ventas", { ventas: Ventas, productos: Products });
+            res.render("ventas", { ventas: Ventas, productos: Products , Tipo:tipoVenta});
           }
         })
     }
@@ -280,7 +304,7 @@ router.get("/ShowProducts/:categoria", (req, res) => {
 
 });
 
-router.get("/DeleteProduct/:IdProd/cat/:cat", (req, res) =>   
+/* router.get("/DeleteProduct/:IdProd/cat/:cat", (req, res) =>   
 {
   const cat = req.params.cat;
   const id_prod = req.params.IdProd;
@@ -292,7 +316,7 @@ router.get("/DeleteProduct/:IdProd/cat/:cat", (req, res) =>
       else 
       { res.redirect('/ShowProducts/'+cat); }
     });  
-});
+}); */
 
 router.get("/EditProduct/:Cat/p/:IdProd", (req, res) => 
 {
@@ -370,6 +394,33 @@ router.get('/buscar-vendedor', (req, res) =>
 
 });
 
+router.get('/buscar-detalleventa', (req, res) => 
+{
+  const id = req.query.id;
+  conexion.query("SELECT * from mostrardetalleventa WHERE Id_Venta = ?", [id], (error , results) => 
+    {
+      if(error)
+      {console.log('Hubo un error al buscar el detalle de la venta N° '+ id +' el error es => '+ error)}
+      else
+      {
+        const detalles_venta = results;
+        res.json({ DetallesVenta: detalles_venta }); 
+
+        /* console.log('Los detalles de la venta son =>\n');
+        console.log(detalles_venta);
+        detalles_venta.forEach((Detalle) => 
+        {
+
+          console.log('Productos Adquiridos =>'+Detalle.Producto);
+        })  */
+      }
+    }) 
+  
+  
+});
+
+
+
 
 /* FUNCIONES */
 /* router.get("/SearchCliente/:nombre", (req, res) => {
@@ -406,6 +457,7 @@ router.post("/UpdateVendedor", crud.UpdateVendedor);
 router.post("/AddProduct", crud.AddProduct);
 router.post("/UpdateProduct", crud.UpdateProduct);
 router.post("/AddVenta",crud.AddVenta);
+router.post("/AddAbono",crud.AddAbono);
 
 /*
 router.post("/SearchCliente",crud.SearchCliente); */

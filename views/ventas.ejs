@@ -4,17 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ventas Comercial Jennifer</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <link
-      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="resources/css/style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/resources/css/style.css" />
+    <link rel="shortcut icon" href="/resources/images/favicon.ico">
   </head>
   <body>
     <%- include('sidebar.ejs') %>
@@ -56,68 +49,8 @@
                                 <option value="Contado">Venta Contado</option>
                                 <option value="Credito">Venta Credito</option>
                               </select>
-
-                              <!-- Formulario para Venta Contado -->
-                              <!-- 
-                              <div id="formularioContado" style="display: none">
-                                <form class="px-3">
-
-                                  <label for="CedulaCliente" class="form-label mt-2" >Digite la Cedula del cliente</label>
-                                  <div class="input-group mb-3">
-                                    <input class="form-control" id="CedulaCliente" placeholder="Escribe para buscar..."/>
-                                    <button class="btn btn-outline-success" type="button" id="btnBuscarCliente" onclick="BuscarCliente()"><i class='bx bx-search'></i></button>
-                                  </div>
-
-                                  <div class="mb-3">
-                                    <p class="text-success" id="client_name" hidden></p>
-                                  </div>
-            
-                                  <label for="CedulaVendedor" class="form-label" >Digite la Cedula del vendedor</label>
-                                  <div class="input-group mb-3">
-                                    <input  class="form-control" list="datalistOptions" id="CedulaVendedor" placeholder="Escribe para buscar..."/>
-                                    <button class="btn btn-outline-success" type="button" id="btnBuscarVendedor" onclick="BuscarVendedor()"><i class='bx bx-search'></i></button>
-                                  </div>
-
-                                  <div class="mb-3">
-                                    <p class="text-success" id="vendedor_name" hidden></p>
-                                  </div>
-
-                                  <div class="mb-3">
-                                    <label for="Fecha_Venta" class="form-label">Ingrese la fecha de venta</label>
-                                    <input type="date" class="form-control" id="Fecha_Venta" placeholder="Ingrese la fecha"/>
-                                  </div>
-                                  <div class="mb-3">
-                                    <label for="text" class="form-label" >Categoria del producto</label>
-
-                                    <select
-                                      class="form-select"
-                                      id="categoriaSelect2"
-                                      onchange="mostrarTablaSegunCategoria2()"
-                                    >
-                                      <label for="Categoria" class="form-label"
-                                        >Seleccione la categoria del prodcuto
-                                        que desea
-                                      </label>
-                                      <option selected>
-                                        Seleccione una categoria
-                                      </option>
-                                      <option value="1">Calzado</option>
-                                      <option value="2">
-                                        Prendas de Vestir
-                                      </option>
-                                      <option value="3">Cosmeticos</option>
-                                      <option value="4">
-                                        Electrodomestico
-                                      </option>
-                                      <option value="5">
-                                        Productos Plasticos
-                                      </option>
-                                    </select>
-                                  </div>
-                                </form>
-                              </div> -->
-
-                              <!-- Formulario para Venta Credito -->
+                            
+                              <!-- Formulario para Venta  -->
                               <div id="formularioCredito" style="display: none">
                                 <form class="px-3">
 
@@ -143,7 +76,7 @@
                                      
                                   <div class="mb-3">
                                     <label for="Fecha_Venta" class="form-label">Ingrese la fecha de venta</label>
-                                    <input type="date" class="form-control" id="Fecha_Venta" placeholder="Ingrese la fecha"/>
+                                    <input type="date" class="form-control" id="Fecha_Venta" placeholder="Ingrese la fecha" onchange="ActualizarFecha()"/>
                                   </div>
 
                                   <div class="mb-3">
@@ -183,7 +116,6 @@
                                     </select>
                                   </div>
 
-                                  
                                 </form>
                               </div>
                             </div>
@@ -382,26 +314,30 @@
                                     <th class="centrado"></th>
                                     <th></th>
                                     <th class="centrado"></th>
+                                    <th class="centrado"></th>
                                   </tr>
                                   <tr>
                                     <th class="centrado">Cliente</th>
                                     <th class="centrado">Vendedor</th>
+                                    <th></th>
                                     <th></th>
                                     <th class="centrado">Fecha Venta</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr>
-                                    <td class="centrado">Nombre del Cliente</td>
-                                    <td class="centrado">Nombre del Vendedor</td>
+                                    <td class="centrado" id="ClienteFactura">Nombre del Cliente</td>
+                                    <td class="centrado" id="VendedorFactura">Nombre del Vendedor</td>
                                     <td></td>
-                                    <td class="centrado">Fecha Venta</td>
+                                    <td></td>
+                                    <td class="centrado" id="FechatablaFactura">Fecha Venta</td>
                                   </tr>
                                   <thead>
                                     <tr>
                                       <th class="centrado">Producto</th>
                                       <th class="centrado">Cantidad Producto</th>
                                       <th class="centrado">Precio</th>
+                                      <th class="centrado">Sub Total</th>
                                       <th class="centrado"></th>
                                     </tr>
                                   </thead>
@@ -413,9 +349,11 @@
                                   <th></th>
                                   <th></th>
                                   <th></th>
-                                  <th class="centrado">Cantidad Total</th>
+                                  <th></th>
+                                  <th class="centrado">Total</th>
                                 </thead>
                                 <tbody>
+                                  <td></td>
                                   <td></td>
                                   <td></td>
                                   <td></td>
@@ -439,14 +377,24 @@
               <div class="py-1 px-3" style="display: flex; align-items: center; justify-content: space-between;">
                 <h4 style="color: black; font-size: 22px">Listado de Ventas</h4>
                 <div style="display: flex; align-items: center">
-                  <select class="form-select" aria-label="Default select example" style="background-color: rgb(128, 192, 128); color: white; width: 180px; padding: 6px;">
+                  <select onchange="Filtrar()" id="filtroTipoVenta"  class="form-select" aria-label="Default select example" style="background-color: rgb(128, 192, 128); color: white; width: 180px; padding: 6px;">
                     <option selected>Filtrar tipo de venta</option>
-                    <option value="1">Ventas al contado</option>
-                    <option value="2">Ventas al crédito</option>
+                    <option value="Contado">Ventas al contado</option>
+                    <option value="Credito">Ventas al crédito</option>
+                    <option value="Todas">Mostrar todas las Ventas</option>
                   </select>
-                  <button type="button" class="btn btn-success" title="Abonar" style="margin-left: 10px" onclick="mostrarPanelHistorialAbonos()"><i class="fa-solid fa-list"></i>Listar historial de abonos</button>
+                  <!-- <button type="button" class="btn btn-success" title="Abonar" style="margin-left: 10px" onclick="mostrarPanelHistorialAbonos()"><i class="fa-solid fa-list"></i>Listar historial de abonos</button>-->
                 </div>
               </div>
+
+              <script>
+                function Filtrar() 
+                {
+                    const Filtro = document.getElementById('filtroTipoVenta').value;
+                    // Redirigir a la misma página, pasando el filtro como parámetro en la URL
+                    window.location.href = '/ventas?tipoVenta=' + Filtro;
+                }
+              </script>
 
               <nav class="navbar bg-body-tertiary">
                 <div class="container-fluid">
@@ -464,7 +412,7 @@
                     <table class="table primary px-3">
                       <thead>
                         <tr>
-                          <th class="centrado">Tipo de venta</th>
+                          <th class="centrado">Tipo de venta <%= Tipo %></th>
                           <th class="centrado">Nombre del cliente</th>
                           <th class="centrado">Nombre de vendedor</th>
                           <th class="centrado">Fecha de venta</th>
@@ -473,34 +421,62 @@
                         </tr>
                       </thead>
                       <tbody>
-
                         <% ventas.forEach((Venta) => { %>
-
-                        <tr>
-                          <td class="centrado">Venta al <%= Venta.Tipo_Venta %></td>
-                          <td class="centrado"><%= Venta.Cliente %></td>
-                          <td class="centrado"><%= Venta.Vendedor %></td>
-                          <td class="centrado"><%= Venta.Fecha_Venta %></td>
-                          <td class="centrado">C$ <%= Venta.Total_Venta %></td>
-                          <td class="centrado">
-                            <button
-                              type="button"
-                              class="btn btn-success info-venta"
-                              title="Informacion de la venta"
-                              onclick="mostrarDetallesVenta()"
-                            >
-                              <i class="fa-solid fa-money-check-dollar"></i>
-                            </button>
-                            <button
-                              type="button"
-                              class="btn btn-danger px-3"
-                              title="Eliminar"
-                            >
-                              <i class="fa-solid fa-trash"></i>
-                            </button>
-                          </td>
-                        </tr>
-
+                          <% if (Tipo == 'Todas' || Tipo == null ) { %>
+                            <tr>
+                              <td class="centrado">Venta al <%= Venta.Tipo_Venta %></td>
+                              <td class="centrado"><%= Venta.Cliente %></td>
+                              <td class="centrado"><%= Venta.Vendedor %></td>
+                              <td class="centrado"><%= Venta.Fecha_Venta %></td>
+                              <td class="centrado">C$ <%= Venta.Total_Venta %></td>
+                              <td class="centrado">
+                                <button
+                                  type="button"
+                                  class="btn btn-success info-venta"
+                                  title="Informacion de la venta"
+                                  onclick="mostrarDetallesVenta('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>','<%= Venta.Fecha_Venta %>','<%= Venta.Total_Venta %>')">
+                                  <i class="fa-solid fa-money-check-dollar"></i>
+                                </button>
+    
+                              </td>
+                            </tr>
+                          <% } else if(Tipo == 'Credito' && Venta.Tipo_Venta == 'Credito' ){ %>
+                            <tr>
+                              <td class="centrado">Venta al <%= Venta.Tipo_Venta %></td>
+                              <td class="centrado"><%= Venta.Cliente %></td>
+                              <td class="centrado"><%= Venta.Vendedor %></td>
+                              <td class="centrado"><%= Venta.Fecha_Venta %></td>
+                              <td class="centrado">C$ <%= Venta.Total_Venta %></td>
+                              <td class="centrado">
+                                <button
+                                  type="button"
+                                  class="btn btn-success info-venta"
+                                  title="Informacion de la venta"
+                                  onclick="mostrarDetallesVenta('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>','<%= Venta.Fecha_Venta %>','<%= Venta.Total_Venta %>')">
+                                  <i class="fa-solid fa-money-check-dollar"></i>
+                                </button>
+    
+                              </td>
+                            </tr>
+                          <% } else if(Tipo == 'Contado' && Venta.Tipo_Venta == 'Contado' ){ %>
+                            <tr>
+                              <td class="centrado">Venta al <%= Venta.Tipo_Venta %></td>
+                              <td class="centrado"><%= Venta.Cliente %></td>
+                              <td class="centrado"><%= Venta.Vendedor %></td>
+                              <td class="centrado"><%= Venta.Fecha_Venta %></td>
+                              <td class="centrado">C$ <%= Venta.Total_Venta %></td>
+                              <td class="centrado">
+                                <button
+                                  type="button"
+                                  class="btn btn-success info-venta"
+                                  title="Informacion de la venta"
+                                  onclick="mostrarDetallesVenta('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>','<%= Venta.Fecha_Venta %>','<%= Venta.Total_Venta %>')">
+                                  <i class="fa-solid fa-money-check-dollar"></i>
+                                </button>
+    
+                              </td>
+                            </tr>
+                          <% }%>
                         <% }) %>
                       </tbody>
                     </table>
@@ -559,32 +535,29 @@
                 </div>
               </div>
 
-              <div
-                id="panelDetalleVentas"
-
-                class="panel-flotante panel-ancho"
-                style="display: none"
-              >
+              <div id="panelDetalleVentas" class="panel-flotante panel-ancho" style="display: none">
                 <div class="panel-content ">
-                  <h4>Detalle de esta venta</h4>
+                  <h4 id="DetalleTitle">Detalle Venta </h4>
 
                   <div style="max-height: 300px; overflow-y: auto">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                      <table class="table" id="tablacliente">
+                      <table class="table" id="tablaDetalleVenta">
                         <thead>
                           <tr>
                             <th class="centrado">Cliente</th>
                             <th class="centrado">Vendedor</th>
                             <th></th>
                             <th class="centrado">Fecha</th>
+                            <th class="centrado"></th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td class="centrado">Mateo</td>
-                            <td class="centrado">Jonathan</td>
+                            <td class="centrado" id="ClienteDetalle"></td>
+                            <td class="centrado" id="VendedorDetalle"></td>
                             <td></td>
-                            <td class="centrado">13/04/2024</td>
+                            <td class="centrado" id="FechaDetalle"></td>
+                            <td></td>
                           </tr>
                           <thead>
                             <tr>
@@ -592,29 +565,28 @@
                               <th class="centrado">Cantidad Producto</th>
                               <th class="centrado"></th>
                               <th class="centrado">Precio</th>
+                              <th class="centrado">Sub Total</th>
                             </tr>
                           </thead>
                         </tbody>
 
                         <tbody>
                           <tr>
-                            <td class="centrado">Zapatos</td>
-                            <td class="centrado">3</td>
-                            <td class="centrado"></td>
-                            <td class="centrado">150 C$</td>
                           </tr>
                         </tbody>
                         <thead>
                           <th></th>
                           <th></th>
                           <th></th>
-                          <th class="centrado">SubTotal</th>
+                          <th class="centrado"></th>
+                          <th>Total</th>
                         </thead>
                         <tbody>
                           <td></td>
                           <td></td>
                           <td></td>
-                          <td class="centrado">450 C$</td>
+                          <td ></td>
+                          <td class="centrado" id="TotalDetalle"></td>
                         </tbody>
                       </table>
                   <button
