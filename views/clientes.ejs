@@ -28,158 +28,255 @@
     <%- include('sidebar.ejs') %>
 
     <section class="home-section">
-      <div class="Container px-3">
-        <div class="row">
-          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <h3>Registrar Cliente</h3>
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="Container">
+          <div>
+            <div
+              id="panelRegistroCliente"
+              class="panel-flotante panel-ancho"
+              style="display: none"
+            >
+              <div class="panel-content">
+                <h4>Registrar un nuevo cliente</h4>
 
-            <form action="/AddClient" method="post" class="needs-validation" novalidate>
-              <div class="mb-2 position-relative">
-                <label for="Nombre" class="form-label">Nombres</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="Tipo"
-                  name="Tipo_cl"
-                  placeholder="Tipo"
-                  value="Cliente"
-                  hidden
-                />
-                <input
-                  type="text"
-                  class="form-control"
-                  id="Nombre"
-                  name="Nombre_cl"
-                  placeholder="Nombres"
-                  required
-                />
-                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Nombre</div>
-              </div>
+                <div style="max-height: 300px; overflow-y: auto">
+                  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                      <h3>Registrar Cliente</h3>
 
-              <div class="mb-2 position-relative">
-                <label for="Apellido" class="form-label">Apellidos</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="Apellido"
-                  name="Apellido_cl"
-                  placeholder="Apellidos"
-                  required
-                />
-                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Apellido</div>
+                      <form
+                        action="/AddClient"
+                        method="post"
+                        class="needs-validation"
+                        novalidate
+                      >
+                        <div class="mb-2">
+                          <label for="Nombre" class="form-label">Nombres</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Tipo"
+                            name="Tipo_cl"
+                            placeholder="Tipo"
+                            value="Cliente"
+                            hidden
+                          />
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Nombre"
+                            name="Nombre_cl"
+                            placeholder="Nombres"
+                            required
+                          />
+                          <div
+                            class="invalid-tooltip position-absolute top-0 end-0 translate-end"
+                          >
+                            Es necesario el Nombre
+                          </div>
+                        </div>
+
+                        <div class="mb-2">
+                          <label for="Apellido" class="form-label"
+                            >Apellidos</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Apellido"
+                            name="Apellido_cl"
+                            placeholder="Apellidos"
+                            required
+                          />
+                          <div
+                            class="invalid-tooltip position-absolute top-0 end-0 translate-end"
+                          >
+                            Es necesario el Apellido
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <label for="Telefono" class="form-label"
+                            >Telefono</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="Telefono"
+                            name="Telefono_cl"
+                            placeholder="Telefono"
+                            required
+                          />
+                          <div
+                            class="invalid-tooltip position-absolute top-0 end-0 translate-end"
+                          >
+                            Es necesario número teléfonico
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <label for="Cedula" class="form-label">Cedula</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Cedula"
+                            name="Cedula_cl"
+                            placeholder="Cedula"
+                            required
+                          />
+                          <div
+                            class="invalid-tooltip position-absolute top-0 end-0 translate-end"
+                          >
+                            Es necesario número de cédula
+                          </div>
+                        </div>
+                        <div class="mb-1 position-relative">
+                          <label for="Distrito_cl" class="form-label"
+                            >Dirección</label
+                          >
+                          <select
+                            id="Distrito"
+                            name="Distrito_cl"
+                            class="form-select mb-2 position-relative"
+                            aria-label="Distrito"
+                            required
+                          >
+                            <option selected disabled value="">
+                              Seleccionar Distrito...
+                            </option>
+                            <option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                            <option value="IV">IV</option>
+                            <option value="V">V</option>
+                            <option value="VI">VI</option>
+                            <option value="VII">VII</option>
+                          </select>
+                          <div
+                            class="invalid-tooltip position-absolute top-0 end-0 translate-end"
+                          >
+                            Es necesario el Distrito
+                          </div>
+                        </div>
+
+                        <div class="mb-2">
+                          <label for="Residencia" class="form-label"
+                            >Zona de Residencia</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Residencia"
+                            name="Residencia_cl"
+                            placeholder="Zona de Residencia"
+                            required
+                          />
+                          <div
+                            class="invalid-tooltip position-absolute top-0 end-0 translate-end"
+                          >
+                            Es necesario la zona de residencia
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <label for="PuntoReferencia" class="form-label"
+                            >Punto de Referencia</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="PuntoReferencia"
+                            name="PuntoReferencia_cl"
+                            placeholder="Punto de Referencia"
+                            required
+                          />
+                          <div
+                            class="invalid-tooltip position-absolute top-0 end-0 translate-end"
+                          >
+                            Solicitamos un punto de Referencia
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <label for="Distancia" class="form-label"
+                            >Distancia</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Distancia"
+                            name="Distancia_cl"
+                            placeholder="Distancia"
+                          />
+                        </div>
+                        <div class="mb-2">
+                          <label for="Casa" class="form-label"
+                            >Numero de casa</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Casa"
+                            name="Casa_cl"
+                            placeholder="N. Casa"
+                            required
+                          />
+                          <div
+                            class="invalid-tooltip position-absolute top-0 end-0 translate-end"
+                          >
+                            Es necesario el número de Casa
+                          </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                          <button
+                            type="submit"
+                            class="btn btn-success"
+                            title="Guardar"
+                          >
+                            Guardar
+                          </button>
+                          <button
+                            class="btn btn-secondary"
+                            title="Limpiar Campos"
+                            onclick="Limpiar()"
+                          >
+                            Limpiar Campos
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="py-3">
+                    <button
+                    type="button"
+                    class="btn btn-danger "
+                    onclick="cerrarPanelRegistroCliente()">
+                    Cerrar
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div class="mb-2 position-relative">
-                <label for="Telefono" class="form-label">Telefono</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="Telefono"
-                  name="Telefono_cl"
-                  placeholder="Telefono"
-                  required
-                />
-                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario número teléfonico</div>
-              </div>
-              <div class="mb-2 position-relative">
-                <label for="Cedula" class="form-label">Cedula</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="Cedula"
-                  name="Cedula_cl"
-                  placeholder="Cedula"
-                  required
-                />
-                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario número de cédula</div>
-              </div>
-              <div class="mb-1 position-relative">
-                <label for="Distrito_cl" class="form-label">Dirección</label>
-                <select
-                  id="Distrito"
-                  name="Distrito_cl"
-                  class="form-select mb-2 position-relative"
-                  aria-label="Distrito"
-                  required
-                >
-                  <option selected disabled value="">Seleccionar Distrito...</option>
-                  <option value="I">I</option>
-                  <option value="II">II</option>
-                  <option value="III">III</option>
-                  <option value="IV">IV</option>
-                  <option value="V">V</option>
-                  <option value="VI">VI</option>
-                  <option value="VII">VII</option>
-                </select>
-              <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el Distrito</div>
-              </div>
-              
-              <div class="mb-2 dx-2 position-relative">
-                <label for="Residencia" class="form-label"
-                  >Zona de Residencia</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="Residencia"
-                  name="Residencia_cl"
-                  placeholder="Zona de Residencia"
-                  required
-                />
-                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario la zona de residencia</div>
-              </div>
-              <div class="mb-2 position-relative">
-                <label for="PuntoReferencia" class="form-label"
-                  >Punto de Referencia</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="PuntoReferencia"
-                  name="PuntoReferencia_cl"
-                  placeholder="Punto de Referencia"
-                  required
-                />
-                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Solicitamos un punto de Referencia</div>
-              </div>
-              <div class="mb-2">
-                <label for="Distancia" class="form-label">Distancia</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="Distancia"
-                  name="Distancia_cl"
-                  placeholder="Distancia"
-                />
-              </div>
-              <div class="mb-2 position-relative">
-                <label for="Casa" class="form-label">Numero de casa</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="Casa"
-                  name="Casa_cl"
-                  placeholder="N. Casa"
-                  required
-                />
-                <div class="invalid-tooltip position-absolute top-0 end-0 translate-end">Es necesario el número de Casa</div>
-              </div>
-              <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-success" title="Guardar">
-                  Guardar
-                </button>
-                <button
-                  class="btn btn-secondary"
-                  title="Limpiar Campos"
-                  onclick="Limpiar()"
-                >
-                  Limpiar Campos
-                </button>
-              </div>
-            </form>
+            </div>
           </div>
+        </div>
+      </div>
+      <div class="Container px-3 py-1 contenedorventas">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"></div>
+        <h4>Listado y registro (Clientes)</h4>
+      </div>
 
-          <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-            <h2>Listado de clientes</h2>
+      <div class="Container px-2">
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="px-3 py-2">
+              <h4 style="display: flex; justify-content: space-between">
+                Listado de clientes
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  title="Historial"
+                  onclick="mostrarPanelRegistroCliente()"
+                >
+                  <i class="fa-solid fa-list"></i>Registrar un nuevo cliente
+                </button>
+              </h4>
+            </div>
             <nav class="navbar bg-body-tertiary">
               <div class="container-fluid">
                 <a class="navbar-brand">Buscar cliente</a>
@@ -283,51 +380,52 @@
           </div>
         </div>
         <div
-        id="panelRecordCrediticio"
-        class="panel-flotante"
-        style="display: none"
-      >
-        <div class="panel-content ">
-          <h4>Record Crediticio</h4>
-          <nav class="navbar bg-body-tertiary"></nav>
-          <div style="max-height: 200px; overflow-y: auto">
-            <div>
-              <table class="table primary px-3">
-                <thead>
-                  <tr>
-                    <th class="centrado">Nombre del cliente</th>
-                    <th class="centrado">Fecha de venta</th>
-                    <th class="centrado">Tipo de venta</th>
-                    <th class="centrado">Cantidad total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="centrado">Norlan</td>
-                    <td class="centrado">2024-04-20</td>
-                    <td class="centrado">Venta al credito</td>
-                    <td class="centrado">C$2500.00</td>
-                    <td class="centrado">
-                  </tr>
-                  <tr>
-                    <td class="centrado">Norlan</td>
-                    <td class="centrado">2024-04-20</td>
-                    <td class="centrado">Venta al contado</td>
-                    <td class="centrado">C$20,000.00</td>
-                  </tr>
-                </tbody>
-              </table>
+          id="panelRecordCrediticio"
+          class="panel-flotante"
+          style="display: none"
+        >
+          <div class="panel-content">
+            <h4>Record Crediticio</h4>
+            <nav class="navbar bg-body-tertiary"></nav>
+            <div style="max-height: 200px; overflow-y: auto">
+              <div>
+                <table class="table primary px-3">
+                  <thead>
+                    <tr>
+                      <th class="centrado">Nombre del cliente</th>
+                      <th class="centrado">Fecha de venta</th>
+                      <th class="centrado">Tipo de venta</th>
+                      <th class="centrado">Cantidad total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="centrado">Norlan</td>
+                      <td class="centrado">2024-04-20</td>
+                      <td class="centrado">Venta al credito</td>
+                      <td class="centrado">C$2500.00</td>
+                      <td class="centrado"></td>
+                    </tr>
+
+                    <tr>
+                      <td class="centrado">Norlan</td>
+                      <td class="centrado">2024-04-20</td>
+                      <td class="centrado">Venta al contado</td>
+                      <td class="centrado">C$20,000.00</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="cerrarPanelRecordCrediticio()"
+            >
+              Cerrar
+            </button>
           </div>
-          <button
-            type="button"
-            class="btn btn-danger"
-            onclick="cerrarPanelRecordCrediticio()"
-          >
-            Cerrar
-          </button>
         </div>
-      </div>
       </div>
     </section>
 
@@ -344,23 +442,27 @@
     <script>
       // Example starter JavaScript for disabling form submissions if there are invalid fields
       (() => {
-        'use strict'
-  
+        "use strict";
+
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        const forms = document.querySelectorAll('.needs-validation')
-  
+        const forms = document.querySelectorAll(".needs-validation");
+
         // Loop over them and prevent submission
-        Array.from(forms).forEach(form => {
-          form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-              event.preventDefault()
-              event.stopPropagation()
-            }
-  
-            form.classList.add('was-validated')
-          }, false)
-        })
-      })()
+        Array.from(forms).forEach((form) => {
+          form.addEventListener(
+            "submit",
+            (event) => {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+
+              form.classList.add("was-validated");
+            },
+            false
+          );
+        });
+      })();
     </script>
 
     <% if (typeof alert != "undefined") { %>

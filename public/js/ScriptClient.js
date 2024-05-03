@@ -41,3 +41,15 @@ function mostrarPanelRecordCrediticio() {
     var panel = document.getElementById("panelRecordCrediticio");
     panel.style.display = "none";
   }
+
+  function mostrarPanelRegistroCliente() {
+    var panel = document.getElementById("panelRegistroCliente");
+    panel.style.display = "block";
+  }
+
+  function cerrarPanelRegistroCliente() {
+    var panel = document.getElementById("panelRegistroCliente");
+    panel.style.display = "none";
+  }
+
+  

@@ -35,3 +35,15 @@ function mostrarPanelAbono() {
     panel.style.display = "none";
   }
   //FIN MOSTRAR HISTORIAL
+
+   //MOSTRAR FORMULARIO PARA REALIZAR ABONOS
+   function mostrarPanelAbono() {
+    var panel = document.getElementById("panelAbono");
+    panel.style.display = "block";
+  }
+
+  function cerrarPanelAbono() {
+    var panel = document.getElementById("panelAbono");
+    panel.style.display = "none";
+  }
+  //FIN FORMULARIO
