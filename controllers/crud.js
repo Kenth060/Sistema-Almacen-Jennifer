@@ -296,7 +296,6 @@ exports.AddProduct = ( req, res) =>
 
 exports.AddVenta = ( req, res) => 
 {
-    res.render('inicio');
     const DatosVenta = req.body;
 
     console.log(DatosVenta);
@@ -367,7 +366,7 @@ exports.UpdateProduct = (req, res) =>
 
 } 
 
-/* exports.AddVenta = (req,res) => 
+exports.AddVenta = (req,res) => 
 {
     const DatosVenta = req.body;
 
@@ -378,63 +377,7 @@ exports.UpdateProduct = (req, res) =>
         if(error)
         { 
             console.log('Hubo un error al agregar la Venta => '+error);
-
-            /* conexion.query("SELECT * from mostrarventas", (error, results) => 
-            {
-                if (error) 
-                { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
-                else 
-                {  
-                    const Ventas = results.map(venta => 
-                    {
-                        const fecha = new Date(venta.Fecha_Venta);
-                        const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-                        const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-                    
-                        return {
-                            ...venta,
-                            Fecha_Venta: fechaFormateada
-                        };
-                    });
-
-                    conexion.query('SELECT * from productos', (error, results) => 
-                    {
-                        if (error)
-                        {console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
-                        else 
-                        {
-                            const Products = results.map( producto => 
-                            {
-                                const fecha = new Date(producto.Fecha_Ingreso);
-                                const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-                                const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-                                
-                                return {
-                                ...producto,
-                                Fecha_Ingreso: fechaFormateada
-                                };
-                            });
-
-                        
-                            res.render("ventas", { 
-                                ventas: Ventas, 
-                                productos: Products,
-                                alert: true,
-                                alertTitle: "Operacion Incompleta",
-                                alertMessage: "La venta no ha podido ser agregada, revise los datos y trate nuevamente",
-                                alertIcon: 'error',
-                                showConfirmButton: true,
-                                timer: false,
-                                ruta:'ventas'
-                            });
-                        }
-                    })
-                }
-    
-            }); 
-
-            res.redirect('/Ventas');
-
+            res.status(500).json({ success: false, message: 'Hubo un error al agregar la Venta' });
         }
         else
         {
@@ -449,62 +392,13 @@ exports.UpdateProduct = (req, res) =>
                     {console.log('Producto Agregado Correctamente :D');}
                 })
             });
-
-            /* conexion.query("SELECT * from mostrarventas", (error, results) => 
-            {
-                if (error) 
-                { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
-                else 
-                {  
-                    const Ventas = results.map(venta => 
-                    {
-                        const fecha = new Date(venta.Fecha_Venta);
-                        const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-                        const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-                    
-                        return {
-                            ...venta,
-                            Fecha_Venta: fechaFormateada
-                        };
-                    });
-
-                    conexion.query('SELECT * from productos', (error, results) => 
-                    {
-                        if (error)
-                        {console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
-                        else 
-                        {
-                            const Products = results.map( producto => 
-                            {
-                                const fecha = new Date(producto.Fecha_Ingreso);
-                                const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-                                const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-                                
-                                return {
-                                ...producto,
-                                Fecha_Ingreso: fechaFormateada
-                                };
-                            });
-
-                        
-                            res.render("ventas", { ventas: Ventas, productos: Products,
-                                alert: true,
-                                alertTitle: "Venta Agregada",
-                                alertMessage: "La venta ha sido registrada con exito",
-                                alertIcon: 'success',
-                                showConfirmButton: true,
-                                timer: false,
-                                ruta:'ventas'});
-                        }
-                    })
-                }
-    
-            }); 
+            
+            res.status(200).json({ success: true, message: 'Venta agregada correctamente' });
         }
 
     })
-
-/*     console.log('FACTURA DE VENTA AL '+DatosVenta.Tipo_Venta+'\nCliente=> '+DatosVenta.Cliente+'\nVendedor => '+DatosVenta.Vendedor+'\nFECHA => '+ DatosVenta.Fecha_Venta);
+/* 
+    console.log('FACTURA DE VENTA AL '+DatosVenta.Tipo_Venta+'\nCliente=> '+DatosVenta.Cliente+'\nVendedor => '+DatosVenta.Vendedor+'\nFECHA => '+ DatosVenta.Fecha_Venta);
 
     DatosVenta.Productos.forEach((detalle_producto) => { 
         console.log("Producto Agregado");
@@ -512,10 +406,10 @@ exports.UpdateProduct = (req, res) =>
         console.log("Id del Producto => "+ detalle_producto.IdProducto +"\n Cantidad => "+ detalle_producto.Cantidad+"\n Precio => "+detalle_producto.Precio);
     })
 
-    console.log("EL TOTAL DE LA VENTA FUE => "+ DatosVenta.Total); 
-} */
+    console.log("EL TOTAL DE LA VENTA FUE => "+ DatosVenta.Total);  */
+} 
 
-/*
+/* 
 exports.SearchCliente = (req,res) => {
     const nombre = req.body.nombreSearch;
     const consulta = "SELECT * FROM mostrarclientes WHERE Nombre LIKE '"+nombre+"%'";
@@ -531,4 +425,4 @@ exports.SearchCliente = (req,res) => {
         console.log('encontrado ' + results);
       }
     });   
-} */
+}  */

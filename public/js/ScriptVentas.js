@@ -262,12 +262,37 @@ fetch('/AddVenta', {
     }
     return response.json();
   })
-  .then(data => {
-    console.log('Venta agregada con éxito:', data);
+  .then(data => 
+  {
+    if (data.success)
+    {
+      Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: 'Venta agregada correctamente',
+                confirmButtonText: 'Aceptar'})
+            .then(() => { window.location.reload();});
+    } 
+    else 
+    {
+      Swal.fire({
+        icon: 'error',
+        title: 'No se pudo ingresar la venta',
+        text: 'Hubo un error al ingresar la venta, verifique los datos e intentelo nuevamente x',
+        confirmButtonText: 'Aceptar'
+      })
+    }
   })
-  .catch(error => {
-    console.error('Ha ocurrido un error:', error);
+  .catch(error => 
+  {
+    Swal.fire({
+      icon: 'error',
+      title: 'No se pudo ingresar la venta',
+      text: 'Hubo un error al ingresar la venta, verifique los datos e intentelo nuevamente',
+      confirmButtonText: 'Aceptar'
+    })
   });
+ 
 
 
 }
