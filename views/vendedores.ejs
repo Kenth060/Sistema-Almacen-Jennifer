@@ -16,71 +16,181 @@
   <body>
     <%- include('sidebar.ejs') %> 
     <section class="home-section">
+      <div class="Container">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <div
+            id="panelRegistroVendedor"
+            class="panel-flotante panel-ancho"
+            style="display: none"
+          >
+            <div class="panel-content">
+              <h4>Registrar un nuevo vendedor</h4>
+        
+              <div style="max-height: 300px; overflow-y: auto">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                  <div class="mt-3 mb-3">
+                    <h2 class="text-secondary"><b>Datos del Vendedor</b></h2>
+                  </div>
+        
+                  <form action="/AddVendedor" method="post">
+                    <div class="mb-2">
+                      <label for="nombre" class="form-label">Nombres</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Tipo"
+                        name="Tipo_vd"
+                        placeholder="Tipo"
+                        value="Vendedor"
+                        hidden
+                      />
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="nombre"
+                        name="Nombre_vd"
+                        placeholder="Nombres"
+                      />
+                    </div>
+                    <div class="mb-2">
+                      <label for="apellido" class="form-label">Apellidos</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="apellido"
+                        name="Apellido_vd"
+                        placeholder="Apellidos"
+                      />
+                    </div>
+                    <div class="mb-2">
+                      <label for="Telefono" class="form-label">Telefono</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="Telefono"
+                        name="Telefono_vd"
+                        placeholder="Telefono"
+                      />
+                    </div>
+                    <div class="mb-2">
+                      <label for="Cedula" class="form-label">Cedula</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Cedula"
+                        name="Cedula_vd"
+                        placeholder="Cedula"
+                      />
+                    </div>
+                    <div class="mb-1">
+                      <label for="Residencia" class="form-label">Dirección</label>
+                    </div>
+                    <select
+                      id="selectDistritoVd"
+                      class="form-select"
+                      aria-label="Distrito"
+                      name="Distrito_vd"
+                    >
+                      <option selected>Seleccionar distrito</option>
+                      <option value="I">Distrito I</option>
+                      <option value="II">Distrito II</option>
+                      <option value="III">Distrito III</option>
+                      <option value="IV">Distrito IV</option>
+                      <option value="V">Distrito V</option>
+                      <option value="VI">Distrito VI</option>
+                      <option value="VII">Distrito VII</option>
+                    </select>
+                    <div class="mb-2 dx-2">
+                      <label for="Residencia" class="form-label"
+                        >Zona de Residencia</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Residencia"
+                        name="Residencia_vd"
+                        placeholder="Z. Residencia"
+                      />
+                    </div>
+                    <div class="mb-2">
+                      <label for="PuntoReferencia" class="form-label"
+                        >Punto de Referencia</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="PuntoReferencia"
+                        name="PuntoReferencia_vd"
+                        placeholder="P. Referencia"
+                      />
+                    </div>
+                    <div class="mb-2">
+                      <label for="Distancia" class="form-label">Distancia</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Distancia"
+                        name="Distancia_vd"
+                        placeholder="Distancia"
+                      />
+                    </div>
+                    <div class="mb-2">
+                      <label for="casa" class="form-label">Numero de casa</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="casa"
+                        name="Casa_vd"
+                        placeholder="N. Casa"
+                      />
+                    </div>
+                    <div class="d-grid gap-2">
+                      <button type="submit" class="btn btn-success" title="Guardar">
+                        Guardar
+                      </button>
+                      <a
+                        class="btn btn-secondary mb-3"
+                        title="Limpiar Campos"
+                        onclick="Limpiar()"
+                        >Limpiar Campos</a
+                      >
+                    </div>
+                  </form>
+                </div>
+                <div class="py-3">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    onclick="cerrarPanelRegistroVendedor()"
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="Container px-3 py-1 contenedorventas">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"></div>
+        <h4>Listado y registro (Vendedores)</h4>
+      </div>
       <div class="Container px-3">
         <div class="row">
-          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-
-            <div class="mt-3 mb-3">
-              <h2 class="text-secondary "><b>Datos del Vendedor</b></h2>
-            </div>
-
-            <form action="/AddVendedor" method="post">
-                <div class="mb-2">
-                  <label for="nombre" class="form-label">Nombres</label>
-                  <input type="text" class="form-control" id="Tipo" name="Tipo_vd" placeholder="Tipo" value="Vendedor" hidden>
-                  <input type="text" class="form-control" id="nombre" name="Nombre_vd" placeholder="Nombres">
-                </div>
-                <div class="mb-2">
-                  <label for="apellido" class="form-label">Apellidos</label>
-                  <input type="text" class="form-control" id="apellido" name="Apellido_vd" placeholder="Apellidos">
-                </div>
-                <div class="mb-2">
-                    <label for="Telefono" class="form-label">Telefono</label>
-                    <input type="number" class="form-control" id="Telefono" name="Telefono_vd" placeholder="Telefono">
-                  </div>
-                  <div class="mb-2">
-                    <label for="Cedula" class="form-label">Cedula</label>
-                    <input type="text" class="form-control" id="Cedula" name="Cedula_vd" placeholder="Cedula">
-                  </div>
-                  <div class="mb-1">
-                    <label for="Residencia" class="form-label">Dirección</label>
-                  </div>
-                  <select id="selectDistritoVd" class="form-select" aria-label="Distrito" name="Distrito_vd">
-                    <option selected>Seleccionar distrito</option>
-                    <option value="I">Distrito I</option>
-                    <option value="II">Distrito II</option>
-                    <option value="III">Distrito III</option>
-                    <option value="IV">Distrito IV</option>
-                    <option value="V">Distrito V</option>
-                    <option value="VI">Distrito VI</option>
-                    <option value="VII">Distrito VII</option>
-                  </select>
-                  <div class="mb-2 dx-2">
-                    <label for="Residencia" class="form-label">Zona de Residencia</label>
-                    <input type="text" class="form-control" id="Residencia" name="Residencia_vd" placeholder="Z. Residencia">
-                  </div>
-                  <div class="mb-2">
-                    <label for="PuntoReferencia" class="form-label">Punto de Referencia</label>
-                    <input type="text" class="form-control" id="PuntoReferencia" name="PuntoReferencia_vd" placeholder="P. Referencia">
-                  </div>
-                  <div class="mb-2">
-                    <label for="Distancia" class="form-label">Distancia</label>
-                    <input type="text" class="form-control" id="Distancia" name="Distancia_vd" placeholder="Distancia">
-                  </div>
-                  <div class="mb-2">
-                    <label for="casa" class="form-label">Numero de casa</label>
-                    <input type="text" class="form-control" id="casa"  name="Casa_vd" placeholder="N. Casa">
-                  </div>
-                  <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-success" title="Guardar">Guardar</button>
-                    <a class="btn btn-secondary mb-3" title="Limpiar Campos" onclick="Limpiar()">Limpiar Campos</a>
-                  </div>
-                
-            </form>
-          </div>
-          <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-            <div class="mt-3 mb-3">
-              <h2><b>Listado de Vendedores</b></h2>
+          
+          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="px-3 py-2">
+              <h4 style="display: flex; justify-content: space-between">
+                Listado de clientes
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  title="Historial"
+                  onclick="mostrarPanelRegistroVendedor()"
+                >
+                  <i class="fa-solid fa-list"></i>Registrar un nuevo vendedor
+                </button>
+              </h4>
             </div>
             
 

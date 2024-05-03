@@ -30,3 +30,13 @@ function Limpiar()
 
     SelectDistrito.selectedIndex = 0;
 }
+
+function mostrarPanelRegistroVendedor() {
+    var panel = document.getElementById("panelRegistroVendedor");
+    panel.style.display = "block";
+  }
+
+  function cerrarPanelRegistroVendedor() {
+    var panel = document.getElementById("panelRegistroVendedor");
+    panel.style.display = "none";
+  }

@@ -566,3 +566,10 @@ body{
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000; /* Asegura que esté encima de otros elementos */
 }
+
+
+.panel-ancho {
+  max-width: 650px; /* Puedes ajustar este valor según tus necesidades */
+  width: 150%;
+  margin: 0 auto; /* Esto centra el panel horizontalmente en la página */
+}
