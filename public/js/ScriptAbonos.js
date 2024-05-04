@@ -32,6 +32,11 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor)
   function cerrarPanelHistorialAbonos() {
     var panel = document.getElementById("panelHistorialAbonos");
     panel.style.display = "none";
+
+    var tabla = document.getElementById("Tabla_Historial_Abonos").getElementsByTagName('tbody')[0];
+    
+    while (tabla.firstChild) 
+    { tabla.removeChild(tabla.firstChild);}
   }
   //FIN MOSTRAR HISTORIAL
 
@@ -44,6 +49,21 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor)
     panel.style.display = "block";
 
     document.getElementById('TitleHistorial').innerText = 'Historial de abonos Venta N° '+Id;
+
+    fetch(`/buscar-abonos?id=${encodeURIComponent(Id)}`)
+  .then(response => response.json())
+  .then(data => {
+
+    data.Abonos.forEach((abono) => {
+      AgregarAbonosHistorial(Cliente,Vendedor,abono.Fecha_Abono,abono.Monto_Abonado,abono.Saldo_Restante);
+    })
+      
+
+
+  })
+  .catch(error => console.error('Error:', error));
+
+
   }
 
   function cerrarPanelHistorialAbonosUnico() {
@@ -100,3 +120,30 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor)
     });
   });
   
+  function AgregarAbonosHistorial(Cliente,Vendedor,Fecha,Monto,Saldo)
+  {
+    var tabla = document.getElementById("Tabla_Historial_Abonos").getElementsByTagName('tbody')[0];
+
+    var nuevaFila = document.createElement("tr");
+    var celda_Cliente = document.createElement("td");
+    var celda_Vendedor = document.createElement("td");
+    var celda_Fecha_Abono = document.createElement("td");
+    var celda_Monto_abonado = document.createElement("td");
+    var celda_Saldo_Restante = document.createElement("td");
+
+    celda_Cliente.textContent = Cliente;
+    celda_Vendedor.textContent = Vendedor;
+    celda_Fecha_Abono.textContent = Fecha;
+    celda_Monto_abonado.textContent = 'C$ '+Monto;
+    celda_Saldo_Restante.textContent = 'C$ '+ Saldo;
+    
+    // Agregar las celdas a la fila
+    nuevaFila.appendChild(celda_Cliente);
+    nuevaFila.appendChild(celda_Vendedor);
+    nuevaFila.appendChild(celda_Fecha_Abono);
+    nuevaFila.appendChild(celda_Monto_abonado);
+    nuevaFila.appendChild(celda_Saldo_Restante);
+    
+    // Agregar la fila a la tabla
+    tabla.appendChild(nuevaFila);
+  }

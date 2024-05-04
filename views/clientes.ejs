@@ -6,22 +6,12 @@
     <title>Clientes Comercial Jennifer</title>
     <!-- FA pencil-->
     <link rel="shortcut icon" href="/resources/images/favicon.ico">
-    <link
-      rel="stylesheet"
-      href="path/to/font-awesome/css/font-awesome.min.css"
-    />
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"/>
     <!-- Bootstrap-->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
     <!-- Boxicons -->
-    <link
-      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"/>
     <!--Estilo CSS-->
     <link rel="stylesheet" href="/resources/css/style.css" />
   </head>
@@ -32,11 +22,7 @@
       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <div class="Container">
           <div>
-            <div
-              id="panelRegistroCliente"
-              class="panel-flotante panel-ancho"
-              style="display: none"
-            >
+            <div id="panelRegistroCliente" class="panel-flotante panel-ancho" style="display: none">
               <div class="panel-content">
                 <h4>Registrar un nuevo cliente</h4>
 
@@ -45,34 +31,12 @@
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                       <h3>Registrar Cliente</h3>
 
-                      <form
-                        action="/AddClient"
-                        method="post"
-                        class="needs-validation"
-                        novalidate
-                      >
+                      <form action="/AddClient" method="post" class="needs-validation" novalidate>
                         <div class="mb-2">
                           <label for="Nombre" class="form-label">Nombres</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Tipo"
-                            name="Tipo_cl"
-                            placeholder="Tipo"
-                            value="Cliente"
-                            hidden
-                          />
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Nombre"
-                            name="Nombre_cl"
-                            placeholder="Nombres"
-                            required
-                          />
-                          <div
-                            class="invalid-feedback"
-                          >
+                          <input type="text" class="form-control" id="Tipo" name="Tipo_cl" placeholder="Tipo" value="Cliente"  hidden/>
+                          <input type="text" class="form-control" id="Nombre" name="Nombre_cl" placeholder="Nombres" required/>
+                          <div class="invalid-feedback">
                             Es necesario el Nombre
                           </div>
                         </div>
@@ -274,7 +238,7 @@
                   title="Historial"
                   onclick="mostrarPanelRegistroCliente()"
                 >
-                  <i class="fa-solid fa-list"></i>Registrar un nuevo cliente
+                  <i class="fa-solid fa-list"></i> Registrar un nuevo cliente
                 </button>
               </h4>
             </div>
@@ -369,9 +333,9 @@
                       type="button"
                       class="btn btn-success RecordCrediticio"
                       title="RecordCrediticio"
-                      onclick=" mostrarPanelRecordCrediticio()"
+                      onclick="mostrarPanelRecordCrediticio('<%= client.Id_Cliente %>','<%= client.Nombre %>')"
                     >
-                      <i class="fa-solid fa-money-check-dollar"></i>
+                    <i class="fa-solid fa-address-card"></i>
                     </button>
                   </td>
                 </tr>
@@ -390,30 +354,16 @@
             <nav class="navbar bg-body-tertiary"></nav>
             <div style="max-height: 200px; overflow-y: auto">
               <div>
-                <table class="table primary px-3">
+                <table class="table primary px-3" id="TablaRecordCrediticio">
                   <thead>
                     <tr>
-                      <th class="centrado">Nombre del cliente</th>
-                      <th class="centrado">Fecha de venta</th>
-                      <th class="centrado">Tipo de venta</th>
-                      <th class="centrado">Cantidad total</th>
+                      <th class="centrado">Cliente</th>
+                      <th class="centrado">Fecha de la Venta</th>
+                      <th class="centrado">Total de la Venta</th>
+                      <th class="centrado">Estado</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td class="centrado">Norlan</td>
-                      <td class="centrado">2024-04-20</td>
-                      <td class="centrado">Venta al credito</td>
-                      <td class="centrado">C$2500.00</td>
-                      <td class="centrado"></td>
-                    </tr>
-
-                    <tr>
-                      <td class="centrado">Norlan</td>
-                      <td class="centrado">2024-04-20</td>
-                      <td class="centrado">Venta al contado</td>
-                      <td class="centrado">C$20,000.00</td>
-                    </tr>
                   </tbody>
                 </table>
               </div>

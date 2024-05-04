@@ -419,7 +419,78 @@ router.get('/buscar-detalleventa', (req, res) =>
   
 });
 
+router.get('/buscar-abonos', (req, res) => 
+  {
+    const id = req.query.id;
+    conexion.query("SELECT * FROM historial_abonos WHERE Id_Venta = ?", [id], (error , results) => 
+      {
+        if(error)
+        {console.log('Hubo un error al buscar los abonos de la venta N° '+ id +' el error es => '+ error)}
+        else
+        {
+          const abonos = results.map(abono => 
+            {
+              const fecha = new Date(abono.Fecha_Abono);
+              const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+              const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+              
+              return {
+                ...abono,
+                Fecha_Abono: fechaFormateada
+              };
+            });
 
+          res.json({ Abonos: abonos }); 
+  
+          /* console.log('Los detalles de la venta son =>\n');
+          console.log(detalles_venta);
+          detalles_venta.forEach((Detalle) => 
+          {
+  
+            console.log('Productos Adquiridos =>'+Detalle.Producto);
+          })  */
+        }
+      }) 
+    
+    
+});
+  
+router.get('/buscar-records', (req, res) => 
+  {
+    const id = req.query.id;
+    conexion.query("SELECT * FROM record_crediticio WHERE Id_Cliente = ?", [id], (error , results) => 
+      {
+        if(error)
+        {console.log('Hubo un error al buscar los records crediticios del cliente '+ id +' el error es => '+ error)}
+        else
+        {
+          const records = results.map( record => 
+            {
+              const fecha = new Date(record.Fecha_Compra);
+              const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+              const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+              
+              return {
+                ...record,
+                Fecha_Compra: fechaFormateada
+              };
+            });
+
+          res.json({ Records: records }); 
+  
+          /* console.log('Los detalles de la venta son =>\n');
+          console.log(detalles_venta);
+          detalles_venta.forEach((Detalle) => 
+          {
+  
+            console.log('Productos Adquiridos =>'+Detalle.Producto);
+          })  */
+        }
+      }) 
+    
+    
+});
+  
 
 
 /* FUNCIONES */
