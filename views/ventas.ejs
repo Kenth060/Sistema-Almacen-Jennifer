@@ -151,7 +151,7 @@
                                             <td class="row px-2">
                                               <!-- Botones de acciones -->
                                              <!--  <input id="CantProduct" type="number" class="centrado mb-2"/> -->
-                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Modelo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio %>', this)" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Modelo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio %>','<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -187,7 +187,7 @@
 
                                               <!-- Botones de acciones -->
                                               <!-- <input type="number" class="centrado mb-2"/> -->
-                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio %>', this)" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -220,7 +220,7 @@
                                             <td class="row px-4 centrado">
                                               <!-- Botones de acciones -->
                                               <!-- <input type="number"class="centrado mb-2"/> -->
-                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Clasificacion %> <%= producto.Tipo %> <%= producto.Marca %> <%= producto.Color %> ','<%= producto.Precio %>', this)" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Clasificacion %> <%= producto.Tipo %> <%= producto.Marca %> <%= producto.Color %> ','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -255,7 +255,7 @@
                                             <td class="row px-4 centrado">
                                               <!-- Botones de acciones -->
                                               <!-- <input type="number" class="centrado mb-2"/> -->
-                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> <%= producto.Modelo %> Color <%= producto.Color %>','<%= producto.Precio %>', this)" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> <%= producto.Modelo %> Color <%= producto.Color %>','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -290,7 +290,7 @@
                                             <td class="row px-4 centrado">
                                               <!-- Botones de acciones -->
                                               <!-- <input type="number" class="centrado mb-2"/> -->
-                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %>','<%= producto.Precio %>', this)" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %>','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>

@@ -142,7 +142,7 @@ else if (tipoVenta === "Credito")
 }
 
 
-function AñadirProducto(Id_Producto,Nombre_Producto,Precio, Button) 
+function AñadirProducto(Id_Producto,Nombre_Producto,Precio, CantidadExistente) 
 {
   var tabla = document.getElementById("tablacliente").getElementsByTagName('tbody')[1];
   const celda_total = document.getElementById("celda_total");
@@ -217,7 +217,8 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, Button)
     {
       IdProducto: Id_Producto,
       Cantidad: 1,
-      Precio: Precio
+      Precio: Precio,
+      Existencia: CantidadExistente
     };
 
     productosSeleccionados.push(producto);
@@ -374,6 +375,7 @@ function cerrarDetallesVenta()
     { tabla.removeChild(tabla.firstChild);}
     
 }
+
 function validarCant(idProducto, nuevaCantidad) 
 {
   productosSeleccionados.forEach(function(producto) 
@@ -391,6 +393,7 @@ function validarCant(idProducto, nuevaCantidad)
     }
   });
 }
+
 function actualizarCantidadProductoEnArreglo(idProducto, nuevaCantidad) 
 {
   productosSeleccionados.forEach(function(producto) 
@@ -503,6 +506,7 @@ function ActualizarFecha()
 
   InputFecha.textContent = document.getElementById('Fecha_Venta').value;
 }
+
 document.addEventListener('DOMContentLoaded', function() {
   // Obtener la referencia al elemento de fecha
   const fechaVentaInput = document.getElementById('Fecha_Venta');
