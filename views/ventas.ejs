@@ -52,11 +52,12 @@
                             
                               <!-- Formulario para Venta  -->
                               <div id="formularioCredito" style="display: none">
-                                <form class="px-3">
+                                <form class="px-3 needs-validation" novalidate>
 
                                   <label for="CedulaCliente" class="form-label mt-2" >Digite la Cedula del cliente</label>
                                   <div class="input-group mb-3">
-                                    <input class="form-control" id="CedulaCliente" placeholder="Escribe para buscar..."/>
+                                    <input class="form-control" type="text" id="CedulaCliente" placeholder="Escribe para buscar..." required/>
+                                    <div class="invalid-feedback">El Campo es requerido</div>
                                     <button class="btn btn-outline-success" type="button" id="btnBuscarCliente" onclick="BuscarCliente()"><i class='bx bx-search'></i></button>
                                   </div>
 
@@ -66,7 +67,8 @@
             
                                   <label for="CedulaVendedor" class="form-label" >Digite la Cedula del vendedor</label>
                                   <div class="input-group mb-3">
-                                    <input  class="form-control" list="datalistOptions" id="CedulaVendedor" placeholder="Escribe para buscar..."/>
+                                    <input  class="form-control" type="text" list="datalistOptions" id="CedulaVendedor" placeholder="Escribe para buscar..." required/>
+                                    <div class="invalid-feedback">El Campo es requerido</div>
                                     <button class="btn btn-outline-success" type="button" id="btnBuscarVendedor" onclick="BuscarVendedor()"><i class='bx bx-search'></i></button>
                                   </div>
 
@@ -76,23 +78,26 @@
                                      
                                   <div class="mb-3">
                                     <label for="Fecha_Venta" class="form-label">Ingrese la fecha de venta</label>
-                                    <input type="date" class="form-control" id="Fecha_Venta" placeholder="Ingrese la fecha" onchange="ActualizarFecha()"/>
+                                    <input type="date" class="form-control" id="Fecha_Venta" placeholder="Ingrese la fecha" onchange="ActualizarFecha()" required/>
+                                    <div class="invalid-feedback">El Campo es requerido</div>
                                   </div>
 
                                   <div class="mb-3">
                                     <label for="plazo_compra" id="lb_plazo_compra" class="form-label">Plazo de Compra</label>
-                                    <input type="text" class="form-control" id="plazo_compra" placeholder="Ingrese plazo de compra"/>
+                                    <input type="text" class="form-control" id="plazo_compra" placeholder="Ingrese plazo de compra" required/>
+                                    <div class="invalid-feedback">El Campo es requerido</div>
                                   </div>
 
                                   <div class="mb-3">
                                     <label for="FrecuenciaAbono" class="form-label" id="lb_FrecuenciaAbono" >Seleccionar la frecuencia de abonos</label>
-                                    <select class="form-select" id="FrecuenciaAbono" aria-label="">
+                                    <select class="form-select" id="FrecuenciaAbono" aria-label="" required>
                                       <label for="FrecuenciaAbono" class="form-label">Seleccione la frecuencia de abonos</label>
                                       <option selected value=""> Seleccione una opcion</option>
                                       <option value="Semanal">Semanal</option>
                                       <option value="Quincenal">Quincenal</option>
                                       <option value="Mensual">Mensual</option>
                                     </select>
+                                    <div class="invalid-feedback">El Campo es requerido</div>
                                   </div>
 
                                   <div class="mb-3">
@@ -610,6 +615,33 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- codigo js para las validaciones-->
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (() => {
+        "use strict";
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll(".needs-validation");
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach((form) => {
+          form.addEventListener(
+            "submit",
+            (event) => {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+
+              form.classList.add("was-validated");
+            },
+            false
+          );
+        });
+      })();
+    </script>
     
     <% if (typeof alert != "undefined") { %>
       <script>

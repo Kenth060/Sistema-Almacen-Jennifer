@@ -160,6 +160,15 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, CantidadExistente)
   inputCantidad.style.textAlign = 'center';
   inputCantidad.id = 'CantProduct';
   inputCantidad.style.border = "none";
+  inputCantidad.addEventListener('keypress', (e) => {
+    let expre;
+    expre = /^[0-9]+$/;
+    
+    // Verificar si la tecla presionada cumple con la expresión regular
+    if (!expre.test(e.key)) {
+        e.preventDefault(); // Evitar que se ingrese la tecla en el input
+    }
+});
 
   inputCantidad.onchange = function() 
   {
@@ -540,3 +549,24 @@ document.addEventListener('DOMContentLoaded', function() {
   fechaVentaInput.setAttribute('max', fechaMinimaISO);
 });
 
+  // Validación de texto para los inputs de texto
+  const inputLetra = document.querySelectorAll('input[type="text"]');
+
+  // Recorre cada input encontrado
+  inputLetra.forEach(input => {
+    // Agrega un evento "keypress" a cada input
+    input.addEventListener("keypress", (e) => {
+      let expre;
+
+      if(input.id === 'plazo_compra'){
+        expre = /^[a-zA-Z0-9]+$/; 
+      }else{
+        expre = /^[a-zA-Z0-9-]+$/; 
+      }
+
+      // Verifica si la tecla presionada cumple con la expresión regular
+      if (!expre.test(e.key)) {
+          e.preventDefault(); // Evita que se ingrese la tecla en el input
+      }
+    });
+  });

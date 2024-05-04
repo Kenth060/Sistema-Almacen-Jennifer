@@ -106,10 +106,10 @@
                           Es necesario número de cédula
                         </div>
                     </div>
-                    <div class="mb-1">
-                      <label for="Residencia" class="form-label"
-                      >Dirección</label>
-                    
+                    <div class="mb-1 position-relative">
+                      <label for="Distrito_cl" class="form-label"
+                        >Dirección</label
+                      >
                       <select
                         id="selectDistritoVd"
                         class="form-select"
@@ -117,20 +117,22 @@
                         name="Distrito_vd"
                         required
                       >
-                        <option selected>Seleccionar distrito</option>
-                        <option value="I">Distrito I</option>
-                        <option value="II">Distrito II</option>
-                        <option value="III">Distrito III</option>
-                        <option value="IV">Distrito IV</option>
-                        <option value="V">Distrito V</option>
-                        <option value="VI">Distrito VI</option>
-                        <option value="VII">Distrito VII</option>
-                        </select>
-                        <div
-                          class="invalid-feedback"
-                        >
-                          Es necesario el Distrito
-                        </div>
+                        <option selected disabled value="">
+                          Seleccionar Distrito...
+                        </option>
+                        <option value="I">I</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                        <option value="V">V</option>
+                        <option value="VI">VI</option>
+                        <option value="VII">VII</option>
+                      </select>
+                      <div
+                        class="invalid-feedback"
+                      >
+                        Es necesario el Distrito
+                      </div>
                     </div>
                     <div class="mb-2 dx-2">
                       <label for="Residencia" class="form-label"

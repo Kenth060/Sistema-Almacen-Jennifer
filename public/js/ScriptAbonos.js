@@ -84,3 +84,19 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor)
     const fechaMinimaISO = fechaMinima.toISOString().split('T')[0];
     fechaVentaInput.setAttribute('max', fechaMinimaISO);
   });
+
+  const inputnumero = document.querySelectorAll('input[type="number"]');
+  inputnumero.forEach(input => {
+    // Agrega un evento "keypress" a cada input
+    input.addEventListener("keypress", (e) => {
+      let expre;
+  
+      expre = /^[0-9]+$/; // Solo números del 0-9
+      
+      // Verifica si la tecla presionada cumple con la expresión regular
+      if (!expre.test(e.key)) {
+          e.preventDefault(); // Evita que se ingrese la tecla en el input
+      }
+    });
+  });
+  
