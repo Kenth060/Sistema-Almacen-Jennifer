@@ -32,7 +32,7 @@
                     <h2 class="text-secondary"><b>Datos del Vendedor</b></h2>
                   </div>
         
-                  <form action="/AddVendedor" method="post">
+                  <form action="/AddVendedor" method="post" class="needs-validation"novalidate>
                     <div class="mb-2">
                       <label for="nombre" class="form-label">Nombres</label>
                       <input
@@ -50,7 +50,13 @@
                         id="nombre"
                         name="Nombre_vd"
                         placeholder="Nombres"
+                        required
                       />
+                      <div
+                        class="invalid-feedback"
+                      >
+                        Es necesario el Nombre
+                      </div>
                     </div>
                     <div class="mb-2">
                       <label for="apellido" class="form-label">Apellidos</label>
@@ -60,7 +66,13 @@
                         id="apellido"
                         name="Apellido_vd"
                         placeholder="Apellidos"
+                        required
                       />
+                      <div
+                          class="invalid-feedback"
+                        >
+                          Es necesario el Apellido
+                        </div>
                     </div>
                     <div class="mb-2">
                       <label for="Telefono" class="form-label">Telefono</label>
@@ -70,7 +82,13 @@
                         id="Telefono"
                         name="Telefono_vd"
                         placeholder="Telefono"
+                        required
                       />
+                      <div
+                          class="invalid-feedback"
+                        >
+                          Es necesario número teléfonico
+                        </div>
                     </div>
                     <div class="mb-2">
                       <label for="Cedula" class="form-label">Cedula</label>
@@ -80,26 +98,40 @@
                         id="Cedula"
                         name="Cedula_vd"
                         placeholder="Cedula"
+                        required
                       />
+                      <div
+                          class="invalid-feedback"
+                        >
+                          Es necesario número de cédula
+                        </div>
                     </div>
                     <div class="mb-1">
-                      <label for="Residencia" class="form-label">Dirección</label>
+                      <label for="Residencia" class="form-label"
+                      >Dirección</label>
+                    
+                      <select
+                        id="selectDistritoVd"
+                        class="form-select"
+                        aria-label="Distrito"
+                        name="Distrito_vd"
+                        required
+                      >
+                        <option selected>Seleccionar distrito</option>
+                        <option value="I">Distrito I</option>
+                        <option value="II">Distrito II</option>
+                        <option value="III">Distrito III</option>
+                        <option value="IV">Distrito IV</option>
+                        <option value="V">Distrito V</option>
+                        <option value="VI">Distrito VI</option>
+                        <option value="VII">Distrito VII</option>
+                        </select>
+                        <div
+                          class="invalid-feedback"
+                        >
+                          Es necesario el Distrito
+                        </div>
                     </div>
-                    <select
-                      id="selectDistritoVd"
-                      class="form-select"
-                      aria-label="Distrito"
-                      name="Distrito_vd"
-                    >
-                      <option selected>Seleccionar distrito</option>
-                      <option value="I">Distrito I</option>
-                      <option value="II">Distrito II</option>
-                      <option value="III">Distrito III</option>
-                      <option value="IV">Distrito IV</option>
-                      <option value="V">Distrito V</option>
-                      <option value="VI">Distrito VI</option>
-                      <option value="VII">Distrito VII</option>
-                    </select>
                     <div class="mb-2 dx-2">
                       <label for="Residencia" class="form-label"
                         >Zona de Residencia</label
@@ -110,7 +142,13 @@
                         id="Residencia"
                         name="Residencia_vd"
                         placeholder="Z. Residencia"
+                        required
                       />
+                      <div
+                          class="invalid-feedback"
+                        >
+                          Es necesario la zona de residencia
+                        </div>
                     </div>
                     <div class="mb-2">
                       <label for="PuntoReferencia" class="form-label"
@@ -122,7 +160,13 @@
                         id="PuntoReferencia"
                         name="PuntoReferencia_vd"
                         placeholder="P. Referencia"
+                        required
                       />
+                      <div
+                          class="invalid-feedback"
+                        >
+                          Solicitamos un punto de Referencia
+                        </div>
                     </div>
                     <div class="mb-2">
                       <label for="Distancia" class="form-label">Distancia</label>
@@ -142,7 +186,13 @@
                         id="casa"
                         name="Casa_vd"
                         placeholder="N. Casa"
+                        required
                       />
+                      <div
+                          class="invalid-feedback"
+                        >
+                          Es necesario el número de Casa
+                        </div>
                     </div>
                     <div class="d-grid gap-2">
                       <button type="submit" class="btn btn-success" title="Guardar">
@@ -249,6 +299,32 @@
     <script src="/resources/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
  
+    <!-- codigo js para las validaciones-->
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (() => {
+        "use strict";
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll(".needs-validation");
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach((form) => {
+          form.addEventListener(
+            "submit",
+            (event) => {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+
+              form.classList.add("was-validated");
+            },
+            false
+          );
+        });
+      })();
+    </script>
     <% if (typeof alert != "undefined")  { %>
       <script>
           Swal.fire({

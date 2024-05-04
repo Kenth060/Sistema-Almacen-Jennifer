@@ -45,47 +45,55 @@
               <% } %>
             </select>
 
-            <form action="/UpdateProduct" method="post" class="row g-3 py-3">
+            <form action="/UpdateProduct" method="post" class="row g-3 py-3 needs-validation" novalidate>
               <div class="col-md-6">
                 <label for="Marca" id="Marcalb" class="form-label">Marca</label>
                 <input type="text" class="form-control" id="Marca" name="Marca" required value="<%= Producto.Marca %>"/>
+                <div class="invalid-feedback">La marca es requerida</div>
                 <input type="text" class="form-control" id="Id_Prod" name="Id_Prod"  value="<%= Producto.Id_Producto %>" hidden />
                 <input type="text" class="form-control" id="Categoria_Prod" name="Categoria_Prod"  value="<%= Producto.Categoria %>" hidden />
               </div>
 
               <div class="col-md-6">
                 <label for="Existencia" class="form-label">Existencia del producto</label>
-                <input type="number" class="form-control" id="Existencia" name="Existencia" value="<%= Producto.Existencia %>"/>
+                <input type="number" class="form-control" id="Existencia" name="Existencia" required value="<%= Producto.Existencia %>"/>
+                <div class="invalid-feedback">La Existencia es requerida</div>
               </div>
 
               <div class="col-md-6">
                 <label for="Precio" class="form-label">Precio del Producto</label>
                 <input type="number" class="form-control" id="Precio" name="Precio" required value="<%= Producto.Precio %>"/>
+                <div class="invalid-feedback">El Precio es requerido</div>
               </div>
 
               <div class="col-md-6">
                 <label for="Color" class="form-label">Color del producto</label>
                 <input type="text" class="form-control" id="Color" name="Color" required value="<%= Producto.Color %>"/>
+                <div class="invalid-feedback">El Color es requerido</div>
               </div>
 
               <div class="col-md-6">
                 <label for="Tipo" class="form-label">Tipo de producto</label>
                 <input type="text" class="form-control" id="Tipo" name="Tipo" required value="<%= Producto.Tipo %>"/>
+                <div class="invalid-feedback">El Tipo de Producto es requerido</div>
               </div>
 
               <div class="col-md-6">
                 <label for="FechaIngreso" class="form-label">Fecha de Ingreso</label>
                 <input type="date" class="form-control" id="FechaIngreso" name="Fecha" required value="<%= Producto.Fecha_Ingreso %>"/>
+                <div class="invalid-feedback">La Fecha es requerida</div>
               </div>
               
               <div class="col-md-6">
                 <label for="Talla" id="Tallalb" class="form-label">Talla del producto</label>
-                <input type="text" class="form-control" id="Talla" name="Talla" value="<%= Producto.Talla %>"/>
+                <input type="text" class="form-control" id="Talla" name="Talla" value="<%= Producto.Talla %>" required/>
+                <div class="invalid-feedback">La Talla es requerida</div>
               </div>
               
               <div class="col-md-6">
                 <label for="Modelo" id="Modelolb" class="form-label">Modelo del producto</label>
-                <input type="text" class="form-control" id="Modelo" name="Modelo" value="<%= Producto.Modelo %>"/>
+                <input type="text" class="form-control" id="Modelo" name="Modelo" value="<%= Producto.Modelo %>" required/>
+                <div class="invalid-feedback">El Modelo es requerido</div>
               </div>
 
               <div class="col-md-6">
@@ -134,6 +142,33 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/resources/js/script.js"></script>
     <script src="/resources/js/ScriptProducts.js"></script>
+
+        <!-- codigo js para las validaciones-->
+        <script>
+          // Example starter JavaScript for disabling form submissions if there are invalid fields
+          (() => {
+            "use strict";
+    
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll(".needs-validation");
+    
+            // Loop over them and prevent submission
+            Array.from(forms).forEach((form) => {
+              form.addEventListener(
+                "submit",
+                (event) => {
+                  if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                  }
+    
+                  form.classList.add("was-validated");
+                },
+                false
+              );
+            });
+          })();
+        </script>
 
     <% if (typeof alert != "undefined") { %>
     <script>

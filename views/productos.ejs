@@ -28,16 +28,18 @@
               <option value="5">Productos Plasticos</option>
             </select>
 
-            <form action="/AddProduct" method="post" class="row g-3 py-3"> 
+            <form action="/AddProduct" method="post" class=" needs-validation g-3 py-3" novalidate> 
               <div class="col-md-6">
                 <label for="Marca" id="Marcalb" class="form-label">Marca</label>
                 <input type="text" class="form-control" id="Marca" name="Marca" required>
+                <div class="invalid-feedback">La marca es requerida</div>
                 <input type="text" class="form-control" id="Categoria_Prod" name="Categoria_Prod" hidden>
               </div>
 
               <div class="col-md-6">
                 <label for="Existencia" class="form-label">Existencia del producto</label>
                 <input type="number" class="form-control" id="Existencia" name="Existencia" required>
+                <div class="invalid-feedback">La existencia es requerida</div>
               </div>
 
               <div class="col-md-6">
@@ -150,6 +152,32 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/resources/js/script.js"></script>
     <script src="/resources/js/ScriptProducts.js"></script>
+    <!-- codigo js para las validaciones-->
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (() => {
+        "use strict";
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll(".needs-validation");
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach((form) => {
+          form.addEventListener(
+            "submit",
+            (event) => {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+
+              form.classList.add("was-validated");
+            },
+            false
+          );
+        });
+      })();
+    </script>
 
     <% if (typeof alert != "undefined")  { %>
       <script>

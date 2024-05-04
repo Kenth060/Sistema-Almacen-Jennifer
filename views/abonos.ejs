@@ -114,10 +114,10 @@
               </tbody>
             </table>
 
-            <div id="panelAbono" class="panel-flotante" style="display: none">
+            <div id="panelAbono" class="panel-flotante " style="display: none">
               <div class="panel-content">
                 <h4 id="Abono_Title">Realizar abono</h4>
-                <form action="/AddAbono" method="post" class="row g-3 py-3">
+                <form action="/AddAbono" method="post" class="row g-3 py-3 needs-validation" novalidate>
                   <div class="col-md-6">
                     <input type="text" class="form-control" id="Id_Venta_Abono" name="Id_Venta_Abono" hidden>
                     <label for="Nombre_cliente" class="form-label">Nombre del Cliente</label>
@@ -129,12 +129,14 @@
 
                   <div class="col-md-6">
                     <label for="Fecha_Abono" class="form-label">Fecha del abono</label>
-                    <input type="date" class="form-control" id="Fecha_Abono" name="Fecha_Abono">
-
-                    <label for="Monto_Abono" class="form-label">Monto a Abonar</label>
-                    <input type="number" class="form-control" id="Monto_Abono" name="Monto_Abono" step="0.01">
+                    <input type="date" class="form-control" id="Fecha_Abono" name="Fecha_Abono" required>
+                    <div class="invalid-feedback">No campos vacíos</div>
+                    <div>
+                      <label for="Monto_Abono" class="form-label">Monto a Abonar</label>
+                      <input type="number" class="form-control" id="Monto_Abono" name="Monto_Abono" step="0.01" required>
+                      <div class="invalid-feedback">No campos vacíos</div>
+                    </div>
                   </div>
-                  
                   <button type="submit" class="btn btn-success">Guardar</button>
                   <button type="button" class="btn btn-danger" onclick="cerrarPanelAbono()">Cancelar</button>
                 </form>
@@ -185,6 +187,33 @@
     <script src="resources/js/script.js"></script>
     <script src="/resources/js/ScriptAbonos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- codigo js para las validaciones-->
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (() => {
+        "use strict";
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll(".needs-validation");
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach((form) => {
+          form.addEventListener(
+            "submit",
+            (event) => {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+
+              form.classList.add("was-validated");
+            },
+            false
+          );
+        });
+      })();
+    </script>
 
     <% if (typeof alert != "undefined") { %>
       <script>

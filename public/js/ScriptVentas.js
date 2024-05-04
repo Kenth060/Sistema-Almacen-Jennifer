@@ -164,6 +164,12 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, Button)
   inputCantidad.onchange = function() 
   {
     var nuevaCantidad = parseInt(inputCantidad.value);
+    if (nuevaCantidad < 1) {
+      // Si es negativa, establecer la cantidad a 1 (o al valor mínimo aceptable)
+      inputCantidad.value = 1;
+      nuevaCantidad = 1;
+      validarCant(Id_Producto, nuevaCantidad);
+    }
     actualizarCantidadProductoEnArreglo(Id_Producto, nuevaCantidad);
     actualizarTotalEnTabla();
     celdaSubtotal.textContent = 'C$' + Precio*inputCantidad.value;
@@ -368,7 +374,23 @@ function cerrarDetallesVenta()
     { tabla.removeChild(tabla.firstChild);}
     
 }
-
+function validarCant(idProducto, nuevaCantidad) 
+{
+  productosSeleccionados.forEach(function(producto) 
+  {
+    if (producto.IdProducto === idProducto) 
+    { if(nuevaCantidad >= producto.Cantidad){
+        Swal.fire({
+          title: "Cantidad excedida",
+          text: "La cantidad disponible es " + producto.Cantidad,
+          icon: 'warning',
+          showConfirmButton: true,
+          timer: false,
+        });
+      }
+    }
+  });
+}
 function actualizarCantidadProductoEnArreglo(idProducto, nuevaCantidad) 
 {
   productosSeleccionados.forEach(function(producto) 
@@ -481,3 +503,36 @@ function ActualizarFecha()
 
   InputFecha.textContent = document.getElementById('Fecha_Venta').value;
 }
+document.addEventListener('DOMContentLoaded', function() {
+  // Obtener la referencia al elemento de fecha
+  const fechaVentaInput = document.getElementById('Fecha_Venta');
+
+  // Obtener la fecha actual
+  const fechaActual = new Date();
+
+  // Obtener la hora y los minutos actuales
+  const horaActual = fechaActual.getHours();
+  const minutosActuales = fechaActual.getMinutes();
+
+  // Definir la hora y minutos de corte (6:45 PM)
+  const horaCorte = 17; // 6 PM en formato militar
+  const minutosCorte = 0; // 45 minutos
+
+  // Verificar si la hora actual es después de las 6:45 PM
+  const esDespuesDeLas645PM = horaActual > horaCorte || (horaActual === horaCorte && minutosActuales >= minutosCorte);
+
+  // Calcular la fecha mínima permitida
+  const fechaMinima = new Date();
+  if (esDespuesDeLas645PM) {
+    // Si es después de las 6:45 PM, permitir seleccionar a partir del día siguiente
+    fechaMinima.setDate(fechaActual.getDate() - 1);
+  } else {
+    // Si es antes de las 6:45 PM, permitir seleccionar a partir de hoy
+    fechaMinima.setDate(fechaActual.getDate());
+  }
+
+  // Establecer la fecha mínima en el campo de fecha
+  const fechaMinimaISO = fechaMinima.toISOString().split('T')[0];
+  fechaVentaInput.setAttribute('max', fechaMinimaISO);
+});
+
