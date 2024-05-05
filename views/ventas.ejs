@@ -8,6 +8,10 @@
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/resources/css/style.css" />
     <link rel="shortcut icon" href="/resources/images/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+	  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css">
   </head>
   <body>
     <%- include('sidebar.ejs') %>
@@ -379,7 +383,7 @@
                 </div>
               </div>
 
-              <div class="py-1 px-3" style="display: flex; align-items: center; justify-content: space-between;">
+              <div class="py-1 px-3 mb-2" style="display: flex; align-items: center; justify-content: space-between;">
                 <h4 style="color: black; font-size: 22px">Listado de Ventas</h4>
                 <div style="display: flex; align-items: center">
                   <select onchange="Filtrar()" id="filtroTipoVenta"  class="form-select" aria-label="Default select example" style="background-color: rgb(128, 192, 128); color: white; width: 180px; padding: 6px;">
@@ -401,7 +405,7 @@
                 }
               </script>
 
-              <nav class="navbar bg-body-tertiary">
+<!--               <nav class="navbar bg-body-tertiary">
                 <div class="container-fluid">
                   <a class="navbar-brand px-3">Buscar una venta</a>
                   <form class="d-flex" role="search">
@@ -409,15 +413,15 @@
                     <button class="btn btn-outline-success" type="submit">Buscar</button>
                   </form>
                 </div>
-              </nav>
+              </nav> -->
 
               <div class="Container">
                 <div class="row">
                   <div>
-                    <table class="table primary px-3">
+                    <table class="table primary px-3 hover" id="TableVentas">
                       <thead>
                         <tr>
-                          <th class="centrado">Tipo de venta <%= Tipo %></th>
+                          <th class="centrado">Tipo de venta</th>
                           <th class="centrado">Nombre del cliente</th>
                           <th class="centrado">Nombre de vendedor</th>
                           <th class="centrado">Fecha de venta</th>
@@ -615,6 +619,10 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap5.min.js"></script>      
+
 
     <!-- codigo js para las validaciones-->
     <script>
@@ -659,6 +667,31 @@
 
     <script src="/resources/js/script.js"></script>
     <script src="/resources/js/ScriptVentas.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        
+          $('#TableVentas').DataTable({
+            info: false,
+            ordering: false,
+            lengthMenu: [5,10,15,20,25,50],
+            "oLanguage": {
+              "sSearch": "Buscar una Venta:",
+              "sZeroRecords": "No se encontraron resultados",
+              "sLengthMenu": "Mostrar  _MENU_  Ventas",
+              "sZeroRecords": "No se encontraron resultados",
+              "sLoadingRecords": "Cargando...",
+              "oPaginate": {
+                  "sFirst": "Primero",
+                  "sLast": "Último",
+                  "sNext": "Siguiente",
+                  "sPrevious": "Anterior"}
+              }
+          });
+      });
+    
+    
+    </script>
     
   </body>
 </html>

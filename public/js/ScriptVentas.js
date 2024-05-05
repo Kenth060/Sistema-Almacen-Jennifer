@@ -160,6 +160,8 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, CantidadExistente)
   inputCantidad.style.textAlign = 'center';
   inputCantidad.id = 'CantProduct';
   inputCantidad.style.border = "none";
+  inputCantidad.min = 1;
+  inputCantidad.max=CantidadExistente;
   inputCantidad.addEventListener('keypress', (e) => {
     let expre;
     expre = /^[0-9]+$/;

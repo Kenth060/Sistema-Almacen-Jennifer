@@ -1,3 +1,6 @@
+let table = new DataTable('#TableClients');
+
+
 function confirmDelete(clientID) 
 {
     Swal.fire({
