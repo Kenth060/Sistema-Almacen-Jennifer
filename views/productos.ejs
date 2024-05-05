@@ -19,19 +19,21 @@
               <label for="text" class="form-label"><b>Seleccione la categoria del producto a añadir</b></label>
             </div>
 
-            <select class="form-select"  aria-label="Seleccione una categoria" id="categoria"  required>
-              <option value="0" >Seleccione una categoria</option>
-              <option value="1">Calzado</option>
-              <option value="2">Prendas de Vestir</option>
-              <option value="3">Cosmeticos</option>
-              <option value="4">Electrodomestico</option>
-              <option value="5">Productos Plasticos</option>
-            </select>
-
             <form action="/AddProduct" method="post" class="row needs-validation g-3 py-3" novalidate> 
+              <div>
+                <select class="form-select"  aria-label="Seleccione una categoria" id="categoria"  required>
+                  <option selected disabled value="" >Seleccione una categoria</option>
+                  <option value="1">Calzado</option>
+                  <option value="2">Prendas de Vestir</option>
+                  <option value="3">Cosmeticos</option>
+                  <option value="4">Electrodomestico</option>
+                  <option value="5">Productos Plasticos</option>
+                </select>
+                <div class="invalid-feedback">No ha seleccionado la categoría</div>
+              </div>
               <div class="col-md-6">
                 <label for="Marca" id="Marcalb" class="form-label">Marca</label>
-                <input type="text" class="form-control" id="Marca" name="Marca" required>
+                <input type="text" class="form-control" id="Marca" placeholder="aqui" name="Marca" required>
                 <div class="invalid-feedback">La marca es requerida</div>
                 <input type="text" class="form-control" id="Categoria_Prod" name="Categoria_Prod" hidden>
               </div>
@@ -62,25 +64,34 @@
                 <input type="date" class="form-control" id="FechaIngreso" name="Fecha" required>
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-6" id="Talladiv">
                 <label for="Talla" id="Tallalb" class="form-label">Talla del producto</label>
-                <input type="text" class="form-control" id="Talla" name="Talla">
+                <input type="text" class="form-control" id="Talla" name="Talla" required>
+                <div class="invalid-feedback">La Talla es requerida</div>
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-6" id="Modelodiv">
                 <label for="Modelo" id="Modelolb" class="form-label">Modelo del producto</label>
-                <input type="text" class="form-control" id="Modelo" name="Modelo">
+                <input type="text" class="form-control" id="Modelo" name="Modelo" required>
+                <div class="invalid-feedback">El Modelo es requerido</div>
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-6" id="Clasificaciondiv">
                 <label for="Clasificacion" id="Clasificacionlb" class="form-label">Clasificacion</label>
-                <input type="text" class="form-control" id="Clasificacion" name="Clasificacion">
+                <input type="text" class="form-control" id="Clasificacion" name="Clasificacion" required>
+                <div class="invalid-feedback">La Clasificacion es requerida</div>
 
+              </div>
+              <div class="col-md-6" id="plasticos">
                 <label for="Dimensiones" id="Dimensioneslb" class="form-label">Dimensiones</label>
-                <input type="text" class="form-control" id="Dimensiones" name="Dimensiones">
+                <input type="text" class="form-control" id="Dimensiones" name="Dimensiones" required>
+                <div class="invalid-feedback">La Dimension es requerida</div>
 
-                <label for="UnidadMedida" id="UnidadMedidalb" class="form-label">Unidad de Medida</label>
-                <input type="text" class="form-control" id="UnidadMedida" name="Unidad_Medida">
+                <div>
+                  <label for="UnidadMedida" id="UnidadMedidalb" class="form-label">Unidad de Medida</label>
+                  <input type="text" class="form-control" id="UnidadMedida" name="Unidad_Medida" required>
+                  <div class="invalid-feedback">La Medida es requerida</div>
+                </div>
               </div>
 
               <div class="d-grid gap-2">

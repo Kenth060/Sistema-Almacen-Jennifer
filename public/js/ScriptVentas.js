@@ -156,10 +156,11 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, CantidadExistente)
 
   var inputCantidad = document.createElement("input");
   inputCantidad.type = "number";
-  inputCantidad.value = 1;
   inputCantidad.style.textAlign = 'center';
   inputCantidad.id = 'CantProduct';
+  inputCantidad.value=1;
   inputCantidad.style.border = "none";
+  inputCantidad.placeholder="Ingrese la Cantidad";
   inputCantidad.addEventListener('keypress', (e) => {
     let expre;
     expre = /^[0-9]+$/;
@@ -177,8 +178,32 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, CantidadExistente)
       // Si es negativa, establecer la cantidad a 1 (o al valor mínimo aceptable)
       inputCantidad.value = 1;
       nuevaCantidad = 1;
-      validarCant(Id_Producto, nuevaCantidad);
     }
+    inputCantidad.max = producto.Existencia;
+    if (nuevaCantidad > producto.Existencia) {
+
+      inputCantidad.value = producto.Existencia;
+      nuevaCantidad = producto.Existencia;
+      Swal.fire({
+        title: "Stock Excedido",
+        text: "La cantidad no puede ser más de "+producto.Existencia,
+        icon: 'warning',
+        showConfirmButton: true,
+        timer: false,
+      });
+    }
+    inputCantidad.addEventListener('keypress', (e) => {
+      // Obtener el valor actual del input como un número
+      const cantidadIngresada = parseInt(inputCantidad.value + e.key);
+      
+      // Obtener la existencia del producto como un número
+      const existenciaProducto = producto.Existencia;
+      
+      // Validar si la tecla presionada es un número y si la cantidad ingresada es mayor que la existencia del producto
+      if (cantidadIngresada > existenciaProducto) {
+          e.preventDefault(); // Prevenir la entrada de más caracteres
+      }
+    });
     actualizarCantidadProductoEnArreglo(Id_Producto, nuevaCantidad);
     actualizarTotalEnTabla();
     celdaSubtotal.textContent = 'C$' + Precio*inputCantidad.value;
@@ -385,24 +410,6 @@ function cerrarDetallesVenta()
     
 }
 
-function validarCant(idProducto, nuevaCantidad) 
-{
-  productosSeleccionados.forEach(function(producto) 
-  {
-    if (producto.IdProducto === idProducto) 
-    { if(nuevaCantidad >= producto.Cantidad){
-        Swal.fire({
-          title: "Cantidad excedida",
-          text: "La cantidad disponible es " + producto.Cantidad,
-          icon: 'warning',
-          showConfirmButton: true,
-          timer: false,
-        });
-      }
-    }
-  });
-}
-
 function actualizarCantidadProductoEnArreglo(idProducto, nuevaCantidad) 
 {
   productosSeleccionados.forEach(function(producto) 
@@ -559,7 +566,7 @@ document.addEventListener('DOMContentLoaded', function() {
       let expre;
 
       if(input.id === 'plazo_compra'){
-        expre = /^[a-zA-Z0-9]+$/; 
+        expre = /^[a-zA-Z0-9\sñÑ]+$/; 
       }else{
         expre = /^[a-zA-Z0-9-]+$/; 
       }

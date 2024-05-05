@@ -57,9 +57,9 @@ const inputnumero = document.querySelectorAll('input[type="number"]');
     }else
     if (input.id === 'Residencia' || input.id === 'PuntoReferencia' || input.id === 'Distancia' || input.id === 'casa') { // Supongamos que el input de la cédula tiene el ID 'cedulaInput'
         // Expresión regular para permitir números y guion "-"
-        expre = /^[a-zA-Z0-9\s]+$/; // Solo números del 0-9 y guion "-"
+        expre = /^[a-zA-Z0-9\sñÑ]+$/; // Solo números del 0-9 y guion "-"
     }else{ 
-        expre = /^[a-zA-Z\s]+$/; 
+        expre = /^[a-zA-Z\sñÑ]+$/; 
       } 
       // Verifica si la tecla presionada cumple con la expresión regular
       if (!expre.test(e.key)) {

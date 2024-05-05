@@ -31,6 +31,9 @@ if(opcionSeleccionada === '1') /*seleccion de Calzado en el Dropdown */
   Clasificacion.style.display='none';
   U_med .style.display='none';
   Dimensiones.style.display='none';
+  Clasificacion.removeAttribute('required');
+  U_med.removeAttribute('required');
+  Dimensiones.removeAttribute('required');
 
   /*deshabilitacion de labels */
   Clasificacionlb.style.display='none';
@@ -42,6 +45,8 @@ if(opcionSeleccionada === '1') /*seleccion de Calzado en el Dropdown */
   Tallalb.style.display='block';
   Modelo.style.display='block';
   Modelolb.style.display='block';
+  Talla.setAttribute('required','true');
+  Modelo.setAttribute('required','true');
 
   Categoria_Prod.value = 'Calzado';
 }
@@ -54,6 +59,10 @@ else if(opcionSeleccionada === '2') /*seleccion de Prendas en el Dropdown */
     U_med.style.display='none';
     Dimensiones.style.display='none';
     Modelo.style.display='none';
+    Clasificacion.removeAttribute('required');
+    U_med.removeAttribute('required');
+    Dimensiones.removeAttribute('required');
+    Modelo.removeAttribute('required');
 
     /*deshabilitacion de labels */
     Clasificacionlb.style.display='none';
@@ -64,6 +73,7 @@ else if(opcionSeleccionada === '2') /*seleccion de Prendas en el Dropdown */
     /*Habilitacion*/
     Talla.style.display='block';
     Tallalb.style.display='block';
+    Talla.setAttribute('required','true');
 
 }
 else if (opcionSeleccionada === '3') /*seleccion de Cosmeticos en el Dropdown */
@@ -74,6 +84,10 @@ else if (opcionSeleccionada === '3') /*seleccion de Cosmeticos en el Dropdown */
   Dimensiones.style.display='none';
   Modelo.style.display='none';
   Talla.style.display='none';
+  U_med.removeAttribute('required');
+  Dimensiones.removeAttribute('required');
+  Modelo.removeAttribute('required');
+  Talla.removeAttribute('required');
 
   /*deshabilitacion de labels */
   Tallalb.style.display='none';
@@ -84,6 +98,7 @@ else if (opcionSeleccionada === '3') /*seleccion de Cosmeticos en el Dropdown */
   /*Habilitacion*/
   Clasificacion.style.display='block';
   Clasificacionlb.style.display='block';
+  Clasificacion.setAttribute('required','true');
 
 }
 else if(opcionSeleccionada === '4') /*seleccion de Electrodomesticos en el Dropdown */
@@ -94,6 +109,10 @@ else if(opcionSeleccionada === '4') /*seleccion de Electrodomesticos en el Dropd
     U_med.style.display='none';
     Dimensiones.style.display='none';
     Talla.style.display='none';
+    Clasificacion.removeAttribute('required');
+    U_med.removeAttribute('required');
+    Dimensiones.removeAttribute('required');
+    Talla.removeAttribute('required');
 
     /*deshabilitacion de labels */
     Clasificacionlb.style.display='none';
@@ -104,6 +123,7 @@ else if(opcionSeleccionada === '4') /*seleccion de Electrodomesticos en el Dropd
     /*Habilitacion*/
     Modelo.style.display='block';
     Modelolb.style.display='block';
+    Modelo.setAttribute('required','true');
 }
 else if(opcionSeleccionada === '5') /*seleccion de productos plasticos en el Dorpdown */
 {   
@@ -112,6 +132,9 @@ else if(opcionSeleccionada === '5') /*seleccion de productos plasticos en el Dor
     Clasificacion.style.display='none';
     Talla.style.display='none';
     Modelo.style.display='none';
+    Clasificacion.removeAttribute('required');
+    Talla.removeAttribute('required');
+    Modelo.removeAttribute('required');
 
   /*Habilitacion de labels */
     Clasificacionlb.style.display='none';
@@ -123,14 +146,21 @@ else if(opcionSeleccionada === '5') /*seleccion de productos plasticos en el Dor
     Dimensioneslb.style.display='block';
     U_med.style.display='block';
     U_medlb.style.display='block';
+    Dimensiones.setAttribute('required','true');
+    U_med.setAttribute('required','true');
 }
-else if(opcionSeleccionada === '0')
+else
 {
   Talla.style.display='none';
   Modelo.style.display='none';
   Clasificacion.style.display='none';
   U_med .style.display='none';
   Dimensiones.style.display='none';
+  Talla.removeAttribute('required');
+  Modelo.removeAttribute('required');
+  Clasificacion.removeAttribute('required');
+  U_med.removeAttribute('required');
+  Dimensiones.removeAttribute('required');
 
   Tallalb.style.display='none';
   Modelolb.style.display='none';
@@ -149,6 +179,9 @@ document.getElementById('categoria').addEventListener('change',function()
       Clasificacion.style.display='none';
       U_med .style.display='none';
       Dimensiones.style.display='none';
+      Clasificacion.removeAttribute('required');
+      U_med.removeAttribute('required');
+      Dimensiones.removeAttribute('required');
 
       /*deshabilitacion de labels */
       Clasificacionlb.style.display='none';
@@ -160,6 +193,8 @@ document.getElementById('categoria').addEventListener('change',function()
       Tallalb.style.display='block';
       Modelo.style.display='block';
       Modelolb.style.display='block';
+      Talla.setAttribute('required','true');
+      Modelo.setAttribute('required','true');
 
       Categoria_Prod.value = 'Calzado';
     }
@@ -172,6 +207,10 @@ document.getElementById('categoria').addEventListener('change',function()
         U_med.style.display='none';
         Dimensiones.style.display='none';
         Modelo.style.display='none';
+        Clasificacion.removeAttribute('required');
+        U_med.removeAttribute('required');
+        Dimensiones.removeAttribute('required');
+        Modelo.removeAttribute('required');
 
         /*deshabilitacion de labels */
         Clasificacionlb.style.display='none';
@@ -182,6 +221,7 @@ document.getElementById('categoria').addEventListener('change',function()
         /*Habilitacion*/
         Talla.style.display='block';
         Tallalb.style.display='block';
+        Talla.setAttribute('required','true');
 
     }
     else if (opcionSeleccionada === '3') /*seleccion de Cosmeticos en el Dropdown */
@@ -192,6 +232,10 @@ document.getElementById('categoria').addEventListener('change',function()
       Dimensiones.style.display='none';
       Modelo.style.display='none';
       Talla.style.display='none';
+      U_med.removeAttribute('required');
+      Dimensiones.removeAttribute('required');
+      Modelo.removeAttribute('required');
+      Talla.removeAttribute('required');
 
       /*deshabilitacion de labels */
       Tallalb.style.display='none';
@@ -202,6 +246,7 @@ document.getElementById('categoria').addEventListener('change',function()
       /*Habilitacion*/
       Clasificacion.style.display='block';
       Clasificacionlb.style.display='block';
+      Clasificacion.setAttribute('required','true');
 
     }
     else if(opcionSeleccionada === '4') /*seleccion de Electrodomesticos en el Dropdown */
@@ -212,6 +257,10 @@ document.getElementById('categoria').addEventListener('change',function()
         U_med.style.display='none';
         Dimensiones.style.display='none';
         Talla.style.display='none';
+        Clasificacion.removeAttribute('required');
+        U_med.removeAttribute('required');
+        Dimensiones.removeAttribute('required');
+        Talla.removeAttribute('required');
 
         /*deshabilitacion de labels */
         Clasificacionlb.style.display='none';
@@ -222,6 +271,7 @@ document.getElementById('categoria').addEventListener('change',function()
         /*Habilitacion*/
         Modelo.style.display='block';
         Modelolb.style.display='block';
+        Modelo.setAttribute('required','true');
     }
     else if(opcionSeleccionada === '5') /*seleccion de productos plasticos en el Dorpdown */
     {   
@@ -230,6 +280,9 @@ document.getElementById('categoria').addEventListener('change',function()
         Clasificacion.style.display='none';
         Talla.style.display='none';
         Modelo.style.display='none';
+        Clasificacion.removeAttribute('required');
+        Talla.removeAttribute('required');
+        Modelo.removeAttribute('required');
 
       /*Habilitacion de labels */
         Clasificacionlb.style.display='none';
@@ -241,14 +294,21 @@ document.getElementById('categoria').addEventListener('change',function()
         Dimensioneslb.style.display='block';
         U_med.style.display='block';
         U_medlb.style.display='block';
+        Dimensiones.setAttribute('required','true');
+        U_med.setAttribute('required','true');
     }
-    else if(opcionSeleccionada === '0')
+    else
     {
       Talla.style.display='none';
       Modelo.style.display='none';
       Clasificacion.style.display='none';
       U_med .style.display='none';
       Dimensiones.style.display='none';
+      Talla.removeAttribute('required');
+      Modelo.removeAttribute('required');
+      Clasificacion.removeAttribute('required');
+      U_med.removeAttribute('required');
+      Dimensiones.removeAttribute('required');
 
       Tallalb.style.display='none';
       Modelolb.style.display='none';
@@ -308,3 +368,55 @@ document.addEventListener('DOMContentLoaded', function() {
   const fechaMinimaISO = fechaMinima.toISOString().split('T')[0];
   fechaVentaInput.setAttribute('max', fechaMinimaISO);
 });
+
+const inputLetra = document.querySelectorAll('input[type="text"]');
+  const inputnumero = document.querySelectorAll('input[type="number"]');
+
+  // Recorre cada input encontrado
+  inputLetra.forEach(input => {
+    // Agrega un evento "keypress" a cada input
+    input.addEventListener("keypress", (e) => {
+      let expre;
+
+      
+      if (input.id === 'Precio') {
+
+          expre = /^[0-9.]+$/;
+      }else
+      if (input.id === 'Color' || input.id === 'Tipo') {
+          
+          expre = /^[a-zA-Z\sñÑ]+$/;
+      }else if(input.id === 'Modelo'|| input.id === 'Clasificacion') {
+
+        expre = /^[a-zA-Z0-9\sñÑ]+$/;
+      }else if(input.id === 'UnidadMedida') {
+        
+        expre = /^[a-zA-Z\sñÑ]+$/;
+      }else if(input.id === 'Talla') {
+        
+        expre = /^[a-zA-Z0-9.\sñÑ]+$/;
+      }else if(input.id === 'Dimensiones') {
+        
+        expre = /^[0-9]+$/;
+      }else{ 
+          expre = /^[a-zA-Z\sñÑ]+$/; 
+      } 
+   
+      if (!expre.test(e.key)) {
+          e.preventDefault(); // Evita que se ingrese la tecla en el input
+      }
+    });
+  });
+  inputnumero.forEach(input => {
+    // Agrega un evento "keypress" a cada input
+    input.addEventListener("keypress", (e) => {
+      let expre;
+  
+      expre = /^[0-9.]+$/; // Solo números del 0-9
+      
+      // Verifica si la tecla presionada cumple con la expresión regular
+      if (!expre.test(e.key)) {
+          e.preventDefault(); // Evita que se ingrese la tecla en el input
+      }
+    });
+  });

@@ -106,7 +106,7 @@
                     <td class="centrado">C$ <%= venta.Total_Venta %></td>
                     <td class="centrado">C$ <%= venta.Saldo_Restante %></td>
                     <td class="centrado">
-                      <button type="button" class="btn btn-success" title="Abonar" onclick= "mostrarPanelAbono('<%= venta.Id_Venta %>','<%= venta.Nombre_Cliente %>','<%= venta.Nombre_Vendedor %>')"><i class="fa-solid fa-money-check-dollar"></i></button>
+                      <button type="button" class="btn btn-success" title="Abonar" onclick= "mostrarPanelAbono('<%= venta.Id_Venta %>','<%= venta.Nombre_Cliente %>','<%= venta.Nombre_Vendedor %>','<%= venta.Saldo_Restante %>')"><i class="fa-solid fa-money-check-dollar"></i></button>
                       <button type="button" class="btn btn-primary" title="Detalles de abonos" onclick="mostrarPanelHistorialAbonosUnico('<%= venta.Id_Venta %>','<%= venta.Nombre_Cliente %>','<%= venta.Nombre_Vendedor %>')"><i class="fa-solid fa-receipt fa-lg" style="color: #ffffff;"></i></button>
                     </td>
                   </tr>
@@ -130,11 +130,11 @@
                   <div class="col-md-6">
                     <label for="Fecha_Abono" class="form-label">Fecha del abono</label>
                     <input type="date" class="form-control" id="Fecha_Abono" name="Fecha_Abono" required>
-                    <div class="invalid-feedback">No campos vacíos</div>
+                    <div class="invalid-feedback">La Fecha es requerida</div>
                     <div>
                       <label for="Monto_Abono" class="form-label">Monto a Abonar</label>
-                      <input type="number" class="form-control" id="Monto_Abono" name="Monto_Abono" step="0.01" required>
-                      <div class="invalid-feedback">No campos vacíos</div>
+                      <input type="number" class="form-control" id="Monto_Abono" name="Monto_Abono" min="1" required>
+                      <div class="invalid-feedback">El Monto es requerido</div>
                     </div>
                   </div>
                   <button type="submit" class="btn btn-success">Guardar</button>

@@ -45,14 +45,14 @@
                             <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
                               <h6 class="px-2"> Por favor seleccione el tipo de venta</h6>
                               <select class="form-select" id="TipoDeVenta_Select" onchange="TipoVenta()">
-                                <option selected>Seleccione una venta</option>
+                                <option selected disabled value="">Seleccione una venta</option>
                                 <option value="Contado">Venta Contado</option>
                                 <option value="Credito">Venta Credito</option>
                               </select>
                             
                               <!-- Formulario para Venta  -->
                               <div id="formularioCredito" style="display: none">
-                                <form class="px-3 needs-validation" novalidate>
+                                <form class="px-3 needs-validation" id="formVenta" novalidate>
 
                                   <label for="CedulaCliente" class="form-label mt-2" >Digite la Cedula del cliente</label>
                                   <div class="input-group mb-3">
@@ -92,7 +92,7 @@
                                     <label for="FrecuenciaAbono" class="form-label" id="lb_FrecuenciaAbono" >Seleccionar la frecuencia de abonos</label>
                                     <select class="form-select" id="FrecuenciaAbono" aria-label="" required>
                                       <label for="FrecuenciaAbono" class="form-label">Seleccione la frecuencia de abonos</label>
-                                      <option selected value=""> Seleccione una opcion</option>
+                                      <option selected disabled value=""> Seleccione una opcion</option>
                                       <option value="Semanal">Semanal</option>
                                       <option value="Quincenal">Quincenal</option>
                                       <option value="Mensual">Mensual</option>
@@ -104,7 +104,7 @@
                                     <label for="text" class="form-label">Seleccionar categoria del producto a añadir</label>
                                     <select class="form-select" id="categoriaSelect1" onchange="mostrarTablaSegunCategoria1()">
                                       <label for="Categoria" class="form-label">Seleccione la categoria del producto que desea</label>
-                                      <option selected>
+                                      <option selected disabled value="">
                                         Seleccione una categoria
                                       </option>
                                       <option value="1">Calzado</option>
@@ -120,6 +120,7 @@
                                       </option>
                                     </select>
                                   </div>
+                                  
 
                                 </form>
                               </div>

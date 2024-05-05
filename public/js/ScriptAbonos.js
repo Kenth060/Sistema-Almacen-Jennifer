@@ -1,5 +1,5 @@
 //MOSTRAR FORMULARIO PARA REALIZAR ABONOS
-function mostrarPanelAbono(Id_Venta, Cliente,Vendedor) 
+function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante) 
 {
   var panel = document.getElementById("panelAbono");
   panel.style.display = "block";
@@ -13,6 +13,38 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor)
   document.getElementById('Nombre_vendedor_Abono').value = Vendedor;
   document.getElementById('Nombre_vendedor_Abono').disabled = true;
 
+  var Monto_Abonando = document.getElementById("Monto_Abono");
+  Monto_Abonando.onchange = function() 
+  {
+    var Cantidad = parseInt(Monto_Abonando.value);
+    if (Cantidad < 1) {
+      // Si es negativa, establecer la cantidad a 1 (o al valor mínimo aceptable)
+      Monto_Abonando.value = 1;
+      Cantidad = 1;
+    }
+    Monto_Abonando.max = Saldo_Restante;
+    if (Cantidad > Saldo_Restante) {
+
+      Monto_Abonando.value = Saldo_Restante;
+      Cantidad = Saldo_Restante;
+      Swal.fire({
+        title: "Saldo restante Excedido",
+        text: "El monto no puede pasar a más de C$ "+Saldo_Restante,
+        icon: 'warning',
+        showConfirmButton: true,
+        timer: false,
+      });
+    }
+    Monto_Abonando.addEventListener('keypress', (e) => {
+      // Obtener el valor actual del input como un número
+      const cantidadIngresada = parseInt(Monto_Abonando.value + e.key);
+
+      // Validar si la tecla presionada es un número y si la cantidad ingresada es mayor que la existencia del producto
+      if (cantidadIngresada > Saldo_Restante) {
+          e.preventDefault(); // Prevenir la entrada de más caracteres
+      }
+    });
+  };
 }
 
   function cerrarPanelAbono() {

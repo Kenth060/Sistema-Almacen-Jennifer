@@ -88,16 +88,16 @@ function mostrarPanelRecordCrediticio(ID,Cliente)
     }else
     if (input.id === 'Residencia' || input.id === 'PuntoReferencia' || input.id === 'Distancia' || input.id === 'Casa') { // Supongamos que el input de la cédula tiene el ID 'cedulaInput'
         // Expresión regular para permitir números y guion "-"
-        expre = /^[a-zA-Z0-9\s]+$/; // Solo números del 0-9 y guion "-"
+        expre = /^[a-zA-Z0-9\sñÑ]+$/; // Solo números del 0-9 y guion "-"
     }else{ 
-        expre = /^[a-zA-Z\s]+$/; 
+        expre = /^[a-zA-Z\sñÑ]+$/; 
       } 
       // Verifica si la tecla presionada cumple con la expresión regular
       if (!expre.test(e.key)) {
           e.preventDefault(); // Evita que se ingrese la tecla en el input
       }
     });
- });
+  });
  inputnumero.forEach(input => {
   // Agrega un evento "keypress" a cada input
   input.addEventListener("keypress", (e) => {
