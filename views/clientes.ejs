@@ -14,6 +14,10 @@
       rel="stylesheet"/>
     <!--Estilo CSS-->
     <link rel="stylesheet" href="/resources/css/style.css" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+	  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap5.min.css">
   </head>
   <body>
     <%- include('sidebar.ejs') %>
@@ -242,7 +246,7 @@
                 </button>
               </h4>
             </div>
-            <nav class="navbar bg-body-tertiary">
+            <!-- <nav class="navbar bg-body-tertiary">
               <div class="container-fluid">
                 <a class="navbar-brand">Buscar cliente</a>
                 <form
@@ -265,8 +269,8 @@
                   </button>
                 </form>
               </div>
-            </nav>
-            <table class="table primary">
+            </nav> -->
+            <table class="table primary ml-1 hover" id="TableClients">
               <thead>
                 <tr>
                   <th class="centrado">Nombre completo</th>
@@ -331,7 +335,7 @@
 
                     <button
                       type="button"
-                      class="btn btn-success RecordCrediticio"
+                      class="btn btn-primary RecordCrediticio"
                       title="RecordCrediticio"
                       onclick="mostrarPanelRecordCrediticio('<%= client.Id_Cliente %>','<%= client.Nombre %>')"
                     >
@@ -385,6 +389,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap5.min.js"></script>      
+
+    
+
+    
+    
+
+
+
+
+  
+
+
+
     <!-- codigo js para las validaciones-->
     <script>
       // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -425,5 +445,19 @@
       });
     </script>
     <% } %>
+
+    <script>
+        $(document).ready(function(){
+            $('#TableClients').DataTable({
+              info: false,
+              ordering: false,
+              paging: false,
+              "oLanguage": {
+                "sSearch": "Buscar a un Cliente:"
+                }
+            })
+            ;
+        });
+    </script>
   </body>
 </html>

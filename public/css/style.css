@@ -573,3 +573,9 @@ body{
   width: 150%;
   margin: 0 auto; /* Esto centra el panel horizontalmente en la página */
 }
+
+table.dataTable {
+  margin-top:10px !important;  
+  margin-bottom:8px !important;  
+}
+

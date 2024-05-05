@@ -16,6 +16,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="resources/css/style.css" />
+
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+	  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css">
+    
   </head>
   <body>
     <%- include('sidebar.ejs') %>
@@ -29,7 +34,7 @@
         </div>
         <div class="row">
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <div class="px-3 py-2">
+            <div class="px-3 py-2 mb-1">
               <h4 style="display: flex; justify-content: space-between;">Seleccione la venta a la que desea realizar abono
                 <!-- <button type="button" class="btn btn-success" title="Historial" onclick="mostrarPanelHistorialAbonos()"><i class="fa-solid fa-list"></i>Listar historial de abonos</button> -->
               </h4>
@@ -72,7 +77,7 @@
               </div>
             </div>
             
-            <nav class="navbar bg-body-tertiary">
+<!--             <nav class="navbar bg-body-tertiary">
               <div class="container-fluid">
                 <a class="navbar-brand px-3">Buscar nombre del cliente que desea abonar</a>
                 <form class="d-flex" role="search">
@@ -80,9 +85,9 @@
                   <button class="btn btn-outline-success" type="submit">Buscar</button>
                 </form>
               </div>
-            </nav>
+            </nav> -->
 
-            <table id="TablaAbonos" class="table primary px-3">
+            <table id="TablaAbonos" class="table primary px-3 hover">
               <thead>
                 <tr>
                   <th class="centrado">Nombre del cliente</th>
@@ -181,6 +186,11 @@
     <script src="/resources/js/ScriptAbonos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap5.min.js"></script>      
+
+
     <!-- codigo js para las validaciones-->
     <script>
       // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -221,6 +231,29 @@
         });
       </script>
     <% } %>
+
+    <script>
+      $(document).ready(function(){
+          $('#TablaAbonos').DataTable({
+            info: false,
+            ordering: false,
+            lengthMenu: [5,10,15,20,25,50],
+            "oLanguage": {
+              "sSearch": "Buscar una Venta al Credito:",
+              "sZeroRecords": "No se encontraron resultados",
+              "sLengthMenu": "Mostrar   _MENU_    Ventas al Credito",
+              "sZeroRecords": "No se encontraron resultados",
+              "sLoadingRecords": "Cargando...",
+              "oPaginate": {
+                  "sFirst": "Primero",
+                  "sLast": "Último",
+                  "sNext": "Siguiente",
+                  "sPrevious": "Anterior"}
+              }
+          })
+          ;
+      });
+    </script>
 
   </body>
 </html>
