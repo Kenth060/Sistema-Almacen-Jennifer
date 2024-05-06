@@ -359,16 +359,22 @@
   <script>
     $(document).ready(function(){
         $('#TableVendedor').DataTable({
-          info: false,
-          ordering: false,
-          paging: false,
-          "oLanguage": {
-            "sSearch": "Buscar a un Cliente:"
+            info: false,
+            ordering: false,
+            paging: false,
+            "oLanguage": {
+                "sSearch": "Buscar a un vendedor:"
+            },
+            "rowCallback": function( row, data ) {
+                if (data[3] === "activo") { // Suponiendo que el estado está en la cuarta columna (índice 3)
+                    $(row).css('background-color', 'green');
+                } else if (data[3] === "inactivo") {
+                    $(row).css('background-color', 'red');
+                }
             }
-        })
-        ;
+        });
     });
-</script>
+  </script>
 
   </body>
 </html>
