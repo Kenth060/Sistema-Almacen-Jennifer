@@ -278,6 +278,7 @@
                   <th class="centrado">Teléfono</th>
                   <th class="centrado">Dirección</th>
                   <th class="centrado">Crédito Disponible</th>
+                  <th class="centrado">Estado Cliente</th>
                   <th class="centrado">Acciones</th>
                 </tr>
               </thead>
@@ -289,6 +290,7 @@
                   <td class="centrado"><%= client.Telefono %></td>
                   <td class="centrado"><%= client.Dirección %></td>
                   <td class="centrado">C$ <%= client.Credito_Disponible %></td>
+                  <td><%= client.Estado_Cliente %></td>
                   <td>
                     <!-- Botones de acciones -->
                     <a
@@ -452,10 +454,13 @@
               info: false,
               ordering: false,
               paging: false,
+              
               "oLanguage": {
                 "sSearch": "Buscar a un Cliente:"
                 }
+    
             })
+
             ;
         });
     </script>
