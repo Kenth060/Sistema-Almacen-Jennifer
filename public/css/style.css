@@ -584,4 +584,9 @@ table.dataTable {
 
 table#TableClients th{ text-align: center; }
 
+table#TableReturnProducts {
+  margin: auto;
+  width: 80% !important; 
+}
+
 th.dt-center, td.dt-center { text-align: center; }

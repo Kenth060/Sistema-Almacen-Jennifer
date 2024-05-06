@@ -446,9 +446,9 @@
                   "sSearch": "Buscar a un Cliente:"
               },
               "rowCallback": function( row, data ) {
-                  if (data[3] === "activo") { // Suponiendo que el estado está en la cuarta columna (índice 3)
+                  if (data[5] === "activo") { // Suponiendo que el estado está en la cuarta columna (índice 3)
                       $(row).css('background-color', 'green');
-                  } else if (data[3] === "inactivo") {
+                  } else if (data[5] === "inactivo") {
                       $(row).css('background-color', 'red');
                   }
               }

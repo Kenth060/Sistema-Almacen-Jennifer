@@ -7,7 +7,7 @@ const conexion = require("./database/db");
 const bcryptjs = require("bcryptjs");
 
 //Estableciendo las rutas
-router.get ("/Login", (req, res) => {
+/* router.get ("/Login", (req, res) => {
   res.render("login");
 });
 
@@ -112,7 +112,7 @@ router.get ("/", (req, res) => {
     });
   }
 });
-
+ */
 
 router.get ("/Inicio", (req, res) => {
   res.render("inicio");
@@ -223,6 +223,32 @@ router.get("/EditVendedor/:ID", (req, res) => {
 
 router.get("/Productos", (req, res) => {
   res.render("productos");
+});
+
+router.get ("/Show/ProductosDevueltos", (req, res) => 
+{
+  conexion.query('SELECT * FROM ShowProductosDevueltos', (error, results) => {
+    if(error)
+    { console.log('Hubo un error al mostrar los productos devueltos => '+error); }
+    else
+    {
+      //res.send(results);
+
+      const devoluciones = results.map( devolucion => 
+        {
+          const fecha = new Date(devolucion.Fecha_Devolucion);
+          const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+          const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+          
+          return {
+            ...devolucion,
+            Fecha_Devolucion: fechaFormateada
+          };
+        });
+
+      res.render("productosDevueltos",{ Devoluciones : devoluciones});
+    }
+  })
 });
 
 router.get("/Ventas", (req, res) => {
