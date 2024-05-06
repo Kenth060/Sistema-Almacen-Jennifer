@@ -447,7 +447,9 @@
                                   onclick="mostrarDetallesVenta('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>','<%= Venta.Fecha_Venta %>','<%= Venta.Total_Venta %>')">
                                   <i class="fa-solid fa-money-check-dollar"></i>
                                 </button>
-    
+                                <button type="button" class="btn btn-success" title="Devolver Producto" onclick="mostrarPanelDevolverProducto()">
+                                  <i class="fa-solid fa-receipt fa-lg" style="color: #f0e7e7;"></i>
+                                </button>
                               </td>
                             </tr>
                           <% } else if(Tipo == 'Credito' && Venta.Tipo_Venta == 'Credito' ){ %>
@@ -465,8 +467,9 @@
                                   onclick="mostrarDetallesVenta('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>','<%= Venta.Fecha_Venta %>','<%= Venta.Total_Venta %>')">
                                   <i class="fa-solid fa-money-check-dollar"></i>
                                 </button>
-    
+                                
                               </td>
+                              
                             </tr>
                           <% } else if(Tipo == 'Contado' && Venta.Tipo_Venta == 'Contado' ){ %>
                             <tr>
@@ -483,14 +486,73 @@
                                   onclick="mostrarDetallesVenta('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>','<%= Venta.Fecha_Venta %>','<%= Venta.Total_Venta %>')">
                                   <i class="fa-solid fa-money-check-dollar"></i>
                                 </button>
-    
+                                
                               </td>
+                              
                             </tr>
                           <% }%>
                         <% }) %>
                       </tbody>
                     </table>
                   </div>
+                </div>
+              </div>
+
+              <div id="ProductoDevuelto" class="panel-flotante panel-ancho" style="display: none">
+                <div class="panel-content">
+                  <h4>Devolucion de productos</h4>
+                  <div style="max-height: 300px; overflow-y: auto">
+                    <table class="table" id="tablaDetalleVenta">
+                      <thead>
+                        <tr>
+                          <th class="centrado">Cliente</th>
+                          <th class="centrado">Vendedor</th>
+                          <th></th>
+                          <th class="centrado">Fecha</th>
+                          <th class="centrado"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="centrado" id="ClienteDetalle">Nolan</td>
+                          <td class="centrado" id="VendedorDetalle">kenneth</td>
+                          <td></td>
+                          <td class="centrado" id="FechaDetalle"><input type="date"></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                      <thead>
+                        <tr>
+                          <th class="centrado">Producto</th>
+                          <th class="centrado">Cantidad</th>
+                          <th></th>
+                          <th class="centrado">Cantidad de producto a devolver</th>
+                          <th class="centrado"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="centrado" >Nike</td>
+                          <td class="centrado" >10</td>
+                          <td></td>
+                          <td class="centrado" ><input type="number"></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    
+                  </div>
+                  
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    onclick="cerrarPanelDevolverProducto()"
+                  >
+                    Cancelar
+                  </button>
+                  <button type="button" class="btn btn-primary 3px 3py" onclick="">
+                    Realizar Devolucion
+                  </button>
                 </div>
               </div>
 
@@ -613,8 +675,8 @@
                   
                 </div>
               </div>
+              </div>
             </div>
-          </div>
         </div>
       </div>
     </section>

@@ -576,3 +576,14 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+
+  function mostrarPanelDevolverProducto() {
+    var panel = document.getElementById("ProductoDevuelto");
+    panel.style.display = "block";
+  }
+
+  function cerrarPanelDevolverProducto() {
+    var panel = document.getElementById("ProductoDevuelto");
+    panel.style.display = "none";
+  }
