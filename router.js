@@ -529,6 +529,7 @@ router.post("/AddProduct", crud.AddProduct);
 router.post("/UpdateProduct", crud.UpdateProduct);
 router.post("/AddVenta",crud.AddVenta);
 router.post("/AddAbono",crud.AddAbono);
+router.post("/DevolverProducto",crud.DevolverProducto);
 
 /*
 router.post("/SearchCliente",crud.SearchCliente); */

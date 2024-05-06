@@ -88,7 +88,7 @@
 
                                   <div class="mb-3">
                                     <label for="plazo_compra" id="lb_plazo_compra" class="form-label">Plazo de Compra</label>
-                                    <input type="text" class="form-control" id="plazo_compra" placeholder="Ingrese plazo de compra" required/>
+                                    <input type="date" class="form-control" id="plazo_compra" placeholder="Ingrese plazo de compra" required/>
                                     <div class="invalid-feedback">El Campo es requerido</div>
                                   </div>
 
@@ -427,6 +427,7 @@
                           <th class="centrado">Nombre de vendedor</th>
                           <th class="centrado">Fecha de venta</th>
                           <th class="centrado">Cantidad total</th>
+                          <th class="centrado">Estado de la Venta</th>
                           <th class="centrado"></th>
                         </tr>
                       </thead>
@@ -439,6 +440,7 @@
                               <td class="centrado"><%= Venta.Vendedor %></td>
                               <td class="centrado"><%= Venta.Fecha_Venta %></td>
                               <td class="centrado">C$ <%= Venta.Total_Venta %></td>
+                              <td class="centrado"><%= Venta.Estado_Venta %></td>
                               <td class="centrado">
                                 <button
                                   type="button"
@@ -457,6 +459,7 @@
                               <td class="centrado"><%= Venta.Vendedor %></td>
                               <td class="centrado"><%= Venta.Fecha_Venta %></td>
                               <td class="centrado">C$ <%= Venta.Total_Venta %></td>
+                              <td class="centrado"><%= Venta.Estado_Venta %></td>
                               <td class="centrado">
                                 <button
                                   type="button"
@@ -476,6 +479,7 @@
                               <td class="centrado"><%= Venta.Vendedor %></td>
                               <td class="centrado"><%= Venta.Fecha_Venta %></td>
                               <td class="centrado">C$ <%= Venta.Total_Venta %></td>
+                              <td class="centrado"><%= Venta.Estado_Venta %></td>
                               <td class="centrado">
                                 <button
                                   type="button"
@@ -496,9 +500,9 @@
                 </div>
               </div>
 
-              <div id="ProductoDevuelto" class="panel-flotante panel-ancho" style="display: none">
+              <div id="ProductoDevuelto" class="panel-flotante panel-ancho" style="display: none" >
                 <div class="panel-content">
-                  <h4>Devolucion de productos</h4>
+                  <h4 id="Title_Devolucion">Devolucion de productos</h4>
                   <div style="max-height: 300px; overflow-y: auto">
                     <table class="table" id="tablaDevolucionVenta">
                       <thead>
@@ -515,7 +519,7 @@
                           <td class="centrado" id="ClienteDevuelto">Nolan</td>
                           <td class="centrado" id="VendedorDevuelto">kenneth</td>
                           <td></td>
-                          <td class="centrado" id="FechaDevuelto"><input type="date"></td>
+                          <td class="centrado" ><input type="date" class="form-control" id="FechaDevuelto"></td>
                           <td></td>
                         </tr>
                       </tbody>
@@ -530,17 +534,29 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td class="centrado" >Nike</td>
-                          <td class="centrado" >10</td>
+                          <td class="centrado" id="NombreProductoDevuelto">Nike</td>
+                          <td class="centrado" id="StockAvailable">10</td>
                           <td></td>
-                          <td class="centrado" ><input type="number"></td>
+                          <td class="centrado" ><input type="number" class="form-control" id="Cantidad_Devolver" ></td>
                           <td></td>
-                        </tr>
+                        </tr>        
                       </tbody>
                     </table>
+
+                    
+
+
+                    
                     
                   </div>
                   
+                  <div class="form-floating mb-3">
+                    <input id="idventadevolver" hidden>
+                    <input id="idproductodevolver" hidden>
+                    <input class="form-control" type="text" id="MotivoDevolucion" style="width: 100%; height: 100px; justify-content:center">
+                    <label for="MotivoDevolucion">Motivo de la Devolucion</label>
+                  </div>
+
                   <button
                     type="button"
                     class="btn btn-danger"
@@ -548,7 +564,7 @@
                   >
                     Cancelar
                   </button>
-                  <button type="button" class="btn btn-primary 3px 3py" onclick="">
+                  <button type="button" class="btn btn-primary 3px 3py" onclick="DevolverProducto();">
                     Realizar Devolucion
                   </button>
                 </div>
@@ -619,6 +635,7 @@
                             <th></th>
                             <th class="centrado">Fecha</th>
                             <th class="centrado"></th>
+                            <th class="centrado"></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -628,6 +645,7 @@
                             <td></td>
                             <td class="centrado" id="FechaDetalle"></td>
                             <td></td>
+                            <td></td>
                           </tr>
                           <thead>
                             <tr>
@@ -636,6 +654,7 @@
                               <th class="centrado"></th>
                               <th class="centrado">Precio</th>
                               <th class="centrado">Sub Total</th>
+                              <th class="centrado"></th>
                             </tr>
                           </thead>
                         </tbody>
@@ -650,6 +669,7 @@
                           <th></th>
                           <th class="centrado"></th>
                           <th>Total</th>
+                          <th></th>
                         </thead>
                         <tbody>
                           <td></td>
@@ -657,6 +677,7 @@
                           <td></td>
                           <td ></td>
                           <td class="centrado" id="TotalDetalle"></td>
+                          <td ></td>
                         </tbody>
                       </table>
                   <button

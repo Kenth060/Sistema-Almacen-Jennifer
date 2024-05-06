@@ -386,7 +386,7 @@ function mostrarDetallesVenta(Id_Venta, Cliente, Vendedor, Fecha , Total)
     const Detalles = data.DetallesVenta;
     Detalles.forEach((Detalle) => 
     {
-      AddProductoTabla (Detalle.Producto,Detalle.Cant_Vendida,Detalle.Precio_Unitario,Detalle.Sub_Total)
+      AddProductoTabla (Detalle.Producto,Detalle.Cant_Vendida,Detalle.Precio_Unitario,Detalle.Sub_Total, Id_Venta,Cliente,Vendedor,Detalle.Id_Producto)
     })
 
   })
@@ -487,7 +487,7 @@ function generarIdVenta()
   return idVenta;
 }
 
-function AddProductoTabla (Producto,Cantidad,Precio,SubTotal)
+function AddProductoTabla (Producto,Cantidad,Precio,SubTotal,Id_Venta, Cliente,Vendedor,Id_Producto)
 {
   var tabla = document.getElementById("tablaDetalleVenta").getElementsByTagName('tbody')[1];
 
@@ -497,20 +497,29 @@ function AddProductoTabla (Producto,Cantidad,Precio,SubTotal)
   var celda_Precio = document.createElement("td");
   var celda_Subtotal = document.createElement("td")
   var celda_Vacia = document.createElement("td")
-  var boton_devolver = document.createElement("td")
+  var celda_boton_devolver = document.createElement("td")
 
   // Agregar contenido a las celdas
   celda_Producto.textContent = Producto;
   celda_Cantidad.textContent = Cantidad;
   celda_Precio.textContent = 'C$ '+Precio;
   celda_Subtotal.textContent = 'C$ '+ SubTotal;
+
+  var BotonDevolver = document.createElement("button");
+  BotonDevolver.className = "btn btn-primary px-3"
+  BotonDevolver.innerHTML = " <i class='fa-solid fa-rotate-left'></i>";
+  BotonDevolver.onclick = function() 
+  { mostrarPanelDevolverProducto(Id_Venta,Cliente,Vendedor,Id_Producto,Producto,Cantidad); };
   
+  celda_boton_devolver.appendChild(BotonDevolver);
+
   // Agregar las celdas a la fila
   nuevaFila.appendChild(celda_Producto);
   nuevaFila.appendChild(celda_Cantidad);
   nuevaFila.appendChild(celda_Vacia);
   nuevaFila.appendChild(celda_Precio);
   nuevaFila.appendChild(celda_Subtotal);
+  nuevaFila.appendChild(celda_boton_devolver);
   
   // Agregar la fila a la tabla
   tabla.appendChild(nuevaFila);
@@ -579,12 +588,89 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 
-  function mostrarPanelDevolverProducto() {
+  function mostrarPanelDevolverProducto(ID_Venta,Cliente,Vendedor,ID_Producto,Nombre_Producto,Cantidad) 
+  {
+    cerrarDetallesVenta();
     var panel = document.getElementById("ProductoDevuelto");
     panel.style.display = "block";
+
+    document.getElementById('Title_Devolucion').innerText = 'Devolver Producto de la Venta N° '+ID_Venta;
+    document.getElementById('ClienteDevuelto').textContent = Cliente;
+    document.getElementById('VendedorDevuelto').textContent = Vendedor;
+    document.getElementById('NombreProductoDevuelto').textContent = Nombre_Producto;
+    document.getElementById('StockAvailable').textContent = Cantidad; 
+    document.getElementById('Cantidad_Devolver').max = Cantidad;
+    document.getElementById('idventadevolver').value = ID_Venta;
+    document.getElementById('idproductodevolver').value=ID_Producto;
+
+
   }
 
   function cerrarPanelDevolverProducto() {
     var panel = document.getElementById("ProductoDevuelto");
     panel.style.display = "none";
+  }
+
+  function DevolverProducto()
+  {
+    const ID_Producto = document.getElementById('idproductodevolver').value;
+    const Fecha_Devolver = document.getElementById('FechaDevuelto').value;
+    const Cantidad_Devolver = document.getElementById('Cantidad_Devolver').value;
+    const motivo = document.getElementById('MotivoDevolucion').value;
+    const ID_Venta = document.getElementById('idventadevolver').value
+    
+    const DatosDevolucion = 
+    {
+      Id_Producto: ID_Producto,
+      Id_Venta: ID_Venta,
+      Cantidad_Devuelta:Cantidad_Devolver,
+      Motivo: motivo,
+      Fecha_Devolucion: Fecha_Devolver
+    }
+
+    fetch('/DevolverProducto', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(DatosDevolucion)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('La solicitud ha fallado');
+      }
+      return response.json();
+    })
+    .then(data => 
+    {
+      if (data.success)
+      {
+        Swal.fire({
+                  icon: 'success',
+                  title: '¡Éxito!',
+                  text: 'Producto Devuelto correctamente',
+                  confirmButtonText: 'Aceptar'})
+              .then(() => { window.location.reload();});
+      } 
+      else 
+      {
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudo Devolver el producto',
+          text: 'Hubo un error al devolver el producto, verifique los datos e intentelo nuevamente',
+          confirmButtonText: 'Aceptar'
+        })
+      }
+    })
+    .catch(error => 
+    {
+      Swal.fire({
+        icon: 'error',
+        title: 'No se pudo Devolver el producto',
+        text: 'Hubo un error al devolver el producto, verifique los datos e intentelo nuevamente',
+        confirmButtonText: 'Aceptar'
+      })
+    }); 
+
+
   }

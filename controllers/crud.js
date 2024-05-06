@@ -417,7 +417,7 @@ exports.AddAbono = (req,res) =>
                         alertIcon: 'error',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'clientes'
+                        ruta:'abonos'
                     });
                   }
                     
@@ -467,20 +467,26 @@ exports.AddAbono = (req,res) =>
 
 }
 
-/* 
-exports.SearchCliente = (req,res) => {
-    const nombre = req.body.nombreSearch;
-    const consulta = "SELECT * FROM mostrarclientes WHERE Nombre LIKE '"+nombre+"%'";
-    console.log('Buscando Cliente '+nombre + '\n QUERY=> '+ consulta);
+exports.DevolverProducto = (req,res) =>
+{
+    const DatosDevolucion = req.body;
 
-     conexion.query(consulta, (error, results) => 
-    {
-      if (error) 
-      { console.log( "Hubo un error al buscar a ese cliente, error => " + error );} 
-      else 
-      { 
-        res.render("clientes", { clientes: results });
-        console.log('encontrado ' + results);
-      }
-    });   
-}  */
+    console.log(DatosDevolucion);
+
+    
+    conexion.query('INSERT INTO productos_devueltos (`Id_Producto`, `Id_Venta`, `Cantidad_Devuelta`, `Fecha_Devolucion`, `Motivo`) VALUES (?,?,?,?,?)',[DatosDevolucion.Id_Producto,DatosDevolucion.Id_Venta,DatosDevolucion.Cantidad_Devuelta,DatosDevolucion.Fecha_Devolucion,DatosDevolucion.Motivo], (error,results) =>
+        {
+            if(error)
+            { 
+                console.log('Hubo un error al agregar el producto Devuelto => '+ error);
+                res.status(500).json({ success: false, message: 'Hubo un error al agregar el producto Devuelto'});
+            }
+            else
+            {
+                console.log('Producto Devuelto');
+                res.status(200).json({ success: true, message: 'Venta agregada correctamente' });
+            }
+    
+        })
+    
+}
