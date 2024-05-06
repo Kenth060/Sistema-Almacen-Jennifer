@@ -497,6 +497,7 @@ function AddProductoTabla (Producto,Cantidad,Precio,SubTotal)
   var celda_Precio = document.createElement("td");
   var celda_Subtotal = document.createElement("td")
   var celda_Vacia = document.createElement("td")
+  var boton_devolver = document.createElement("td")
 
   // Agregar contenido a las celdas
   celda_Producto.textContent = Producto;
