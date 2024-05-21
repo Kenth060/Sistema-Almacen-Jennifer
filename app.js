@@ -6,7 +6,7 @@ const app = express();
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
-//3 Inovar a dotenv traka
+//3 Inovar a dotenv 
 const dotenv= require('dotenv');
 dotenv.config({path:'./env/.env'})
 
@@ -14,25 +14,11 @@ dotenv.config({path:'./env/.env'})
 app.use('/resources',express.static('public'));
 app.use('/resources',express.static(__dirname + '/public'));
 
-
 //5 -> Establecer Motor de Plantillas ejs
 app.set('view engine','ejs');
 
-
-
-//7 -> Var de Session
-const session = require('express-session');
-app.use(session({
-    secret:'secret',
-    resave: true,
-    saveUninitialized: true
-}));
-
-
 //8 -> Invocar enrutador
 app.use('/',require('./router'));
-
-
 
 app.listen(4500,(req,res) => {
     console.log('SERVER LISTO SIIIIUUU en http://localhost:4500')

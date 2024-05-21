@@ -3,11 +3,20 @@ const router = express.Router();
 
 const conexion = require("./database/db");
 
-//6 -> Invocacion a bcryptjs
+//1 -> Invocacion a bcryptjs
 const bcryptjs = require("bcryptjs");
 
-//Estableciendo las rutas
-/* router.get ("/Login", (req, res) => {
+//2 -> Var de Session
+const session = require('express-session');
+router.use(session({
+    secret:'secret',
+    resave: true,
+    saveUninitialized: true
+}));
+
+//3 -> Estableciendo las rutas
+router.get ("/", (req, res) => 
+{
   res.render("login");
 });
 
@@ -15,146 +24,279 @@ router.get ("/register", (req, res) => {
   res.render("register");
 });
 
-//10 -> Registro
-router.post ("/register", async (req, res) => {
-  const user = req.body.user;
-  const name = req.body.name;
-  const rol = req.body.rol;
-  const pass = req.body.pass;
-  //console.log('Abriendo registrar');
-  let passwordHaash = await bcryptjs.hash(pass, 8);
-
-  conexion.query(
-    "INSERT INTO usuarios SET ?",
-    { Usuario: user, Nombre: name, Rol: rol, Contraseña: passwordHaash },
-    async (error, results) => {
-      if (error) {
-        console.log("Hubo un error al registrar error => " + error);
-      } else {
-        res.render("register", {
-          alert: true,
-          alertTitle: "Registro",
-          alertMessage: "¡Registro de Usuario Exitoso!",
-          alertIcon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-          ruta: "",
-        });
-      }
-    }
-  );
+router.get ("/login", (req, res) => 
+{
+  res.render("login");
 });
 
-//11 -> Autenticacion
-router.post ("/auth", async (req, res) => {
-  const user = req.body.user;
-  const pass = req.body.pass;
+router.get ("/inicio", async (req, res) => 
+{
+  if (req.session.loggedin) 
+  {
+    let VentaContado = [];
+    let VentaCredito = [];
+    let Ventas = [];
+    let Ingresos = null;
+    let ProductosAct = null;
+    let No_Clientes = null;
+    let ClientesNew = null;
 
-  let passwordHaash = await bcryptjs.hash(pass, 8);
-
-  if (user && pass) {
-    conexion.query(
-      "Select * FROM usuarios WHERE usuario = ?",
-      [user],
-      async (error, results) => {
-        if (
-          results.length == 0 ||
-          !(await bcryptjs.compare(pass, results[0].Contraseña))
-        ) {
-          res.render("login", {
-            alert: true,
-            alertTitle: "Error",
-            alertMessage: "Usuario y/o contraseña incorrectas",
-            alertIcon: "error",
-            showConfirmButton: true,
-            timer: false,
-            ruta: "login",
-          });
-        } else {
-          req.session.loggedin = true;
-          req.session.name = results[0].Nombre;
-          res.render("login", {
-            alert: true,
-            alertTitle: "Conexion Exitosa",
-            alertMessage: "¡Inicio de Sesión Correcto!",
-            alertIcon: "success",
-            showConfirmButton: false,
-            timer: 2500,
-            ruta: "",
-          });
+    const consultaVentasContado = new Promise((resolve, reject) => 
+    {
+      conexion.query("SELECT * FROM ventasContxmes;", (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CONTADO => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          VentaContado = results;
+          resolve();
         }
-      }
-    );
-  } else {
-    res.render("login", {
-      alert: true,
-      alertTitle: "Advertencia",
-      alertMessage: "¡Por favor ingrese un usuario y/o una contraseña!",
-      alertIcon: "warning",
-      showConfirmButton: true,
-      timer: false,
-      ruta: "login",
-    });
-  }
-});
-
-// 12-> Auth pages
-router.get ("/", (req, res) => {
-  if (req.session.loggedin) {
-    res.render("inicio", {
-      login: true,
-      name: req.session.name,
-    });
-  } else {
-    res.render("login", {
-      login: false,
-      name: "Debe iniciar sesión",
-    });
-  }
-});
- */
-
-router.get ("/Inicio", (req, res) => {
-  res.render("inicio");
-});
-
-router.get ("/Abonos", (req, res) => {
-  
-  conexion.query("SELECT * from showventascredito  ", (error, results) => 
-  {
-    if (error) 
-    { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
-    else 
-    {  
-      const Ventas = results.map(venta => 
-          {
-            const fecha = new Date(venta.Fecha_Venta);
-            const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-            const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-            
-            return {
-              ...venta,
-              Fecha_Venta: fechaFormateada
-            };
       });
-  
-      res.render("abonos",{ Ventas_Credito:Ventas });
-    }
-      
-  });
+    });
 
+    const consultaVentasCredito = new Promise((resolve, reject) => 
+    {
+      conexion.query("SELECT * FROM ventasCredxmes;", (error, results) => 
+      { 
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CREDITO => ' + error);
+          reject(error);
+        } 
+        else
+        {
+          VentaCredito = results;
+          resolve();
+        }
+      });
+    });
+
+    const consultaIngresos = new Promise((resolve, reject) => 
+    {
+      const queryIngresos = `SELECT SUM(Total_Venta) AS Ingresos_Mes FROM Venta
+                              WHERE 
+                              MONTH(Fecha_Venta) = MONTH(CURDATE()) AND
+                              YEAR(Fecha_Venta) = YEAR(CURDATE())
+      `;
+
+      conexion.query(queryIngresos, (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CONTADO => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          Ingresos = results;
+          resolve();
+        }
+      });                        
+    });
+
+    const consultaProductosAct = new Promise((resolve, reject) => 
+      {
+        const queryProductosAct = `SELECT COUNT(productos.Id_Producto) AS Total FROM productos`;
+  
+        conexion.query(queryProductosAct, (error, results) => 
+        {
+          if (error) 
+          {
+            console.log('HUBO UN ERROR AL MOSTRAR EL Buscar los Productos Activos => ' + error);
+            reject(error);
+          } 
+          else 
+          {
+            ProductosAct = results;
+            resolve();
+          }
+        });                        
+      });
+
+    const consultaClientes = new Promise((resolve, reject) => 
+    {
+      const queryClientes = `SELECT COUNT(persona.Id_Persona) AS Total 
+                             FROM persona 
+                             WHERE persona.Tipo_Persona='Cliente' 
+                             and 
+                             persona.Estado_Cliente='Activo'
+      `;
+    
+      conexion.query(queryClientes, (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL  Buscar los Clientes Activos => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          No_Clientes = results;
+          resolve();
+        }
+      });                        
+    });
+
+    const consultaVentas = new Promise((resolve, reject) => 
+    {
+      const queryVentas = `SELECT 
+                              v.Tipo_Venta, 
+                              v.Fecha_Venta, 
+                              v.Total_Venta, 
+                              CONCAT(c.Nombre,' ',c.Apellido) AS Cliente, 
+                              CONCAT(vdr.Nombre,' ',vdr.Apellido) AS Vendedor
+                            FROM 
+                                Venta v
+                            JOIN 
+                                Persona c ON v.Id_Cliente = c.Id_Persona
+                            JOIN 
+                                Persona vdr ON v.Id_Vendedor = vdr.Id_Persona
+                            WHERE 
+                                MONTH(v.Fecha_Venta) = MONTH(CURDATE()) 
+                                AND YEAR(v.Fecha_Venta) = YEAR(CURDATE())
+                            ORDER BY 
+                                v.Fecha_Venta DESC
+                            LIMIT 5;
+  
+      `;
+      
+      conexion.query(queryVentas, (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL  Buscar las ultimas Ventas => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          const VentasFormateadas = results.map(venta => 
+            {
+              const fecha = new Date(venta.Fecha_Venta);
+              const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+              const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+              
+              return {
+                ...venta,
+                Fecha_Venta: fechaFormateada
+              };
+          });
+
+          Ventas = VentasFormateadas;
+          resolve();
+        }
+      });                        
+    });
+    
+    Promise.all([consultaVentasContado, consultaVentasCredito, consultaIngresos,consultaProductosAct,consultaClientes,consultaVentas])
+      .then(() => {
+        res.render("inicio", 
+        {
+          VentaContado: VentaContado,
+          VentaCredito: VentaCredito,
+          Ingresos: 'C$ '+Ingresos[0].Ingresos_Mes,
+          Productos: ProductosAct[0].Total,
+          No_Clientes:No_Clientes[0].Total,
+          Ventas:Ventas
+        });
+
+        console.log(Ventas);
+
+      })
+      .catch(error => {
+        console.log('Hubo un error al obtener los datos => ' + error);
+      });
+
+
+
+
+/*
+
+    conexion.query("SELECT * FROM ventasContxmes;", (error, results) => 
+    {
+      if(error)
+      { console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CONTADO => ' + error); }
+      else
+      {
+        VentaContado.push(results);
+        console.log('RESULTADOS #1\n'+VentaContado);
+        flag=true;
+      }
+    });
+
+     conexion.query("SELECT * FROM ventasCredxmes;", (error, results) => 
+      {
+        if(error)
+        { console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL Credito => ' + error); }
+        else
+        {
+          VentaCredito.push(results);
+        }
+      }); 
+
+    //console.log('*****************************************\n'+VentaCredito);
+    if(flag == true)
+    {
+      res.render("inicio", {Meses:['Enero','Febrero','Marzo','Abril','Mayo'], Cantidades:[1,2,3,4,5]});
+      console.log('RESULTADOS #2\n*****************************************\n'+VentaContado);
+    }*/
+  } 
+  else 
+  {
+    res.redirect('/login');
+  }
 });
 
-router.get ("/Clientes", (req, res) => {
-
-  conexion.query("SELECT * from MostrarClientes", (error, results) => 
+router.get ("/Abonos", (req, res) => 
+{
+  if (req.session.loggedin) 
   {
-    if (error) 
-    { console.log( "Ha ocurrido un error al mostrar los clientes, el error es => " + error ); } 
-    else 
-    { res.render("clientes", { clientes: results }); }
-  });
+    conexion.query("SELECT * from showventascredito  ", (error, results) => 
+        {
+          if (error) 
+          { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+          else 
+          {  
+            const Ventas = results.map(venta => 
+                {
+                  const fecha = new Date(venta.Fecha_Venta);
+                  const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                  const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                  
+                  return {
+                    ...venta,
+                    Fecha_Venta: fechaFormateada
+                  };
+            });
+        
+            res.render("abonos",{ Ventas_Credito:Ventas });
+          }
+            
+    });
+  } 
+  else 
+  {
+    res.redirect('/login');
+  }
+});
 
+router.get ("/Clientes", (req, res) => 
+{
+  if (req.session.loggedin) 
+  {
+    conexion.query("SELECT * from MostrarClientes", (error, results) => 
+      {
+        if (error) 
+        { console.log( "Ha ocurrido un error al mostrar los clientes, el error es => " + error ); } 
+        else 
+        { res.render("clientes", { clientes: results }); }
+      });
+  } 
+  else 
+  { res.redirect('/login'); }
 });
 
 /* router.get ("/DeleteClient/:ID", (req, res) => 
@@ -185,13 +327,19 @@ router.get("/EditClient/:ID", (req, res) =>
 
 router.get("/Vendedores", (req, res) => 
 {
-  conexion.query("SELECT * FROM mostrarvendedores", (error, results) => 
+  if (req.session.loggedin) 
   {
-    if (error) 
-    { console.log( "Ha ocurrido un error al mostrar los vendedores, el error es => " + error ); } 
-    else 
-    { res.render("vendedores", { vendedores: results }); }
-  });
+    conexion.query("SELECT * FROM mostrarvendedores", (error, results) => 
+      {
+        if (error) 
+        { console.log( "Ha ocurrido un error al mostrar los vendedores, el error es => " + error ); } 
+        else 
+        { res.render("vendedores", { vendedores: results }); }
+      });
+  } 
+  else 
+  { res.redirect('/login'); }
+
 });
 
 /* router.get("/DeleteVendedor/:ID", (req, res) => 
@@ -221,8 +369,13 @@ router.get("/EditVendedor/:ID", (req, res) => {
   });
 });
 
-router.get("/Productos", (req, res) => {
-  res.render("productos");
+router.get("/Productos", (req, res) => 
+{
+  if (req.session.loggedin) 
+  {   res.render("productos"); } 
+  else 
+  { res.redirect('/login'); }
+
 });
 
 router.get ("/Show/ProductosDevueltos", (req, res) => 
@@ -251,55 +404,60 @@ router.get ("/Show/ProductosDevueltos", (req, res) =>
   })
 });
 
-router.get("/Ventas", (req, res) => {
-  const tipoVenta = req.query.tipoVenta;
-
-  conexion.query("SELECT * from mostrarventas", (error, results) => 
+router.get("/Ventas", (req, res) => 
+{
+  if (req.session.loggedin) 
   {
-    if (error) 
-    { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
-    else 
-    {  
-      const Ventas = results.map(venta => 
-        {
-          const fecha = new Date(venta.Fecha_Venta);
-          const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-          const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-          
-          return {
-            ...venta,
-            Fecha_Venta: fechaFormateada
-          };
-        });
+    const tipoVenta = req.query.tipoVenta;
 
-        conexion.query('SELECT * from productos', (error, results) => 
-        {
-          if (error)
-          {console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
-          else 
+    conexion.query("SELECT * from mostrarventas", (error, results) => 
+    {
+      if (error) 
+      { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+      else 
+      {  
+        const Ventas = results.map(venta => 
           {
-            const Products = results.map( producto => 
-              {
-                const fecha = new Date(producto.Fecha_Ingreso);
-                const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-                const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-                
-                return {
-                  ...producto,
-                  Fecha_Ingreso: fechaFormateada
-                };
-              });
+            const fecha = new Date(venta.Fecha_Venta);
+            const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+            const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+            
+            return {
+              ...venta,
+              Fecha_Venta: fechaFormateada
+            };
+          });
+  
+          conexion.query('SELECT * from productos', (error, results) => 
+          {
+            if (error)
+            {console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+            else 
+            {
+              const Products = results.map( producto => 
+                {
+                  const fecha = new Date(producto.Fecha_Ingreso);
+                  const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                  const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                  
+                  return {
+                    ...producto,
+                    Fecha_Ingreso: fechaFormateada
+                  };
+                });
+  
+              //res.send(Products);
+              res.render("ventas", { ventas: Ventas, productos: Products , Tipo:tipoVenta});
+            }
+          })
+      }
+      
+    });
+  } 
+  else 
+  { res.redirect('/login'); }
 
-            //res.send(Products);
-            res.render("ventas", { ventas: Ventas, productos: Products , Tipo:tipoVenta});
-          }
-        })
-    }
-    
-  });
- 
 });
-
 
 router.get("/ShowProducts/:categoria", (req, res) => {
   const categoria = req.params.categoria;
@@ -516,35 +674,97 @@ router.get('/buscar-records', (req, res) =>
     
     
 });
-  
 
-
-/* FUNCIONES */
-/* router.get("/SearchCliente/:nombre", (req, res) => {
-  const nombre = req.params.id;
-
-  busqueda = "'"+nombre+"%'";
-  console.log('Buscando Cliente '+nombre + ' o '+ busqueda);
-  conexion.query("SELECT * FROM mostrarclientes WHERE Nombre LIKE ?",[nombre], (error, results) => 
+// 4 -> Registro
+router.post ("/register", async (req, res) => 
   {
-    if (error) 
-    { console.log( "Hubo un error al buscar a ese cliente, error => " + error );} 
-    else 
-    { 
-      //res.render("clientes", { clientes: results });
-      res.send(results);
-      console.log('encontrado');
+    const user = req.body.user;
+    const name = req.body.name;
+    const rol = req.body.rol;
+    const pass = req.body.pass;
+    //console.log('Abriendo registrar');
+    let passwordHaash = await bcryptjs.hash(pass, 8);
+  
+    conexion.query( "INSERT INTO usuarios SET ?", { Usuario: user, Contraseña: passwordHaash, Rol: rol,Id_Persona:31 }, async (error, results) => 
+    {
+      if (error) 
+      { console.log("Hubo un error al registrar error => " + error); } 
+      else 
+      {
+          res.render("register", 
+          {
+            alert: true,
+            alertTitle: "Registro",
+            alertMessage: "¡Registro de Usuario Exitoso!",
+            alertIcon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+            ruta: "",
+          });
+      }
     }
-  });  
+    );
+  });
 
-
+// 5 -> Autenticacion
+router.post ("/auth", async (req, res) =>
+  {
+    const user = req.body.user;
+    const pass = req.body.pass;
+  
+    let passwordHaash = await bcryptjs.hash(pass, 8);
+  
+    if (user && pass) 
+    {
+      conexion.query( "Select * FROM usuarios WHERE usuario = ?", [user], async (error, results) => 
+      {
+        if ( results.length == 0 || !(await bcryptjs.compare(pass, results[0].Contraseña)) ) 
+        {
+          res.render("login", 
+          {
+              alert: true,
+              alertTitle: "Error",
+              alertMessage: "Usuario y/o contraseña incorrectas",
+              alertIcon: "error",
+              showConfirmButton: true,
+              timer: false,
+              ruta: "login",
+            });
+        } 
+        else 
+        {
+            req.session.loggedin = true;
+            req.session.name = results[0].Usuario;
+            res.render("login", {
+              alert: true,
+              alertTitle: "Conexion Exitosa",
+              alertMessage: "¡Inicio de Sesión Correcto!",
+              alertIcon: "success",
+              showConfirmButton: false,
+              timer: 2500,
+              ruta: "inicio",
+            });
+          }
+        }
+      );
+  
+    } 
+    else 
+    {
+      res.render("login", 
+      {
+        alert: true,
+        alertTitle: "Advertencia",
+        alertMessage: "¡Por favor ingrese un usuario y/o una contraseña!",
+        alertIcon: "warning",
+        showConfirmButton: true,
+        timer: false,
+        ruta: "login",
+      });
+    }
 });
- */
-/* 
 
-*/
-
-
+// 6 -> METODOS POST
 
 const crud = require("./controllers/crud");
 router.post("/AddClient", crud.AddClient);
@@ -557,7 +777,5 @@ router.post("/AddVenta",crud.AddVenta);
 router.post("/AddAbono",crud.AddAbono);
 router.post("/DevolverProducto",crud.DevolverProducto);
 
-/*
-router.post("/SearchCliente",crud.SearchCliente); */
-
 module.exports = router;
+
