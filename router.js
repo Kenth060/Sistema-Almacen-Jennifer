@@ -100,7 +100,7 @@ router.get ("/inicio", async (req, res) =>
 
     const consultaProductosAct = new Promise((resolve, reject) => 
       {
-        const queryProductosAct = `SELECT COUNT(productos.Id_Producto) AS Total FROM productos`;
+        const queryProductosAct = `SELECT COUNT(productos.Id_Producto) AS Total FROM productos where productos.Estado_Producto = 'Activo'`;
   
         conexion.query(queryProductosAct, (error, results) => 
         {

@@ -134,7 +134,7 @@
                             <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
                               <div class="row">
                                 <div id="tablaCalzado" style="display: none">
-                                  <table class="table primary">
+                                  <table class="table primary" id="TableShoes">
                                     <thead>
                                       <tr>
                                         <th class="centrado">Nombre del producto</th>
@@ -171,7 +171,7 @@
                                 </div>
 
                                 <div id="tablaPrendas" style="display: none">
-                                  <table class="table primary">
+                                  <table class="table primary" id="tablePV">
                                     <thead>
                                       <tr>
                                         <th class="centrado">Nombre del producto</th>
@@ -207,7 +207,7 @@
                                 </div>
 
                                 <div id="tablaCosmeticos" style="display: none">
-                                  <table class="table primary">
+                                  <table class="table primary" id="TbCosmetics">
                                     <thead>
                                       <tr>
                                         <th class="centrado">Nombre del producto</th>
@@ -240,7 +240,7 @@
                                 </div>
 
                                 <div id="tablaElectrodomesticos" style="display: none">
-                                  <table class="table primary">
+                                  <table class="table primary" id="tableElectrodomesticos">
                                     <thead>
                                       <tr>
                                         <th class="centrado">Nombre del producto</th>
@@ -275,7 +275,7 @@
                                 </div>
 
                                 <div id="tablaPPlasticos" style="display: none">
-                                  <table class="table primary">
+                                  <table class="table primary" id="tablePP">
                                     <thead>
                                       <tr>
                                         <th class="centrado">Nombre del producto</th>
@@ -750,6 +750,94 @@
     <script src="/resources/js/script.js"></script>
     <script src="/resources/js/ScriptVentas.js"></script>
 
+  
+    <script>
+      $(document).ready(function(){
+        
+          $('#tablePP').DataTable({
+            info: false,
+            ordering: false,
+            lengthMenu: [5,10,15,20,25,50],
+            "oLanguage": {
+              "sSearch": "Buscar un Producto:",
+              "sZeroRecords": "No se encontraron resultados",
+              "sLengthMenu": "Mostrar  _MENU_  Productos",
+              "sZeroRecords": "No se encontraron resultados",
+              "sLoadingRecords": "Cargando...",
+              "oPaginate": {
+                  "sFirst": "Primero",
+                  "sLast": "Último",
+                  "sNext": "Siguiente",
+                  "sPrevious": "Anterior"}
+              }
+          });
+      });
+    
+      $(document).ready(function(){
+          
+        $('#tablePV').DataTable({
+          info: false,
+          ordering: false,
+          lengthMenu: [5,10,15,20,25,50],
+          "oLanguage": {
+            "sSearch": "Buscar un Producto:",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLengthMenu": "Mostrar  _MENU_  Productos",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"}
+            }
+        });
+    });
+
+      $(document).ready(function(){
+          
+        $('#TbCosmetics').DataTable({
+          info: false,
+          ordering: false,
+          lengthMenu: [5,10,15,20,25,50],
+          "oLanguage": {
+            "sSearch": "Buscar un Producto:",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLengthMenu": "Mostrar  _MENU_  Productos",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"}
+            }
+        });
+    });
+
+      $(document).ready(function(){
+          
+        $('#tableElectrodomesticos').DataTable({
+          info: false,
+          ordering: false,
+          lengthMenu: [5,10,15,20,25,50],
+          "oLanguage": {
+            "sSearch": "Buscar un Producto:",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLengthMenu": "Mostrar  _MENU_  Productos",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"}
+            }
+        });
+    });
+
+    </script>
+
     <script>
       $(document).ready(function(){
         
@@ -771,9 +859,10 @@
               }
           });
       });
-    
-    
     </script>
+
+    
+
     
   </body>
 </html>

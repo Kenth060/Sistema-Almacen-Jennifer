@@ -101,6 +101,12 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante)
   function cerrarPanelHistorialAbonosUnico() {
     var panel = document.getElementById("panelHistorialAbonosUnico");
     panel.style.display = "none";
+
+    var tabla = document.getElementById("Tabla_Historial_Abonos").getElementsByTagName('tbody')[0];
+    
+    while (tabla.firstChild) 
+    { tabla.removeChild(tabla.firstChild);}
+
   }
   //FIN MOSTRAR HISTORIAL
 
