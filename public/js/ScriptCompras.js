@@ -50,3 +50,13 @@ function cerrarDetallesCompra() {
     panel.style.display = "none";
 }
 
+function mostrarProveedorCompras() {
+    var panel = document.getElementById("BuscarProveedorVenta");
+    panel.style.display = "block";
+}
+
+function cerrarProveedorCompras() {
+    var panel = document.getElementById("BuscarProveedorVenta");
+    panel.style.display = "none";
+}
+
