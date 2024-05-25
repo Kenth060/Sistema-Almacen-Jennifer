@@ -29,6 +29,11 @@ router.get ("/login", (req, res) =>
   res.render("login");
 });
 
+router.get ("/Compras", (req, res) => 
+  {
+    res.render("Compras");
+  });
+
 router.get ("/inicio", async (req, res) => 
 {
   if (req.session.loggedin) 

@@ -569,7 +569,7 @@ body{
 
 
 .panel-ancho {
-  max-width: 650px; /* Puedes ajustar este valor según tus necesidades */
+  max-width: 650px; /*ajustar este valor según varia dog*/
   width: 150%;
   margin: 0 auto; /* Esto centra el panel horizontalmente en la página */
 }

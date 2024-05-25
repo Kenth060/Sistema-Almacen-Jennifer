@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compras Comercial Jennifer</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/resources/css/style.css" />
+    <link rel="shortcut icon" href="/resources/images/favicon.ico" />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap5.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css"
+    />
+  </head>
+  <body>
+    <%- include('sidebar.ejs') %>
+
+    <section class="home-section">
+      <div class="Container">
+        <div class="row">
+          <div class="Container px-3 py-1 contenedorventas">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <h2 class="centrado">Registro e historial de</h2>
+              <h2 class="centrado">compras</h2>
+            </div>
+          </div>
+
+          <div class="Container">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <div class="row">
+                <div class="accordion accordion-flush py-0"id="accordionCompras">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button
+                        class="accordion-button collapsed contenedorventas"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseOne"
+                      >
+                        <h5>REGISTRAR UNA NUEVA COMPRA</h5>
+                      </button>
+                    </h2>
+                    <div id="flush-collapseOne"class="accordion-collapse collapse"data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                        <div class="Container"style="background-color: rgb(241, 238, 238)">
+                          <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                              <!-- Formulario para compra  -->
+                              <form class="center">
+                                <div
+                                  class="row px-2"
+                                  id="formularioCompra"
+                                  style="display: block"
+                                >
+                                  <div class="row g-3">
+                                    <div class="col">
+                                      <label
+                                        for="Fecha_Compra"
+                                        class="form-label"
+                                        >Seleccione el Proveedor</label
+                                      >
+                                      <select
+                                        class="form-select"
+                                        aria-label="Default select example"
+                                      >
+                                        <option selected>
+                                          Seleccionar un proovedor
+                                        </option>
+                                        <option value="1">Juan</option>
+                                        <option value="2">Pedro</option>
+                                        <option value="3">Sergio</option>
+                                      </select>
+                                    </div>
+                                    <div class="col">
+                                      <label
+                                        for="Fecha_Compra"
+                                        class="form-label"
+                                        >Ingrese la fecha de compra</label
+                                      >
+                                      <input
+                                        type="date"
+                                        class="form-control"
+                                        id="Fecha_Compra"
+                                        placeholder="Ingrese la fecha"
+                                        required
+                                      />
+                                      <div class="invalid-feedback">
+                                        El Campo es requerido
+                                      </div>
+                                    </div>
+
+                                    <div class="col py-4">
+                                      <button
+                                        type="submit"
+                                        class="btn btn-success"
+                                        title="Agregar Productos"
+                                        onclick="AbrirPanelProductoCompra()"
+                                        required
+                                      >
+                                        <div class="invalid-feedback"></div>
+                                        Agregar Productos
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="Container py-4" id="facturacompra" style="display: block">
+                          <div class="row">
+                            <div
+                              class="col-sm-12 col-md-1 col-lg-1 col-xl-1"
+                            ></div>
+                            <div class="col-sm-12 col-md-10 col-lg-10 col-xl-10">
+                              <table class="table" id="tablacompra">
+                                <thead>
+                                  <tr>
+                                    <th id="IdVenta" class="centrado">
+                                      N° Venta:
+                                    </th>
+                                    <th class="centrado"></th>
+                                    <th></th>
+                                    <th class="centrado"></th>
+                                    <th class="centrado"></th>
+                                  </tr>
+                                  <tr>
+                                    <th class="centrado">Proveedor</th>
+                                    <th class="centrado">Cliente</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="centrado">Fecha Venta</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="centrado" id="">
+                                      Nombre del proovedor
+                                    </td>
+                                    <td class="centrado" id="">
+                                      Almacen Comercial Jennifer
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="centrado" id="">Fecha Venta</td>
+                                  </tr>
+                                  <thead>
+                                    <tr>
+                                      <th class="centrado">Producto</th>
+                                      <th class="centrado">Cantidad Producto</th>
+                                      <th class="centrado">Precio</th>
+                                      <th class="centrado">Sub Total</th>
+                                      <th class="centrado"></th>
+                                    </tr>
+                                  </thead>
+                                </tbody>
+
+                                <tbody></tbody>
+                                <thead>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th class="centrado">Total</th>
+                                </thead>
+                                <tbody>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td class="centrado" id="celda_total">C$ 0</td>
+                                </tbody>
+                              </table>
+
+                              <div class="centrado text-end" id="btnfactura">
+                                <button
+                                  class="btn btn-success"
+                                  onclick="AñadirCompra()"
+                                >
+                                  Guardar Compra
+                                </button>
+                              </div>
+                            </div>
+                            <div
+                              class="col-sm-12 col-md-1 col-lg-1 col-xl-1"
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="CompraProductos"class="panel-flotante panel-ancho"style="display: none">
+                <div class="panel-content">
+                  <h4>Seleccion de productos</h4>
+                  <div style="max-height: 350px; overflow-y: auto">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-10 col-lg-10 col-xl-10">
+                        <div class="mb-3">
+                          <label for="text" class="form-label"
+                            >Seleccionar categoria del producto a añadir</label
+                          >
+                          <select
+                          class=" px-2 form-select"
+                          id="categoriaSelect1"
+                          onchange="mostrarTablaSegunCategoria1()"
+                        >
+                          <label for="Categoria" class="form-label"
+                            >Seleccione la categoria del prodcuto que desea</label
+                          >
+                          <option selected>Seleccione una categoria</option>
+                          <option value="1">Calzado</option>
+                          <option value="2">Prendas de Vestir</option>
+                          <option value="3">Cosmeticos</option>
+                          <option value="4">Electrodomestico</option>
+                          <option value="5">Productos Plasticos</option>
+                        </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2"></div>
+                      <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                        <div id="tablaCalzado" style="display: none">
+                          <table class="table primary">
+                            <thead>
+                              <tr>
+                                <th class="centrado">Nombre del producto</th>
+                                <th class="centrado">Marca</th>
+                                <th class="centrado">Color</th>
+                                <th class="centrado">Tipo</th>
+                                <th class="centrado">Talla</th>
+                                <th class="centrado">Modelo</th>
+                                <th class="centrado col-xl-1">Accion</th>
+                              </tr>
+                              <tbody>
+                                <tr>
+                                  <td class="centrado">Zapato</td>
+                                  <td class="centrado">Nike</td>
+                                  <td class="centrado">Negro</td>
+                                  <td class="centrado">High</td>
+                                  <td class="centrado">42</td>
+                                  <td class="centrado">Retro 1</td>
+                                  <td class="row px-4 ">
+                                    <!-- Botones de acciones -->
+                                    <button type="button" class="btn btn-success px-3" title="Añadir"><i class="fa-solid fa-cart-plus"></i></button>
+                                  </td> 
+                                
+                                </tr>
+                              </tbody>
+                            </thead>
+                          </table>
+                        </div>
+                        <div id="tablaPrendas" style="display: none">
+                          <table class="table primary">
+                            <thead>
+                              <tr>
+                                <th class="centrado">Nombre del producto</th>
+                                <th class="centrado">Marca</th>
+                                <th class="centrado">Color</th>
+                                <th class="centrado">Tipo</th>
+                                <th class="centrado">Talla</th>
+                                <th class="centrado col-1">Accion</th>
+                              </tr>
+                              <tbody>
+                                <td class="centrado">Camisa</td>
+                                <td class="centrado">Colombia</td>
+                                <td class="centrado">Azul</td>
+                                <td class="centrado">camisa</td>
+                                <td class="centrado">M</td>
+                                <td class="row px-4 centrado">
+                                  <!-- Botones de acciones -->
+                                  <button type="button" class="btn btn-success px-3" title="Añadir"><i class="fa-solid fa-cart-plus"></i></button>
+                                </td> 
+                              </tbody>
+                            </thead>
+                          </table>
+                        </div>
+                        <div id="tablaCosmeticos" style="display: none">
+                          <table class="table primary">
+                            <thead>
+                              <tr>
+                                <th class="centrado">Nombre del producto</th>
+                                <th class="centrado">Marca</th>
+                                <th class="centrado">Color</th>
+                                <th class="centrado">Tipo</th>
+                                <th class="centrado">Clasificacion</th>
+                                <th class="centrado col-1">Accion</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <td class="centrado">Labial</td>
+                              <td class="centrado">FENTY BEAUTY</td>
+                              <td class="centrado">Rojo Pasion</td>
+                              <td class="centrado">lapiz labial</td>
+                              <td class="centrado">lipstick</td>
+                              <td class="row px-4 centrado">
+                                <!-- Botones de acciones -->
+                                <button type="button" class="btn btn-success px-3" title="Añadir"><i class="fa-solid fa-cart-plus"></i></button>
+                              </td> 
+                            </tbody>
+                          </table>
+                        </div>
+                        <div id="tablaElectrodomesticos" style="display: none">
+                          <table class="table primary">
+                            <thead>
+                              <tr>
+                                <th class="centrado">Nombre del producto</th>
+                                <th class="centrado">Marca</th>
+                                <th class="centrado">Color</th>
+                                <th class="centrado">Tipo</th>
+                                <th class="centrado">Modelo</th>
+                                <th class="centrado col-1">Accion</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <td class="centrado">Lavadora</td>
+                              <td class="centrado">whirlpool</td>
+                              <td class="centrado">Blanco</td>
+                              <td class="centrado">Lava-secadora</td>
+                              <td class="centrado">SCPH21-2303</td>
+                              <td class="row px-4 centrado">
+                                <!-- Botones de acciones -->
+                                <button type="button" class="btn btn-success px-3" title="Añadir"><i class="fa-solid fa-cart-plus"></i></button>
+                              </td> 
+                            </tbody>
+                          </table>
+                        </div>
+                        <div id="tablaPPlasticos" style="display: none">
+                          <table class="table primary">
+                            <thead>
+                              <tr>
+                                <th class="centrado">Nombre del producto</th>
+                                <th class="centrado">Marca</th>
+                                <th class="centrado">Color</th>
+                                <th class="centrado">Tipo</th>
+                                <th class="centrado">Dimensiones</th>
+                                <th class="centrado">Unidad de medida</th>
+                                <th class="centrado">Accion</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <td class="centrado">Mesa</td>
+                              <td class="centrado">Plastic</td>
+                              <td class="centrado">Azul</td>
+                              <td class="centrado"> n</td>
+                              <td class="centrado">n</td>
+                              <td class="centrado">n</td>
+                              <td class="row px-4 centrado">
+                                <!-- Botones de acciones -->
+                                <button type="button" class="btn btn-success px-3" title="Añadir"><i class="fa-solid fa-cart-plus"></i></button>
+                              </td>
+                            </tbody>
+                          </table>
+                        </div>
+                        
+                      </div>
+                      <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2"></div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    onclick="CerrarPanelProductoCompra()"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+              
+            </div>
+            <div
+              class="py-1 px-3 mb-2"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+              "
+            >
+              <h4 style="color: black; font-size: 22px">Listado de compras</h4>
+              <div style="display: flex; align-items: center">
+                <!-- <button type="button" class="btn btn-success" title="Abonar" style="margin-left: 10px" onclick="mostrarPanelHistorialAbonos()"><i class="fa-solid fa-list"></i>Listar historial de abonos</button>-->
+              </div>
+            </div>
+
+            <div class="Container">
+              <div class="row">
+                <div>
+                  <table class="table primary px-3 hover" id="TableCompras">
+                    <thead>
+                      <tr>
+                        <th class="centrado">Nombre del proveedor</th>
+                        <th class="centrado">Nombre de cliente</th>
+                        <th class="centrado">Fecha de compra</th>
+                        <th class="centrado">Cantidad total</th>
+                        <th class="centrado"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="centrado">Proovedor</td>
+                        <td class="centrado">Cliente</td>
+                        <td class="centrado">Fecha_Venta</td>
+                        <td class="centrado">C$ Total_Venta</td>
+                        <td class="centrado">
+                          <button
+                            type="button"
+                            class="btn btn-success info-venta"
+                            title="Informacion de la venta"
+                            onclick="mostrarDetallesCompra()"
+                          >
+                            <i class="fa-solid fa-money-check-dollar"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="panelDetalleCompras"
+              class="panel-flotante panel-ancho"
+              style="display: none"
+            >
+              <div class="panel-content">
+                <h4 id="DetalleTitle">Detalle Compra</h4>
+
+                <div style="max-height: 300px; overflow-y: auto">
+                  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <table class="table" id="tablaDetalleVenta">
+                      <thead>
+                        <tr>
+                          <th class="centrado">Proveedor</th>
+                          <th class="centrado">Cliente</th>
+                          <th></th>
+                          <th class="centrado">Fecha</th>
+                          <th class="centrado"></th>
+                          <th class="centrado"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="centrado" id=""></td>
+                          <td class="centrado" id=""></td>
+                          <td></td>
+                          <td class="centrado" id=""></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <thead>
+                          <tr>
+                            <th class="centrado">Producto</th>
+                            <th class="centrado">Cantidad Producto</th>
+                            <th class="centrado"></th>
+                            <th class="centrado">Precio</th>
+                            <th class="centrado">Sub Total</th>
+                            <th class="centrado"></th>
+                          </tr>
+                        </thead>
+                      </tbody>
+
+                      <tbody>
+                        <tr></tr>
+                      </tbody>
+                      <thead>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th class="centrado"></th>
+                        <th>Total</th>
+                        <th></th>
+                      </thead>
+                      <tbody>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="centrado" id=""></td>
+                        <td></td>
+                      </tbody>
+                    </table>
+                    <button type="button" class="btn btn-danger" onclick="cerrarDetallesCompra()">Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="https://code.jquery.com/jquery-3.5.1.js"
+    ></script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap5.min.js"
+    ></script>
+
+    <!--  <% if (typeof alert != "undefined") { %>
+      <script>
+        Swal.fire({
+          title: "<%= alertTitle %>",
+          text: "<%= alertMessage %>",
+          icon: "<%= alertIcon %>",
+          showConfirmButton: true,
+          timer: false,
+        }).then(() => {
+          window.location = "/<%= ruta %>";
+        });
+      </script>
+    <% } %> -->
+
+    <script src="/resources/js/script.js"></script>
+    <script src="/resources/js/ScriptCompras.js"></script>
+    
+
+    <script>
+      $(document).ready(function () {
+        $("#TableVentas").DataTable({
+          info: false,
+          ordering: false,
+          lengthMenu: [5, 10, 15, 20, 25, 50],
+          oLanguage: {
+            sSearch: "Buscar una Venta:",
+            sZeroRecords: "No se encontraron resultados",
+            sLengthMenu: "Mostrar  _MENU_  Ventas",
+            sZeroRecords: "No se encontraron resultados",
+            sLoadingRecords: "Cargando...",
+            oPaginate: {
+              sFirst: "Primero",
+              sLast: "Último",
+              sNext: "Siguiente",
+              sPrevious: "Anterior",
+            },
+          },
+        });
+      });
+    </script>
+
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,225 @@
+<div
+  id="CompraProductos"
+  class="panel-flotante panel-ancho"
+  style="display: none"
+>
+  <div class="panel-content">
+    <h4 id="Title_Compras">Devolucion de productos</h4>
+    <div style="max-height: 300px; overflow-y: auto">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <div class="mb-3">
+            <label for="text" class="form-label">Seleccionar categoria del producto a añadir</label>
+            <select class="form-select" id="categoriaSelect1" onchange="mostrarTablaSegunCategoria1()">
+              <label for="Categoria" class="form-label">Seleccione la categoria del producto que desea</label>
+              <option selected disabled value="">
+                Seleccione una categoria
+              </option>
+              <option value="1">Calzado</option>
+              <option value="2">
+                Prendas de Vestir
+              </option>
+              <option value="3">Cosmeticos</option>
+              <option value="4">
+                Electrodomestico
+              </option>
+              <option value="5">
+                Productos Plasticos
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+           <!--Mostrar tablas segun la seleccion-->
+           <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+            <div class="row">
+              <div id="tablaCalzado" style="display: none">
+                <table class="table primary">
+                  <thead>
+                    <tr>
+                      <th class="centrado">Nombre del producto</th>
+                      <th class="centrado">Marca</th>
+                      <th class="centrado">Color</th>
+                      <th class="centrado">Talla</th>
+                      <th class="centrado">Existencia</th>
+                      <th class="centrado">Precio</th>
+                      <th class="centrado col-xl-1"><!-- Acción --></th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <% productos.forEach((producto) => { %>
+                      <% if( producto.Categoria == 'Calzado' ) { %>
+                        <tr>
+                          <td class="centrado"><%= producto.Tipo %> <%= producto.Modelo %></td>
+                          <td class="centrado"><%= producto.Marca %></td>
+                          <td class="centrado"><%= producto.Color %></td>
+                          <td class="centrado"><%= producto.Talla %></td>
+                          <td class="centrado"><%= producto.Existencia%></td>
+                          <td class="centrado">C$ <%= producto.Precio %></td>
+                          <td class="centrado"></td>
+                          <td class="row px-2">
+                            <!-- Botones de acciones -->
+                           <!--  <input id="CantProduct" type="number" class="centrado mb-2"/> -->
+                            <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Modelo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio %>','<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                          </td>
+                        </tr>
+                      <% } %>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+
+              <div id="tablaPrendas" style="display: none">
+                <table class="table primary">
+                  <thead>
+                    <tr>
+                      <th class="centrado">Nombre del producto</th>
+                      <th class="centrado">Marca</th>
+                      <th class="centrado">Color</th>
+                      <th class="centrado">Talla</th>
+                      <th class="centrado">Existencia</th>
+                      <th class="centrado">Precio</th>
+                      <th class="centrado col-1"><!-- Acción --></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% productos.forEach((producto) => { %>
+                      <% if( producto.Categoria == 'Prendas de Vestir' ) { %>
+                        <tr>
+                          <td class="centrado"><%= producto.Tipo %></td>
+                          <td class="centrado"><%= producto.Marca %></td>
+                          <td class="centrado"><%= producto.Color %></td>
+                          <td class="centrado"><%= producto.Talla %></td>
+                          <td class="centrado"><%= producto.Existencia %></td>
+                          <td class="centrado">C$ <%= producto.Precio %></td>
+                          <td class="row px-4 centrado">
+
+                            <!-- Botones de acciones -->
+                            <!-- <input type="number" class="centrado mb-2"/> -->
+                            <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                          </td>
+                        </tr>
+                      <% } %>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+
+              <div id="tablaCosmeticos" style="display: none">
+                <table class="table primary">
+                  <thead>
+                    <tr>
+                      <th class="centrado">Nombre del producto</th>
+                      <th class="centrado">Marca</th>
+                      <th class="centrado">Color</th>
+                      <th class="centrado">Existencia</th>
+                      <th class="centrado">Precio</th>
+                      <th class="centrado col-1"><!-- Acción --></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% productos.forEach((producto) => { %>
+                      <% if( producto.Categoria == 'Cosmeticos' ) { %>
+                        <tr>
+                          <td class="centrado"><%= producto.Clasificacion %> <%= producto.Tipo %></td>
+                          <td class="centrado"><%= producto.Marca %></td>
+                          <td class="centrado"><%= producto.Color %></td>
+                          <td class="centrado"><%= producto.Existencia %></td>
+                          <td class="centrado">C$ <%= producto.Precio %></td>
+                          <td class="row px-4 centrado">
+                            <!-- Botones de acciones -->
+                            <!-- <input type="number"class="centrado mb-2"/> -->
+                            <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Clasificacion %> <%= producto.Tipo %> <%= producto.Marca %> <%= producto.Color %> ','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                          </td>
+                        </tr>
+                      <% } %>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+
+              <div id="tablaElectrodomesticos" style="display: none">
+                <table class="table primary">
+                  <thead>
+                    <tr>
+                      <th class="centrado">Nombre del producto</th>
+                      <th class="centrado">Marca</th>
+                      <th class="centrado">Modelo</th>
+                      <th class="centrado">Color</th>
+                      <th class="centrado">Existencia</th>
+                      <th class="centrado">Precio</th>
+                      <th class="centrado col-1"><!-- Acción --></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% productos.forEach((producto) => { %>
+                      <% if( producto.Categoria == 'Electrodomesticos' ) { %>
+                        <tr>
+                          <td class="centrado"><%= producto.Tipo %></td>
+                          <td class="centrado"><%= producto.Marca %></td>
+                          <td class="centrado"><%= producto.Modelo %></td>
+                          <td class="centrado"><%= producto.Color %></td>
+                          <td class="centrado"><%= producto.Existencia %></td>
+                          <td class="centrado">C$ <%= producto.Precio %></td>
+                          <td class="row px-4 centrado">
+                            <!-- Botones de acciones -->
+                            <!-- <input type="number" class="centrado mb-2"/> -->
+                            <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> <%= producto.Modelo %> Color <%= producto.Color %>','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                          </td>
+                        </tr>
+                      <% } %>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+
+              <div id="tablaPPlasticos" style="display: none">
+                <table class="table primary">
+                  <thead>
+                    <tr>
+                      <th class="centrado">Nombre del producto</th>
+                      <th class="centrado">Marca</th>
+                      <th class="centrado">Color</th>
+                      <th class="centrado">Dimensiones</th>
+                      <th class="centrado">Existencia</th>
+                      <th class="centrado">Precio</th>
+                      <th class="centrado"><!-- Acción --></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% productos.forEach((producto) => { %>
+                      <% if( producto.Categoria == 'Productos Plasticos' ) { %>
+                        <tr>
+                          <td class="centrado"><%= producto.Tipo %></td>
+                          <td class="centrado"><%= producto.Marca %></td>
+                          <td class="centrado"><%= producto.Color %></td>
+                          <td class="centrado"><%= producto.Dimensiones %></td>
+                          <td class="centrado"><%= producto.Existencia %></td>
+                          <td class="centrado">C$ <%= producto.Precio %></td>
+                          <td class="row px-4 centrado">
+                            <!-- Botones de acciones -->
+                            <!-- <input type="number" class="centrado mb-2"/> -->
+                            <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %>','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                          </td>
+                        </tr>
+                      <% } %>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-danger"
+      onclick="CerrarPanelProductoCompra()"
+    >
+      Cancelar
+    </button>
+  </div>
+</div>
