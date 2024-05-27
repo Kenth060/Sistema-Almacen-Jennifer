@@ -1,4 +1,4 @@
-function mostrarTablaSegunCategoria1() {
+function mostrarTablaSegunCategoria() {
     // Ocultar todas las tablas
     document.getElementById('tablaCalzado').style.display = 'none';
     document.getElementById('tablaPrendas').style.display = 'none';
