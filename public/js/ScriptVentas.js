@@ -674,3 +674,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   }
+
+  function mostrarClienteVenta() {
+    var panel = document.getElementById("BuscarClienteVenta");
+    panel.style.display = "block";
+  }
+
+  function cerrarClienteVenta() {
+    var panel = document.getElementById("BuscarClienteVenta");
+    panel.style.display = "none";
+  }
+
+  function mostrarVendedorVenta() {
+    var panel = document.getElementById("BuscarVendedorVenta");
+    panel.style.display = "block";
+  }
+
+  function cerrarVendedorVenta() {
+    var panel = document.getElementById("BuscarVendedorVenta");
+    panel.style.display = "none";
+  }

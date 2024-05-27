@@ -29,10 +29,10 @@ router.get ("/login", (req, res) =>
   res.render("login");
 });
 
-router.get ("/Compras", (req, res) => 
+router.get ("/Proveedores", (req, res) => 
   {
-    res.render("Compras");
-  });
+    res.render("Proveedores");
+});
 
 router.get ("/inicio", async (req, res) => 
 {
@@ -328,6 +328,11 @@ router.get("/EditClient/:ID", (req, res) =>
     { res.render("editClient.ejs", { cliente: results[0] }); }
     //{ res.send(results[0]);}
   });
+});
+
+router.get ("/Compras", (req, res) => 
+  {
+    res.render("Compras");
 });
 
 router.get("/Vendedores", (req, res) => 
@@ -772,6 +777,7 @@ router.post ("/auth", async (req, res) =>
 // 6 -> METODOS POST
 
 const crud = require("./controllers/crud");
+router.post("/AddProveedor", crud.AddClient);
 router.post("/AddClient", crud.AddClient);
 router.post("/UpdateClient", crud.UpdateClient);
 router.post("/AddVendedor", crud.AddVendedor);

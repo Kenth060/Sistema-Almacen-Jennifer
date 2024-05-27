@@ -61,6 +61,7 @@ exports.AddClient = ( req, res) =>
     })
 }
 
+
 exports.UpdateClient = (req, res) => 
 {
     const Id_Cliente = req.body.Id_cl;
@@ -247,6 +248,67 @@ exports.UpdateVendedor = (req, res) =>
         }
     })  
 } 
+
+exports.AddProveedor = ( req, res) => 
+    {
+        const Tipo = req.body.Tipo_cl;
+    
+        const Nombre = req.body.Nombre_pro;
+        const Apellido = req.body.Apellido_pro;
+        const Telefono = req.body.Telefono_pro;
+        const Cedula = req.body.Cedula_pro;
+        
+        const Distrito = req.body.Distrito_pro;
+        const Residencia = req.body.Residencia_pro;
+        const PuntoReferencia = req.body.PuntoReferencia_pro;
+        const Distancia = req.body.Distancia_pro;
+        const Casa = req.body.Casa_pro; 
+    
+        conexion.query('CALL InsertarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?)', [Tipo,Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => {
+            if(error)
+            { 
+                console.log('Hubo un error al Ingresar al proveedor -> '+ error);
+                conexion.query('SELECT * from MostrarClientes', (error,results)=>
+                {
+                    if (error)
+                    { console.log('Ha ocurrido un error al mostrar los proveedores, el error es => '+error); }
+                    else
+                    {
+                        res.render('proveedores', { proveedores:results,
+                            alert: true,
+                            alertTitle: "No se pudo completar la operacion",
+                            alertMessage: "No se pudo agregar al proveedor, compruebe los datos e intente nuevamente",
+                            alertIcon: 'error',
+                            showConfirmButton: true,
+                            timer: false,
+                            ruta:'proveedores'
+                        })
+                    }
+                })
+            }
+            else 
+            {
+                console.log('proveedor Ingresado Correctamente');
+                conexion.query('SELECT * from MostrarClientes', (error,results) =>
+                {
+                    if (error)
+                    { console.log('Ha ocurrido un error al mostrar los proveedores, el error es => '+error); }
+                    else
+                    {
+                        res.render('proveedores', { proveedores:results,
+                            alert: true,
+                            alertTitle: "Proveedor agregado",
+                            alertMessage: "¡Se agrego al proveedor correctamente!",
+                            alertIcon: 'success',
+                            showConfirmButton: true,
+                            timer: false,
+                            ruta:'proveedor'
+                        })
+                    }
+                }) 
+            }
+        })
+    }
 
 exports.AddProduct = ( req, res) => 
 {

@@ -58,22 +58,18 @@
                               <div id="formularioCredito" style="display: none">
                                 <form class="px-3 needs-validation" id="formVenta" novalidate>
 
-                                  <label for="CedulaCliente" class="form-label mt-2" >Digite la Cedula del cliente</label>
-                                  <div class="input-group mb-3">
-                                    <input class="form-control" type="text" id="CedulaCliente" placeholder="Escribe para buscar..." required/>
-                                    <div class="invalid-feedback">El Campo es requerido</div>
-                                    <button class="btn btn-outline-success" type="button" id="btnBuscarCliente" onclick="BuscarCliente()"><i class='bx bx-search'></i></button>
+                                  <label for="BuscarCliente" class="form-label mt-2" >Buscar un cliente</label>
+                                  <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-success" type="button" id="btnBuscarCliente" onclick=" mostrarClienteVenta()">Buscar   <i class='bx bx-search'></i></button>
                                   </div>
 
                                   <div class="mb-3">
                                     <p class="text-success" id="client_name"  style="font-weight: bold;" hidden></p>
                                   </div>
             
-                                  <label for="CedulaVendedor" class="form-label" >Digite la Cedula del vendedor</label>
-                                  <div class="input-group mb-3">
-                                    <input  class="form-control" type="text" list="datalistOptions" id="CedulaVendedor" placeholder="Escribe para buscar..." required/>
-                                    <div class="invalid-feedback">El Campo es requerido</div>
-                                    <button class="btn btn-outline-success" type="button" id="btnBuscarVendedor" onclick="BuscarVendedor()"><i class='bx bx-search'></i></button>
+                                  <label for="BuscarVendedor" class="form-label" >Buscar un vendedor</label>
+                                  <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-success" type="button" id="btnBuscarVendedor" onclick="mostrarVendedorVenta()">Buscar   <i class='bx bx-search'></i></button>
                                   </div>
 
                                   <div class="mb-3">
@@ -695,6 +691,78 @@
                 </div>
               </div>
               </div> 
+
+              <div id="BuscarClienteVenta"class="panel-flotante panel-ancho"style="display: none">
+                <div class="panel-content">
+                  <h4 id="Title_Compras">Buscar un cliente</h4>
+                  <div style="max-height: 300px; overflow-y: auto">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <table class="table primary">
+                          <thead>
+                            <tr>
+                              <th class="centrado">Nombre</th>
+                              <th class="centrado">N. Cedula</th>
+                              <th class="centrado">Estado</th>
+                              <th class="centrado"></th>
+                            </tr>
+                            <tbody>
+                              <td class="centrado">Norlan Daniel Gonzalez Fonseca</td>
+                              <td class="centrado">001-190903-1031W</td>
+                              <td class="centrado">Activo</td> 
+                              <td class="centrado"><button type="button" class="btn btn-success px-3" title="Añadir"><i class='bx bxs-comment-add'></i></button></td>
+                            </tbody>
+                          </thead>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    onclick="cerrarClienteVenta()"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+  
+  
+              <div id="BuscarVendedorVenta"class="panel-flotante panel-ancho"style="display: none">
+                <div class="panel-content">
+                  <h4 id="Title_Compras">Buscar un vendedor</h4>
+                  <div style="max-height: 300px; overflow-y: auto">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <table class="table primary">
+                          <thead>
+                            <tr>
+                              <th class="centrado">Nombre</th>
+                              <th class="centrado">N. Cedula</th>
+                              <th class="centrado"></th>
+                            </tr>
+                            <tbody>
+                              <td class="centrado">Kenneth Fabian Silva Hernandez</td>
+                              <td class="centrado">001-000000-1000K</td> 
+                              <td class="centrado"><button type="button" class="btn btn-success px-3" title="Añadir"><i class='bx bxs-comment-add'></i></button></td>
+                            </tbody>
+                          </thead>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    onclick="cerrarVendedorVenta()"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+
             </div>
         </div>
       </div>
