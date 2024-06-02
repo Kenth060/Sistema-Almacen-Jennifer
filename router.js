@@ -29,14 +29,10 @@ router.get ("/login", (req, res) =>
   res.render("login");
 });
 
-router.get ("/Proveedores", (req, res) => 
-  {
-    res.render("Proveedores");
-});
-
 router.get ("/inicio", async (req, res) => 
 {
-  if (req.session.loggedin) 
+  //if (req.session.loggedin) 
+  if(1)
   {
     let VentaContado = [];
     let VentaCredito = [];
@@ -97,7 +93,12 @@ router.get ("/inicio", async (req, res) =>
         } 
         else 
         {
-          Ingresos = results;
+          if(results[0].Ingresos_Mes == null)
+          { Ingresos = 0; }
+          else
+          { Ingresos = results[0].Ingresos_Mes; }
+          console.log('INGRESOS => C$ '+Ingresos);
+          console.log(results[0].Ingresos_Mes);
           resolve();
         }
       });                        
@@ -128,7 +129,7 @@ router.get ("/inicio", async (req, res) =>
                              FROM persona 
                              WHERE persona.Tipo_Persona='Cliente' 
                              and 
-                             persona.Estado_Cliente='Activo'
+                             persona.Estado='Activo'
       `;
     
       conexion.query(queryClientes, (error, results) => 
@@ -202,52 +203,18 @@ router.get ("/inicio", async (req, res) =>
         {
           VentaContado: VentaContado,
           VentaCredito: VentaCredito,
-          Ingresos: 'C$ '+Ingresos[0].Ingresos_Mes,
+          Ingresos: 'C$ '+Ingresos,
           Productos: ProductosAct[0].Total,
           No_Clientes:No_Clientes[0].Total,
           Ventas:Ventas
         });
 
-        console.log(Ventas);
+        /* console.log(Ventas); */
 
       })
       .catch(error => {
         console.log('Hubo un error al obtener los datos => ' + error);
       });
-
-
-
-
-/*
-
-    conexion.query("SELECT * FROM ventasContxmes;", (error, results) => 
-    {
-      if(error)
-      { console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CONTADO => ' + error); }
-      else
-      {
-        VentaContado.push(results);
-        console.log('RESULTADOS #1\n'+VentaContado);
-        flag=true;
-      }
-    });
-
-     conexion.query("SELECT * FROM ventasCredxmes;", (error, results) => 
-      {
-        if(error)
-        { console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL Credito => ' + error); }
-        else
-        {
-          VentaCredito.push(results);
-        }
-      }); 
-
-    //console.log('*****************************************\n'+VentaCredito);
-    if(flag == true)
-    {
-      res.render("inicio", {Meses:['Enero','Febrero','Marzo','Abril','Mayo'], Cantidades:[1,2,3,4,5]});
-      console.log('RESULTADOS #2\n*****************************************\n'+VentaContado);
-    }*/
   } 
   else 
   {
@@ -270,10 +237,14 @@ router.get ("/Abonos", (req, res) =>
                   const fecha = new Date(venta.Fecha_Venta);
                   const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
                   const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+
+                  const fechaPlazo = new Date(venta.Plazo_Compra);
+                  const fechaPlazoFormateada = fechaPlazo.toLocaleDateString('es-ES', opciones);
                   
                   return {
                     ...venta,
-                    Fecha_Venta: fechaFormateada
+                    Fecha_Venta: fechaFormateada,
+                    Plazo_Compra:fechaPlazoFormateada
                   };
             });
         
@@ -304,18 +275,6 @@ router.get ("/Clientes", (req, res) =>
   { res.redirect('/login'); }
 });
 
-/* router.get ("/DeleteClient/:ID", (req, res) => 
-{
-  const id = req.params.ID;
-  conexion.query( "DELETE FROM persona where Id_Persona = ?", [id], (error, results) =>
-   {
-      if (error) 
-      { throw error; } 
-      else 
-      { res.redirect("/Clientes"); }
-  });
-}); */
-
 router.get("/EditClient/:ID", (req, res) => 
 {
   const id = req.params.ID;
@@ -331,8 +290,99 @@ router.get("/EditClient/:ID", (req, res) =>
 });
 
 router.get ("/Compras", (req, res) => 
+{
+  //if(1)
+  if (req.session.loggedin) 
   {
-    res.render("Compras");
+
+    let Compras = [];
+    let Productos = [];
+    let Proveedores = [];
+    let Gerentes = [];
+
+    const consultaCompras = new Promise((resolve, reject) => 
+    {
+      conexion.query("SELECT * FROM mostrarcompras", (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL MOSTRAR LAS COMPRAS => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          const compras = results.map( compra => 
+          {
+            const fecha = new Date(compra.Fecha_Compra);
+            const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+            const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                
+            return {
+              ...compra,
+              Fecha_Compra: fechaFormateada
+            };
+          });
+  
+          Compras = compras;
+          resolve();
+        }
+      });
+    });
+
+    const consultaProductos = new Promise((resolve, reject) => 
+    {
+      conexion.query('SELECT * from productos', (error, results) => 
+      {
+        if (error)
+        {console.log( "Ha ocurrido un error al mostrar los Productos en las Compras, el error es => " + error); } 
+        else 
+        {
+          Productos = results;
+          resolve();
+        }
+      })
+
+    });
+
+    const consultaProveedores = new Promise((resolve, reject) => 
+    {
+      conexion.query('SELECT * from mostrarproveedores', (error, results) => 
+      {
+        if (error)
+        {console.log( "Ha ocurrido un error al mostrar los Proveedores en las Compras, el error es => " + error); } 
+        else 
+        {
+          Proveedores = results;
+          resolve();
+        }
+      })
+    });
+
+    const consultaGerente = new Promise((resolve, reject) => 
+    {
+      conexion.query(`SELECT * from persona where Tipo_Persona = 'Gerente'`, (error, results) => 
+      {
+        if (error)
+        {console.log( "Ha ocurrido un error al mostrar los GErentes en las Compras, el error es => " + error); } 
+        else 
+        {
+          Gerentes = results;
+          resolve();
+        }
+      })
+    });
+
+    Promise.all([consultaCompras , consultaProductos, consultaProveedores,consultaGerente])
+    .then(() => 
+    {
+      //res.send(Gerentes);
+      res.render("compras", {productos: Productos , compras:Compras,proveedores:Proveedores,gerentes:Gerentes});
+    })
+    .catch(error => 
+    { console.log('Hubo un error al obtener los datos => ' + error); });    
+  }
+  else 
+  { res.redirect('/login'); }
 });
 
 router.get("/Vendedores", (req, res) => 
@@ -352,20 +402,6 @@ router.get("/Vendedores", (req, res) =>
 
 });
 
-/* router.get("/DeleteVendedor/:ID", (req, res) => 
-{
-  const id = req.params.ID;
-
-  conexion.query ("DELETE FROM persona where Id_Persona = ?", [id], (error, results) => 
-  {
-      if (error)
-      { throw error;} 
-      else 
-      { res.redirect("/Vendedores");}
-    });
-});
- */
-
 router.get("/EditVendedor/:ID", (req, res) => {
   const id = req.params.ID;
 
@@ -376,6 +412,17 @@ router.get("/EditVendedor/:ID", (req, res) => {
     else 
     {res.render("editvendedor.ejs", { vendedor: results[0] });}
     // res.send(results[0][0]);}
+  });
+});
+
+router.get ("/Proveedores", (req, res) => 
+{
+  conexion.query("SELECT * FROM mostrarproveedores", (error, results) => 
+  {
+    if (error) 
+    { console.log( "Ha ocurrido un error al mostrar los proveedores, el error es => " + error ); } 
+    else 
+    { res.render("Proveedores", { proveedores: results }); }
   });
 });
 
@@ -416,52 +463,111 @@ router.get ("/Show/ProductosDevueltos", (req, res) =>
 
 router.get("/Ventas", (req, res) => 
 {
-  if (req.session.loggedin) 
+  if(1) 
+  //if (req.session.loggedin)
   {
     const tipoVenta = req.query.tipoVenta;
 
-    conexion.query("SELECT * from mostrarventas", (error, results) => 
+    let Ventas = [];
+    let Productos = [];
+    let Clientes = [];
+    let Vendedores = [];
+
+    const consultaVentas = new Promise((resolve, reject) => 
     {
-      if (error) 
-      { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
-      else 
-      {  
-        const Ventas = results.map(venta => 
+      conexion.query("SELECT * FROM mostrarventas;", (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL MOSTRAR LAS VENTAS  => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          let resultados = results.map(venta => 
           {
             const fecha = new Date(venta.Fecha_Venta);
             const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
             const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-            
+              
             return {
               ...venta,
               Fecha_Venta: fechaFormateada
             };
           });
-  
-          conexion.query('SELECT * from productos', (error, results) => 
-          {
-            if (error)
-            {console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
-            else 
-            {
-              const Products = results.map( producto => 
-                {
-                  const fecha = new Date(producto.Fecha_Ingreso);
-                  const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-                  const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-                  
-                  return {
-                    ...producto,
-                    Fecha_Ingreso: fechaFormateada
-                  };
-                });
-  
-              //res.send(Products);
-              res.render("ventas", { ventas: Ventas, productos: Products , Tipo:tipoVenta});
-            }
-          })
-      }
+
+          Ventas = resultados;
+          resolve();
+        }
+      });
+    });
+
+    const consultaProductos = new Promise((resolve, reject) => 
+    {
+      conexion.query("SELECT * FROM Productos;", (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL MOSTRAR LOS PRODUCTOS  => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          Productos = results;
+          resolve();
+        }
+      });
+    });
+
+    const consultaClientes = new Promise((resolve, reject) => 
+    {
+      conexion.query("SELECT * FROM mostrarclientes;", (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL MOSTRAR LOS CLIENTES  => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          Clientes = results;
+          resolve();
+        }
+      });
+    });
+
+    const consultaVendedores = new Promise((resolve, reject) => 
+    {
+      conexion.query("SELECT * FROM mostrarvendedores;", (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL MOSTRAR LOS VENDEDORES  => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          Vendedores = results;
+          resolve();
+        }
+      });
+    });
+
+    Promise.all([consultaVentas, consultaProductos, consultaClientes , consultaVendedores])
+    .then(() => {
       
+      res.render("ventas", 
+      {
+        ventas: Ventas, 
+        productos: Productos , 
+        Tipo:tipoVenta,
+        clientes:Clientes,
+        vendedores:Vendedores
+      });
+
+    })
+    .catch(error => {
+      console.log('Hubo un error al obtener los datos => ' + error);
     });
   } 
   else 
@@ -470,47 +576,39 @@ router.get("/Ventas", (req, res) =>
 });
 
 router.get("/ShowProducts/:categoria", (req, res) => {
-  const categoria = req.params.categoria;
-  //res.send(categoria);
-  
-  conexion.query ('CALL MostrarProductos(?)',[categoria], (error, results) => 
-  {
-    if (error) 
-    { console.log( "Hubo un error al Mostrar estos Producto, error => " + error); } 
-    else 
+
+  if (req.session.loggedin) 
+  { 
+    const categoria = req.params.categoria;
+    //res.send(categoria);
+
+    conexion.query ('CALL MostrarProductos(?)',[categoria], (error, results) => 
     {
-      const productosFormateados = results[0].map(producto => 
-          {
-            const fecha = new Date(producto.Fecha_Ingreso);
-            const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-            const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-            
-            return {
-              ...producto,
-              Fecha_Ingreso: fechaFormateada
-            };
-          });
-
-          //res.send(productosFormateados);
-      res.render("showProducts.ejs", { Producto: productosFormateados, Categoria: categoria }); 
-    }   
-  });   
-
-});
-
-/* router.get("/DeleteProduct/:IdProd/cat/:cat", (req, res) =>   
-{
-  const cat = req.params.cat;
-  const id_prod = req.params.IdProd;
-
-   conexion.query ("DELETE FROM productos where Id_Producto = ?" , [id_prod],(error, results) => 
-   {
       if (error) 
-      { console.log("Hubo un error al eliminar el producto => " + error); } 
+      { console.log( "Hubo un error al Mostrar estos Producto, error => " + error); } 
       else 
-      { res.redirect('/ShowProducts/'+cat); }
+      {
+        const productosFormateados = results[0].map(producto => 
+            {
+              const fecha = new Date(producto.Fecha_Ingreso);
+              const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+              const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+              
+              return {
+                ...producto,
+                Fecha_Ingreso: fechaFormateada
+              };
+            });
+  
+        //res.send(productosFormateados);
+        res.render("showProducts.ejs", { Producto: productosFormateados, Categoria: categoria }); 
+      }   
     });  
-}); */
+  }
+  else 
+  { res.redirect('/login'); }
+ 
+});
 
 router.get("/EditProduct/:Cat/p/:IdProd", (req, res) => 
 {
@@ -685,6 +783,71 @@ router.get('/buscar-records', (req, res) =>
     
 });
 
+router.get('/buscar-prov', (req, res) => 
+{
+  const cedula = req.query.cedula;
+  
+  conexion.query("Select * from persona where Tipo_Persona='Proveedor' and  Cedula = ? ", [cedula], (error , results) => 
+  {
+    if(error)
+    {console.log('Hubo un error al buscar al Proveedor con Cedula: '+ cedula +' el error es => '+ error)}
+    else
+    {
+      if(results.length != 0)
+      {
+        const nombre = results[0].Nombre + ' ' + results[0].Apellido;
+        const COMERCIO = results[0].Comercio;
+        res.json({ nombreProveedor: nombre , comercio:COMERCIO}); 
+      }
+        else 
+        {res.json({ nombreProveedor: 'No se encontro al Proveedor' }); }
+      }
+  })
+  
+});
+
+router.get('/buscar-gerente', (req, res) => 
+  {
+    const cedula = req.query.cedula;
+    
+    conexion.query("Select * from persona where Tipo_Persona='Gerente' and  Cedula = ? ", [cedula], (error , results) => 
+    {
+      if(error)
+      {console.log('Hubo un error al buscar al Gerente con Cedula: '+ cedula +' el error es => '+ error)}
+      else
+      {
+        if(results.length != 0)
+        {
+          const nombre = results[0].Nombre + ' ' + results[0].Apellido;
+          res.json({ nombreGerente: nombre }); 
+        }
+          else 
+          {res.json({ nombreGerente: 'No se encontro al Gerente' }); }
+        }
+    })
+    
+  });
+
+router.get('/buscar-detallecompra', (req, res) => 
+{
+  const id = req.query.id;
+  conexion.query("SELECT * from mostrardetallecompras WHERE Id_Compra = ?", [id], (error , results) => 
+  {
+    if(error)
+    {console.log('Hubo un error al buscar el detalle de la Compra N° '+ id +' el error es => '+ error)}
+    else
+    {
+      const detalles_Compras = results;
+      res.json({ DetallesCompra: detalles_Compras }); 
+    }
+  }) 
+      
+});
+
+
+
+
+
 // 4 -> Registro
 router.post ("/register", async (req, res) => 
   {
@@ -777,7 +940,6 @@ router.post ("/auth", async (req, res) =>
 // 6 -> METODOS POST
 
 const crud = require("./controllers/crud");
-router.post("/AddProveedor", crud.AddClient);
 router.post("/AddClient", crud.AddClient);
 router.post("/UpdateClient", crud.UpdateClient);
 router.post("/AddVendedor", crud.AddVendedor);
@@ -787,6 +949,8 @@ router.post("/UpdateProduct", crud.UpdateProduct);
 router.post("/AddVenta",crud.AddVenta);
 router.post("/AddAbono",crud.AddAbono);
 router.post("/DevolverProducto",crud.DevolverProducto);
+router.post("/AddProveedor",crud.AddProveedor);
+router.post("/AddCompra",crud.AddCompra);
 
 module.exports = router;
 

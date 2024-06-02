@@ -1,9 +1,12 @@
 var productosSeleccionados = [];
 var ID_Venta = generarIdVenta();
 
+Fecha_Actual('Fecha_Venta');
+ActualizarFecha();
+
 document.getElementById('IdVenta').textContent='N° Venta: '+ID_Venta;
 
-function mostrarTablaSegunCategoria1() {
+function mostrarTablaSegunCategoria() {
     // Ocultar todas las tablas
     document.getElementById('tablaCalzado').style.display = 'none';
     document.getElementById('tablaPrendas').style.display = 'none';
@@ -41,54 +44,6 @@ function mostrarTablaSegunCategoria1() {
     }
 }
 
-function mostrarTablaSegunCategoria2() {
-  // Ocultar todas las tablas
-  document.getElementById('tablaCalzado').style.display = 'none';
-  document.getElementById('tablaPrendas').style.display = 'none';
-  document.getElementById('tablaCosmeticos').style.display = 'none';
-  document.getElementById('tablaElectrodomesticos').style.display = 'none';
-  document.getElementById('tablaPPlasticos').style.display = 'none';
-
-  // Obtener la categoría seleccionada
-  var seleccion = document.getElementById('categoriaSelect2').value;
-
-  // Mostrar la tabla correspondiente
-  switch (seleccion) {
-      case '1': 
-          document.getElementById('tablaCalzado').style.display = 'block';
-          document.getElementById('factura').style.display = 'block';
-          break;
-      case '2': 
-          document.getElementById('tablaPrendas').style.display = 'block';
-          document.getElementById('factura').style.display = 'block';
-          break;
-      case '3': 
-          document.getElementById('tablaCosmeticos').style.display = 'block';
-          document.getElementById('factura').style.display = 'block';
-          break;
-      case '4': 
-          document.getElementById('tablaElectrodomesticos').style.display = 'block';
-          document.getElementById('factura').style.display = 'block';
-          break;
-      case '5': 
-          document.getElementById('tablaPPlasticos').style.display = 'block';
-          document.getElementById('factura').style.display = 'block';
-          break;
-      
-  }
-}
-
-function mostrarPanelAbono() {
-    var panel = document.getElementById("panelAbono");
-    panel.style.display = "block";
-  }
-
-  function cerrarPanelAbono() {
-    var panel = document.getElementById("panelAbono");
-    panel.style.display = "none";
-  }
-  //FIN FORMULARIO
-
   //MOSTAR HISTORIAL DE ABONOS
   function mostrarPanelHistorialAbonos() {
     var panel = document.getElementById("panelHistorialAbonos");
@@ -102,22 +57,6 @@ function mostrarPanelAbono() {
   //FIN MOSTRAR HISTORIAL
 
   //AQUI TERMINA
-
-
-function mostrarFormulario() {
-    var tipoVenta = document.getElementById("TipoDeVenta_Select").value;
-
-    // Ocultar todos los formularios
-    document.getElementById("formularioContado").style.display = "none";
-    document.getElementById("formularioCredito").style.display = "none";
-
-    // Mostrar el formulario correspondiente según la opción seleccionada
-    if (tipoVenta === "Contado") {
-        document.getElementById("formularioContado").style.display = "block";
-    } else if (tipoVenta === "Credito") {
-        document.getElementById("formularioCredito").style.display = "block";
-    }
-}
 
 function TipoVenta()
 {
@@ -140,7 +79,6 @@ else if (tipoVenta === "Credito")
   document.getElementById("lb_FrecuenciaAbono").style.display = "block";
 }
 }
-
 
 function AñadirProducto(Id_Producto,Nombre_Producto,Precio, CantidadExistente) 
 {
@@ -173,11 +111,13 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, CantidadExistente)
   inputCantidad.onchange = function() 
   {
     var nuevaCantidad = parseInt(inputCantidad.value);
-    if (nuevaCantidad < 1) {
+    if (nuevaCantidad < 1) 
+    {
       // Si es negativa, establecer la cantidad a 1 (o al valor mínimo aceptable)
       inputCantidad.value = 1;
       nuevaCantidad = 1;
     }
+
     inputCantidad.max = producto.Existencia;
     if (nuevaCantidad > producto.Existencia) {
 
@@ -191,6 +131,7 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, CantidadExistente)
         timer: false,
       });
     }
+    
     inputCantidad.addEventListener('keypress', (e) => {
       // Obtener el valor actual del input como un número
       const cantidadIngresada = parseInt(inputCantidad.value + e.key);
@@ -367,7 +308,6 @@ function EliminarProducto(boton,id) {
     actualizarTotalEnTabla() 
 }
 
-
 function mostrarDetallesVenta(Id_Venta, Cliente, Vendedor, Fecha , Total) 
 {
   var panel = document.getElementById("panelDetalleVentas");
@@ -428,53 +368,51 @@ function actualizarTotalEnTabla()
   celda_total.innerHTML = 'C$ ' + totalVenta.toFixed(2);
 }
 
-function BuscarCliente()
+function BuscarCliente(cedula)
 {
-  const cedula = document.getElementById("CedulaCliente").value;
-
   fetch(`/buscar-cliente?cedula=${encodeURIComponent(cedula)}`)
   .then(response => response.json())
   .then(data => {
       // Mostrar el resultado en la tabla de factura
-      const NameLabel = document.getElementById("client_name");
-      NameLabel.removeAttribute("hidden");
+      const btnBusqueda = document.getElementById("btnBuscarCliente");
 
       if(data.nombreCliente == "No se encontro al Cliente")
       {
-        NameLabel.className = "text-danger";
-        NameLabel.innerText = data.nombreCliente;
+        btnBusqueda.className = "btn btn-outline-danger";
+        btnBusqueda.innerHTML = "No se encontro al Cliente <i class='bx bx-search'></i> ";
       }
       else
       {
-        NameLabel.className = "text-success";
-        NameLabel.innerText = 'Cliente: '+data.nombreCliente;
+        btnBusqueda.className = "btn btn-outline-success";
+        btnBusqueda.innerText = data.nombreCliente;
         document.getElementById('ClienteFactura').textContent = data.nombreCliente;
+        document.getElementById('CedulaCliente').value = cedula;
+        cerrarClienteVenta();
       }
   })
   .catch(error => console.error('Error:', error));
 }
 
-function BuscarVendedor()
+function BuscarVendedor(cedula)
 {
-  const cedula = document.getElementById("CedulaVendedor").value;
-
   fetch(`/buscar-vendedor?cedula=${encodeURIComponent(cedula)}`)
   .then(response => response.json())
   .then(data => {
       // Mostrar el resultado en la tabla de factura
-      const NameLabel = document.getElementById("vendedor_name");
-      NameLabel.removeAttribute("hidden");
+      const btnBusqueda = document.getElementById("btnBuscarVendedor");
 
       if(data.nombreVendedor == "No se encontro al Vendedor")
       {
-        NameLabel.className = "text-danger";
-        NameLabel.innerText = data.nombreVendedor;
+        btnBusqueda.className = "btn btn-outline-danger";
+        btnBusqueda.innerHTML = "No se encontro al Vendedor <i class='bx bx-search'></i> ";
       }
       else
       {
-        NameLabel.className = "text-success";
-        NameLabel.innerText = 'Vendedor: '+data.nombreVendedor;
+        btnBusqueda.className = "btn btn-outline-success";
+        btnBusqueda.innerText = data.nombreVendedor;
         document.getElementById('VendedorFactura').textContent =  data.nombreVendedor;
+        document.getElementById('CedulaVendedor').value = cedula;
+        cerrarVendedorVenta();
       }
   })
   .catch(error => console.error('Error:', error));
@@ -693,4 +631,77 @@ document.addEventListener('DOMContentLoaded', function() {
   function cerrarVendedorVenta() {
     var panel = document.getElementById("BuscarVendedorVenta");
     panel.style.display = "none";
+  }
+
+  function Fecha_Actual(Fecha)
+  {
+    const InputFecha = document.getElementById(Fecha);
+    // Obtiene la fecha actual
+    var today = new Date();
+
+    // Formatea la fecha a 'YYYY-MM-DD'
+    var day = String(today.getDate()).padStart(2, '0');
+    var month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses comienzan en 0
+    var year = today.getFullYear();
+
+    // Establece el valor del input con la fecha formateada
+    InputFecha.value = `${year}-${month}-${day}`;
+  }
+
+  //MOSTAR HISTORIAL DE ABONOS
+  function mostrarPanelHistorialAbonosUnico(Id,Cliente,Vendedor) 
+  {
+    var panel = document.getElementById("panelHistorialAbonosVenta");
+    panel.style.display = "block";
+  
+    document.getElementById('TitleHistorialAbonosVenta').innerText = 'Historial de abonos Venta N° '+Id;
+  
+    fetch(`/buscar-abonos?id=${encodeURIComponent(Id)}`)
+    .then(response => response.json())
+    .then(data => 
+    {
+      data.Abonos.forEach((abono) => 
+      { AgregarAbonosHistorial(Cliente,Vendedor,abono.Fecha_Abono,abono.Monto_Abonado,abono.Saldo_Restante); })
+    })
+    .catch(error => console.error('Error:', error));
+  }
+  
+  function cerrarPanelHistorialAbonosUnico() 
+  {
+    var panel = document.getElementById("panelHistorialAbonosVenta");
+    panel.style.display = "none";
+    
+    var tabla = document.getElementById("Tabla_Historial_Abonos_Venta").getElementsByTagName('tbody')[0];
+      
+    while (tabla.firstChild) 
+    { tabla.removeChild(tabla.firstChild);}
+  
+  }
+
+  function AgregarAbonosHistorial(Cliente,Vendedor,Fecha,Monto,Saldo)
+  {
+    var tabla = document.getElementById("Tabla_Historial_Abonos_Venta").getElementsByTagName('tbody')[0];
+
+    var nuevaFila = document.createElement("tr");
+    var celda_Cliente = document.createElement("td");
+    var celda_Vendedor = document.createElement("td");
+    var celda_Fecha_Abono = document.createElement("td");
+    var celda_Monto_abonado = document.createElement("td");
+    var celda_Saldo_Restante = document.createElement("td");
+
+    celda_Cliente.textContent = Cliente;
+    celda_Vendedor.textContent = Vendedor;
+    celda_Fecha_Abono.textContent = Fecha;
+    celda_Monto_abonado.textContent = 'C$ '+Monto;
+    celda_Saldo_Restante.textContent = 'C$ '+ Saldo;
+    
+    // Agregar las celdas a la fila
+    nuevaFila.appendChild(celda_Cliente);
+    nuevaFila.appendChild(celda_Vendedor);
+    nuevaFila.appendChild(celda_Fecha_Abono);
+    nuevaFila.appendChild(celda_Monto_abonado);
+    nuevaFila.appendChild(celda_Saldo_Restante);
+    
+    // Agregar la fila a la tabla
+    tabla.appendChild(nuevaFila);
   }

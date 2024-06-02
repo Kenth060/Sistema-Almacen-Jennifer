@@ -63,18 +63,21 @@
                                     <button class="btn btn-outline-success" type="button" id="btnBuscarCliente" onclick=" mostrarClienteVenta()">Buscar   <i class='bx bx-search'></i></button>
                                   </div>
 
-                                  <div class="mb-3">
-                                    <p class="text-success" id="client_name"  style="font-weight: bold;" hidden></p>
+                                  <div class="my-3">
+                                    <p class="text-success" id="client_name"  style="font-weight: bold;" hidden>Cliente</p>
                                   </div>
+                                  <input id="CedulaCliente" hidden>
             
                                   <label for="BuscarVendedor" class="form-label" >Buscar un vendedor</label>
                                   <div class="d-grid gap-2">
                                     <button class="btn btn-outline-success" type="button" id="btnBuscarVendedor" onclick="mostrarVendedorVenta()">Buscar   <i class='bx bx-search'></i></button>
                                   </div>
 
-                                  <div class="mb-3">
-                                    <p class="text-success" id="vendedor_name" hidden style="font-weight: bold;"></p>
+                                  <div class="my-3">
+                                    <p class="text-success" id="vendedor_name"  style="font-weight: bold;" hidden> Vendedor</p>
                                   </div>
+
+                                  <input id="CedulaVendedor" hidden>
                                      
                                   <div class="mb-3">
                                     <label for="Fecha_Venta" class="form-label">Ingrese la fecha de venta</label>
@@ -102,7 +105,7 @@
 
                                   <div class="mb-3">
                                     <label for="text" class="form-label">Seleccionar categoria del producto a añadir</label>
-                                    <select class="form-select" id="categoriaSelect1" onchange="mostrarTablaSegunCategoria1()">
+                                    <select class="form-select" id="categoriaSelect1" onchange="mostrarTablaSegunCategoria()">
                                       <label for="Categoria" class="form-label">Seleccione la categoria del producto que desea</label>
                                       <option selected disabled value="">
                                         Seleccione una categoria
@@ -129,42 +132,6 @@
                             <!--Mostrar tablas segun la seleccion-->
                             <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
                               <div class="row">
-                                <div id="tablaCalzado" style="display: none">
-                                  <table class="table primary" id="TableShoes">
-                                    <thead>
-                                      <tr>
-                                        <th class="centrado">Nombre del producto</th>
-                                        <th class="centrado">Marca</th>
-                                        <th class="centrado">Color</th>
-                                        <th class="centrado">Talla</th>
-                                        <th class="centrado">Existencia</th>
-                                        <th class="centrado">Precio</th>
-                                        <th class="centrado col-xl-1"><!-- Acción --></th>
-                                      </tr>
-                                    </thead>
-
-                                    <tbody>
-                                      <% productos.forEach((producto) => { %>
-                                        <% if( producto.Categoria == 'Calzado' ) { %>
-                                          <tr>
-                                            <td class="centrado"><%= producto.Tipo %> <%= producto.Modelo %></td>
-                                            <td class="centrado"><%= producto.Marca %></td>
-                                            <td class="centrado"><%= producto.Color %></td>
-                                            <td class="centrado"><%= producto.Talla %></td>
-                                            <td class="centrado"><%= producto.Existencia%></td>
-                                            <td class="centrado">C$ <%= producto.Precio %></td>
-                                            <td class="centrado"></td>
-                                            <td class="row px-2">
-                                              <!-- Botones de acciones -->
-                                             <!--  <input id="CantProduct" type="number" class="centrado mb-2"/> -->
-                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Modelo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio %>','<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
-                                            </td>
-                                          </tr>
-                                        <% } %>
-                                      <% }) %>
-                                    </tbody>
-                                  </table>
-                                </div>
 
                                 <div id="tablaPrendas" style="display: none">
                                   <table class="table primary" id="tablePV">
@@ -181,19 +148,19 @@
                                     </thead>
                                     <tbody>
                                       <% productos.forEach((producto) => { %>
-                                        <% if( producto.Categoria == 'Prendas de Vestir' ) { %>
+                                        <% if( producto.Categoria == 'Prendas de Vestir' && producto.Existencia > 0  ) { %>
                                           <tr>
                                             <td class="centrado"><%= producto.Tipo %></td>
                                             <td class="centrado"><%= producto.Marca %></td>
                                             <td class="centrado"><%= producto.Color %></td>
                                             <td class="centrado"><%= producto.Talla %></td>
                                             <td class="centrado"><%= producto.Existencia %></td>
-                                            <td class="centrado">C$ <%= producto.Precio %></td>
+                                            <td class="centrado">C$ <%= producto.Precio_Venta %></td>
                                             <td class="row px-4 centrado">
 
                                               <!-- Botones de acciones -->
                                               <!-- <input type="number" class="centrado mb-2"/> -->
-                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -216,17 +183,17 @@
                                     </thead>
                                     <tbody>
                                       <% productos.forEach((producto) => { %>
-                                        <% if( producto.Categoria == 'Cosmeticos' ) { %>
+                                        <% if( producto.Categoria == 'Cosmeticos' && producto.Existencia > 0 ) { %>
                                           <tr>
                                             <td class="centrado"><%= producto.Clasificacion %> <%= producto.Tipo %></td>
                                             <td class="centrado"><%= producto.Marca %></td>
                                             <td class="centrado"><%= producto.Color %></td>
                                             <td class="centrado"><%= producto.Existencia %></td>
-                                            <td class="centrado">C$ <%= producto.Precio %></td>
+                                            <td class="centrado">C$ <%= producto.Precio_Venta %></td>
                                             <td class="row px-4 centrado">
                                               <!-- Botones de acciones -->
                                               <!-- <input type="number"class="centrado mb-2"/> -->
-                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Clasificacion %> <%= producto.Tipo %> <%= producto.Marca %> <%= producto.Color %> ','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Clasificacion %> <%= producto.Tipo %> <%= producto.Marca %> <%= producto.Color %> ','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -250,18 +217,18 @@
                                     </thead>
                                     <tbody>
                                       <% productos.forEach((producto) => { %>
-                                        <% if( producto.Categoria == 'Electrodomesticos' ) { %>
+                                        <% if( producto.Categoria == 'Electrodomesticos' && producto.Existencia > 0  ) { %>
                                           <tr>
                                             <td class="centrado"><%= producto.Tipo %></td>
                                             <td class="centrado"><%= producto.Marca %></td>
                                             <td class="centrado"><%= producto.Modelo %></td>
                                             <td class="centrado"><%= producto.Color %></td>
                                             <td class="centrado"><%= producto.Existencia %></td>
-                                            <td class="centrado">C$ <%= producto.Precio %></td>
+                                            <td class="centrado">C$ <%= producto.Precio_Venta %></td>
                                             <td class="row px-4 centrado">
                                               <!-- Botones de acciones -->
                                               <!-- <input type="number" class="centrado mb-2"/> -->
-                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> <%= producto.Modelo %> Color <%= producto.Color %>','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> <%= producto.Modelo %> Color <%= producto.Color %>','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -285,18 +252,18 @@
                                     </thead>
                                     <tbody>
                                       <% productos.forEach((producto) => { %>
-                                        <% if( producto.Categoria == 'Productos Plasticos' ) { %>
+                                        <% if( producto.Categoria == 'Productos Plasticos' && producto.Existencia > 0  ) { %>
                                           <tr>
                                             <td class="centrado"><%= producto.Tipo %></td>
                                             <td class="centrado"><%= producto.Marca %></td>
                                             <td class="centrado"><%= producto.Color %></td>
                                             <td class="centrado"><%= producto.Dimensiones %></td>
                                             <td class="centrado"><%= producto.Existencia %></td>
-                                            <td class="centrado">C$ <%= producto.Precio %></td>
+                                            <td class="centrado">C$ <%= producto.Precio_Venta %></td>
                                             <td class="row px-4 centrado">
                                               <!-- Botones de acciones -->
                                               <!-- <input type="number" class="centrado mb-2"/> -->
-                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %>','<%= producto.Precio %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %>','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                             </td>
                                           </tr>
                                         <% } %>
@@ -304,6 +271,43 @@
                                     </tbody>
                                   </table>
                                 </div>
+
+                                <div id="tablaCalzado" style="display: none">
+                                  <table class="table primary" id="tableCalzado">
+                                    <thead>
+                                      <tr>
+                                        <th class="centrado">Nombre del producto</th>
+                                        <th class="centrado">Marca</th>
+                                        <th class="centrado">Color</th>
+                                        <th class="centrado">Talla</th>
+                                        <th class="centrado">Existencia</th>
+                                        <th class="centrado">Precio</th>
+                                        <th class="centrado"><!-- Acción --></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <% productos.forEach((producto) => { %>
+                                        <% if( producto.Categoria == 'Calzado' && producto.Existencia > 0 ) { %>
+                                          <tr>
+                                            <td class="centrado"><%= producto.Tipo %> <%= producto.Modelo %></td>
+                                            <td class="centrado"><%= producto.Marca %></td>
+                                            <td class="centrado"><%= producto.Color %></td>
+                                            <td class="centrado"><%= producto.Talla %></td>
+                                            <td class="centrado"><%= producto.Existencia %></td>
+                                            <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                            <td class="row px-4 centrado">
+                                              <!-- Botones de acciones -->
+                                              <!-- <input type="number" class="centrado mb-2"/> -->
+                                              <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Modelo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio_Venta %>','<%= producto.Existencia%>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                            </td>
+                                          </tr>
+                                        <% } %>
+                                      <% }) %>
+                                    </tbody>
+ 
+                                  </table>
+                                </div>
+
                               </div>
                             </div>
                           </div>
@@ -402,16 +406,6 @@
                 }
               </script>
 
-<!--               <nav class="navbar bg-body-tertiary">
-                <div class="container-fluid">
-                  <a class="navbar-brand px-3">Buscar una venta</a>
-                  <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search"/>
-                    <button class="btn btn-outline-success" type="submit">Buscar</button>
-                  </form>
-                </div>
-              </nav> -->
-
               <div class="Container">
                 <div class="row">
                   <div>
@@ -438,14 +432,25 @@
                               <td class="centrado">C$ <%= Venta.Total_Venta %></td>
                               <td class="centrado"><%= Venta.Estado_Venta %></td>
                               <td class="centrado">
-                                <button
-                                  type="button"
-                                  class="btn btn-success info-venta"
-                                  title="Informacion de la venta"
-                                  onclick="mostrarDetallesVenta('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>','<%= Venta.Fecha_Venta %>','<%= Venta.Total_Venta %>')">
-                                  <i class="fa-solid fa-money-check-dollar"></i>
-                                </button>
-                                
+                                <div class="d-flex align-items-center justify-content-center">
+                                  <button
+                                    type="button"
+                                    class="btn btn-success info-venta mx-1"
+                                    title="Informacion de la venta"
+                                    onclick="mostrarDetallesVenta('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>','<%= Venta.Fecha_Venta %>','<%= Venta.Total_Venta %>')">
+                                    <i class="fa-solid fa-money-check-dollar"></i>
+                                  </button>
+
+                                  <% if (  Venta.Tipo_Venta  == 'Credito') { %>
+                                    <button 
+                                      type="button" 
+                                      class="btn btn-primary mx-1" 
+                                      title="Abonos Realizados" 
+                                      onclick="mostrarPanelHistorialAbonosUnico('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>')" >
+                                      <i class="fa-solid fa-receipt fa-lg" style="color: #ffffff;"></i>
+                                    </button>
+                                  <% } %>
+                                </div>
                               </td>
                             </tr>
                           <% } else if(Tipo == 'Credito' && Venta.Tipo_Venta == 'Credito' ){ %>
@@ -457,16 +462,26 @@
                               <td class="centrado">C$ <%= Venta.Total_Venta %></td>
                               <td class="centrado"><%= Venta.Estado_Venta %></td>
                               <td class="centrado">
-                                <button
-                                  type="button"
-                                  class="btn btn-success info-venta"
-                                  title="Informacion de la venta"
-                                  onclick="mostrarDetallesVenta('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>','<%= Venta.Fecha_Venta %>','<%= Venta.Total_Venta %>')">
-                                  <i class="fa-solid fa-money-check-dollar"></i>
-                                </button>
-                                
+                                <div class="d-flex align-items-center justify-content-center">
+                                  <button
+                                    type="button"
+                                    class="btn btn-success info-venta mx-1"
+                                    title="Informacion de la venta"
+                                    onclick="mostrarDetallesVenta('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>','<%= Venta.Fecha_Venta %>','<%= Venta.Total_Venta %>')">
+                                    <i class="fa-solid fa-money-check-dollar"></i>
+                                  </button>
+
+                                  <% if (  Venta.Tipo_Venta  == 'Credito') { %>
+                                    <button 
+                                      type="button" 
+                                      class="btn btn-primary mx-1" 
+                                      title="Abonos Realizados" 
+                                      onclick="mostrarPanelHistorialAbonosUnico('<%= Venta.Id_Venta %>','<%= Venta.Cliente %>','<%= Venta.Vendedor %>')" >
+                                      <i class="fa-solid fa-receipt fa-lg" style="color: #ffffff;"></i>
+                                    </button>
+                                  <% } %>
+                                </div>
                               </td>
-                              
                             </tr>
                           <% } else if(Tipo == 'Contado' && Venta.Tipo_Venta == 'Contado' ){ %>
                             <tr>
@@ -566,27 +581,13 @@
                 </div>
               </div>
 
-              <div id="panelHistorialAbonos" class="panel-flotante" style="display: none">
+              <div id="panelHistorialAbonosVenta" class="panel-flotante" style="display: none">
                 <div class="panel-content">
-                  <h4>Historial de abonos</h4>
+                  <h4 id="TitleHistorialAbonosVenta">Historial de abonos</h4>
                   <nav class="navbar bg-body-tertiary">
-                    <div class="container-fluid">
-                      <a class="navbar-brand px-3">Buscar nombre del cliente</a>
-                      <form class="d-flex" role="search">
-                        <input
-                          class="form-control me-2"
-                          type="search"
-                          placeholder="Buscar..."
-                          aria-label="Search"
-                        />
-                        <button class="btn btn-outline-success" type="submit">
-                          Buscar
-                        </button>
-                      </form>
-                    </div>
                   </nav>
                   <div style="max-height: 300px; overflow-y: auto">
-                    <table class="table primary">
+                    <table class="table primary" id="Tabla_Historial_Abonos_Venta">
                       <thead>
                         <tr>
                           <th class="centrado">Nombre del cliente</th>
@@ -597,20 +598,13 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td class="centrado">Cliente B</td>
-                          <td class="centrado">Vendedor Y</td>
-                          <td class="centrado">2024-04-15</td>
-                          <td class="centrado">$200.00</td>
-                          <td class="centrado">$300.00</td>
-                        </tr>
                       </tbody>
                     </table>
                   </div>
                   <button
                     type="button"
                     class="btn btn-danger"
-                    onclick="cerrarPanelHistorialAbonos()"
+                    onclick="cerrarPanelHistorialAbonosUnico()"
                   >
                     Cerrar
                   </button>
@@ -634,6 +628,7 @@
                             <th class="centrado"></th>
                           </tr>
                         </thead>
+
                         <tbody>
                           <tr>
                             <td class="centrado" id="ClienteDetalle"></td>
@@ -655,23 +650,19 @@
                           </thead>
                         </tbody>
 
+                       <!--  Productos -->
                         <tbody>
-                          <tr>
-                          </tr>
+                         
                         </tbody>
+
                         <thead>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th class="centrado"></th>
+                          <th></th><th></th><th></th><th></th>
                           <th>Total</th>
                           <th></th>
                         </thead>
+
                         <tbody>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td ></td>
+                          <td></td><td></td><td></td><td ></td>
                           <td class="centrado" id="TotalDetalle"></td>
                           <td ></td>
                         </tbody>
@@ -692,25 +683,34 @@
               </div>
               </div> 
 
-              <div id="BuscarClienteVenta"class="panel-flotante panel-ancho"style="display: none">
+              <div id="BuscarClienteVenta"class="panel-flotante panelBusqueda-ancho"style="display: none">
                 <div class="panel-content">
                   <h4 id="Title_Compras">Buscar un cliente</h4>
-                  <div style="max-height: 300px; overflow-y: auto">
+
+                  
+                  <div style="max-height: 400px; overflow-y: auto">
+                    <a type="button" href="/Clientes" class="btn btn-success px-3 mt-2 mb-3" title="Agregar Nuevo Cliente">
+                      Agregar un nuevo Cliente <i class="fa-solid fa-user-plus mx-1"></i>
+                    </a>
                     <div class="row">
                       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <table class="table primary">
+                        <table class="table primary" id="TableClientsVenta">
                           <thead>
                             <tr>
                               <th class="centrado">Nombre</th>
-                              <th class="centrado">N. Cedula</th>
-                              <th class="centrado">Estado</th>
+                              <th class="centrado">Cedula</th>
+                              <th class="centrado">Credito Disponible</th>
                               <th class="centrado"></th>
                             </tr>
                             <tbody>
-                              <td class="centrado">Norlan Daniel Gonzalez Fonseca</td>
-                              <td class="centrado">001-190903-1031W</td>
-                              <td class="centrado">Activo</td> 
-                              <td class="centrado"><button type="button" class="btn btn-success px-3" title="Añadir"><i class='bx bxs-comment-add'></i></button></td>
+                              <% clientes.forEach((client) => { %>
+                                <tr>
+                                  <td class="centrado"><%= client.Nombre %></td>
+                                  <td class="centrado"><%= client.Cedula %></td>
+                                  <td class="centrado">C$ <%= client.Credito_Disponible %></td>
+                                  <td class="centrado"><button type="button" class="btn btn-success px-3" title="Añadir" onclick="BuscarCliente('<%= client.Cedula %>')"><i class="fa-solid fa-user-plus mx-1"></i></button></td>
+                                </tr>
+                                <% }) %>
                             </tbody>
                           </thead>
                         </table>
@@ -728,24 +728,30 @@
                 </div>
               </div>
   
-  
-              <div id="BuscarVendedorVenta"class="panel-flotante panel-ancho"style="display: none">
+              <div id="BuscarVendedorVenta"class="panel-flotante panelBusqueda-ancho"style="display: none">
                 <div class="panel-content">
                   <h4 id="Title_Compras">Buscar un vendedor</h4>
                   <div style="max-height: 300px; overflow-y: auto">
+                    <a type="button" href="/Vendedores" class="btn btn-success px-3 mt-2 mb-3" title="Agregar Nuevo Vendedor">
+                      Agregar un nuevo Vendedor <i class="fa-solid fa-user-plus mx-1"></i>
+                    </a>
                     <div class="row">
                       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <table class="table primary">
+                        <table class="table primary" id="TableVendedoresVenta">
                           <thead>
                             <tr>
                               <th class="centrado">Nombre</th>
-                              <th class="centrado">N. Cedula</th>
+                              <th class="centrado">Cedula</th>
                               <th class="centrado"></th>
                             </tr>
                             <tbody>
-                              <td class="centrado">Kenneth Fabian Silva Hernandez</td>
-                              <td class="centrado">001-000000-1000K</td> 
-                              <td class="centrado"><button type="button" class="btn btn-success px-3" title="Añadir"><i class='bx bxs-comment-add'></i></button></td>
+                              <% vendedores.forEach((vendedor) => { %>
+                                <tr>
+                                  <td class="centrado"><%= vendedor.Nombre %></td>
+                                  <td class="centrado"><%= vendedor.Cedula %></td>
+                                  <td class="centrado"><button type="button" class="btn btn-success px-3" title="Añadir" onclick="BuscarVendedor('<%= vendedor.Cedula %>')"><i class="fa-solid fa-user-plus mx-1"></i></button></td>
+                                </tr>
+                              <% }) %>
                             </tbody>
                           </thead>
                         </table>
@@ -762,6 +768,8 @@
                   </button>
                 </div>
               </div>
+
+
 
             </div>
         </div>
@@ -818,11 +826,30 @@
     <script src="/resources/js/script.js"></script>
     <script src="/resources/js/ScriptVentas.js"></script>
 
-  
     <script>
-      $(document).ready(function(){
+      $(document).ready(function()
+      {
+        $('#tableCalzado').DataTable({
+          info: false,
+          ordering: false,
+          lengthMenu: [5,10,15,20,25,50],
+          "oLanguage": {
+            "sSearch": "Buscar un Producto:",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLengthMenu": "Mostrar  _MENU_  Productos",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"}
+            }
+        });
+      });
         
-          $('#tablePP').DataTable({
+      $(document).ready(function(){
+        $('#tablePP').DataTable({
             info: false,
             ordering: false,
             lengthMenu: [5,10,15,20,25,50],
@@ -839,8 +866,8 @@
                   "sPrevious": "Anterior"}
               }
           });
-      });
-    
+        });
+      
       $(document).ready(function(){
           
         $('#tablePV').DataTable({
@@ -904,33 +931,70 @@
         });
     });
 
-    </script>
-
-    <script>
       $(document).ready(function(){
         
-          $('#TableVentas').DataTable({
-            info: false,
-            ordering: false,
-            lengthMenu: [5,10,15,20,25,50],
-            "oLanguage": {
-              "sSearch": "Buscar una Venta:",
-              "sZeroRecords": "No se encontraron resultados",
-              "sLengthMenu": "Mostrar  _MENU_  Ventas",
-              "sZeroRecords": "No se encontraron resultados",
-              "sLoadingRecords": "Cargando...",
-              "oPaginate": {
-                  "sFirst": "Primero",
-                  "sLast": "Último",
-                  "sNext": "Siguiente",
-                  "sPrevious": "Anterior"}
-              }
-          });
+      $('#TableVentas').DataTable({
+        info: false,
+        ordering: false,
+        lengthMenu: [5,10,15,20,25,50],
+        "oLanguage": {
+          "sSearch": "Buscar una Venta:",
+          "sZeroRecords": "No se encontraron resultados",
+          "sLengthMenu": "Mostrar  _MENU_  Ventas",
+          "sZeroRecords": "No se encontraron resultados",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+              "sFirst": "Primero",
+              "sLast": "Último",
+              "sNext": "Siguiente",
+              "sPrevious": "Anterior"}
+          }
       });
-    </script>
-
+  });
     
-
+      $(document).ready(function(){
+            
+        $('#TableClientsVenta').DataTable({
+          info: false,
+          ordering: false,
+          lengthMenu: [5,10,15,20,25,50],
+          "oLanguage": {
+            "sSearch": "Buscar un Cliente:",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLengthMenu": "Mostrar  _MENU_  Clientes",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"}
+            }
+        });
+    });
+      
+      $(document).ready(function(){
+        
+      $('#TableVendedoresVenta').DataTable({
+        info: false,
+        ordering: false,
+        lengthMenu: [5,10,15,20,25,50],
+        "oLanguage": {
+          "sSearch": "Buscar un Vendedor:",
+          "sZeroRecords": "No se encontraron resultados",
+          "sLengthMenu": "Mostrar  _MENU_  Vendedores",
+          "sZeroRecords": "No se encontraron resultados",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+              "sFirst": "Primero",
+              "sLast": "Último",
+              "sNext": "Siguiente",
+              "sPrevious": "Anterior"}
+          }
+      });
+  });
     
+    </script> 
+
   </body>
 </html>

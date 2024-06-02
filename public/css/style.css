@@ -1,4 +1,7 @@
-*{
+ /* Google Font Link (tipo de letra)*/
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+ 
+ *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -271,9 +274,6 @@ body{
  }
 
  /*SIDEBAR*/
-
- /* Google Font Link (tipo de letra)*/
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 .sidebar{
   position: fixed;
@@ -574,6 +574,12 @@ body{
   margin: 0 auto; /* Esto centra el panel horizontalmente en la página */
 }
 
+.panelBusqueda-ancho {
+  max-width: 770px; /*ajustar este valor según varia dog*/
+  width: 150%;
+  margin: 0 auto; /* Esto centra el panel horizontalmente en la página */
+}
+
 table.dataTable {
   margin-top:10px !important;  
   margin-bottom:8px !important;  
@@ -590,3 +596,10 @@ table#TableReturnProducts {
 }
 
 th.dt-center, td.dt-center { text-align: center; }
+
+.panel-ancho-Compras  {
+  max-width: 850px; /*ajustar este valor según varia dog*/
+  width: 150%;
+  margin: 0 auto; /* Esto centra el panel horizontalmente en la página */
+}
+

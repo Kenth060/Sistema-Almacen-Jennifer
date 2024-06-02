@@ -4,24 +4,30 @@ const Dimensiones = document.getElementById('Dimensiones');
 const Talla = document.getElementById('Talla');
 const Modelo = document.getElementById('Modelo')
 const Categoria_Prod = document.getElementById('Categoria_Prod');
+const FechaVencimiento = document.getElementById('FechaVencimiento');
 
 const Clasificacionlb = document.getElementById('Clasificacionlb');
 const U_medlb = document.getElementById('UnidadMedidalb');
 const Dimensioneslb = document.getElementById('Dimensioneslb');
 const Tallalb = document.getElementById('Tallalb');
 const Modelolb = document.getElementById('Modelolb')
+const FechaVencimientolb = document.getElementById('FechaVencimientolb');
+
+//Fecha_Actual();
 
 Talla.style.display='none';
 Modelo.style.display='none';
 Clasificacion.style.display='none';
 U_med .style.display='none';
-Dimensiones.style.display='none';
+Dimensiones.style.display='none'; 
+FechaVencimiento.style.display = 'none';
 
 Tallalb.style.display='none';
 Modelolb.style.display='none';
 Clasificacionlb.style.display='none';
 U_medlb.style.display='none';
 Dimensioneslb.style.display='none'; 
+FechaVencimientolb.style.display = 'none';
 
 var opcionSeleccionada = document.getElementById('categoria').value;
 
@@ -31,143 +37,167 @@ if(opcionSeleccionada === '1') /*seleccion de Calzado en el Dropdown */
   Clasificacion.style.display='none';
   U_med .style.display='none';
   Dimensiones.style.display='none';
+  FechaVencimiento.style.display='none'
+
   Clasificacion.removeAttribute('required');
   U_med.removeAttribute('required');
   Dimensiones.removeAttribute('required');
+  FechaVencimiento.removeAttribute('required');
 
   /*deshabilitacion de labels */
   Clasificacionlb.style.display='none';
   Dimensioneslb.style.display='none';
   U_medlb.style.display='none';
+  FechaVencimientolb.style.display='none'
 
   /*Habilitacion*/
   Talla.style.display='block';
-  Tallalb.style.display='block';
-  Modelo.style.display='block';
-  Modelolb.style.display='block';
-  Talla.setAttribute('required','true');
-  Modelo.setAttribute('required','true');
-
-  Categoria_Prod.value = 'Calzado';
-}
-else if(opcionSeleccionada === '2') /*seleccion de Prendas en el Dropdown */
-{
-  Categoria_Prod.value = 'Prendas de Vestir';
-  /*deshabilitacion de inputs */
-
-    Clasificacion.style.display='none';
-    U_med.style.display='none';
-    Dimensiones.style.display='none';
-    Modelo.style.display='none';
-    Clasificacion.removeAttribute('required');
-    U_med.removeAttribute('required');
-    Dimensiones.removeAttribute('required');
-    Modelo.removeAttribute('required');
-
-    /*deshabilitacion de labels */
-    Clasificacionlb.style.display='none';
-    U_medlb.style.display='none';
-    Dimensioneslb.style.display='none';
-    Modelolb.style.display='none';
-
-    /*Habilitacion*/
-    Talla.style.display='block';
     Tallalb.style.display='block';
-    Talla.setAttribute('required','true');
-
-}
-else if (opcionSeleccionada === '3') /*seleccion de Cosmeticos en el Dropdown */
-{
-  Categoria_Prod.value = 'Cosmeticos';
-  /*deshabilitacion de inputs */
-  U_med.style.display='none';
-  Dimensiones.style.display='none';
-  Modelo.style.display='none';
-  Talla.style.display='none';
-  U_med.removeAttribute('required');
-  Dimensiones.removeAttribute('required');
-  Modelo.removeAttribute('required');
-  Talla.removeAttribute('required');
-
-  /*deshabilitacion de labels */
-  Tallalb.style.display='none';
-  Dimensioneslb.style.display='none';
-  U_medlb.style.display='none';
-  Modelolb.style.display='none';
-
-  /*Habilitacion*/
-  Clasificacion.style.display='block';
-  Clasificacionlb.style.display='block';
-  Clasificacion.setAttribute('required','true');
-
-}
-else if(opcionSeleccionada === '4') /*seleccion de Electrodomesticos en el Dropdown */
-{
-  Categoria_Prod.value = 'Electrodomesticos';
-  /*deshabilitacion de inputs */
-    Clasificacion.style.display='none';
-    U_med.style.display='none';
-    Dimensiones.style.display='none';
-    Talla.style.display='none';
-    Clasificacion.removeAttribute('required');
-    U_med.removeAttribute('required');
-    Dimensiones.removeAttribute('required');
-    Talla.removeAttribute('required');
-
-    /*deshabilitacion de labels */
-    Clasificacionlb.style.display='none';
-    Dimensioneslb.style.display='none';
-    U_medlb.style.display='none';
-    Tallalb.style.display='none';
-
-    /*Habilitacion*/
     Modelo.style.display='block';
     Modelolb.style.display='block';
+    Talla.setAttribute('required','true');
     Modelo.setAttribute('required','true');
-}
-else if(opcionSeleccionada === '5') /*seleccion de productos plasticos en el Dorpdown */
-{   
-  Categoria_Prod.value = 'Productos Plasticos';
-  /*Habilitacion de inputs */
-    Clasificacion.style.display='none';
-    Talla.style.display='none';
-    Modelo.style.display='none';
-    Clasificacion.removeAttribute('required');
-    Talla.removeAttribute('required');
-    Modelo.removeAttribute('required');
 
-  /*Habilitacion de labels */
-    Clasificacionlb.style.display='none';
+    Categoria_Prod.value = 'Calzado';
+  }
+  else if(opcionSeleccionada === '2') /*seleccion de Prendas en el Dropdown */
+  {
+    Categoria_Prod.value = 'Prendas de Vestir';
+    /*deshabilitacion de inputs */
+
+      Clasificacion.style.display='none';
+      U_med.style.display='none';
+      Dimensiones.style.display='none';
+      Modelo.style.display='none';
+      FechaVencimiento.style.display='none'
+
+      Clasificacion.removeAttribute('required');
+      U_med.removeAttribute('required');
+      Dimensiones.removeAttribute('required');
+      Modelo.removeAttribute('required');
+      FechaVencimiento.removeAttribute('required');
+
+      /*deshabilitacion de labels */
+      Clasificacionlb.style.display='none';
+      U_medlb.style.display='none';
+      Dimensioneslb.style.display='none';
+      Modelolb.style.display='none';
+      FechaVencimientolb.style.display='none'
+
+      /*Habilitacion*/
+      Talla.style.display='block';
+      Tallalb.style.display='block';
+      Talla.setAttribute('required','true');
+  }
+  else if (opcionSeleccionada === '3') /*seleccion de Cosmeticos en el Dropdown */
+  {
+    Categoria_Prod.value = 'Cosmeticos';
+
+    /*deshabilitacion de inputs */
+    U_med.style.display='none';
+    Dimensiones.style.display='none';
+    Modelo.style.display='none';
+    Talla.style.display='none';
+    U_med.removeAttribute('required');
+    Dimensiones.removeAttribute('required');
+    Modelo.removeAttribute('required');
+    Talla.removeAttribute('required');
+
+    /*deshabilitacion de labels */
     Tallalb.style.display='none';
+    Dimensioneslb.style.display='none';
+    U_medlb.style.display='none';
     Modelolb.style.display='none';
 
-  /*Habilitacion*/
-    Dimensiones.style.display='block';
-    Dimensioneslb.style.display='block';
-    U_med.style.display='block';
-    U_medlb.style.display='block';
-    Dimensiones.setAttribute('required','true');
-    U_med.setAttribute('required','true');
-}
-else
-{
-  Talla.style.display='none';
-  Modelo.style.display='none';
-  Clasificacion.style.display='none';
-  U_med .style.display='none';
-  Dimensiones.style.display='none';
-  Talla.removeAttribute('required');
-  Modelo.removeAttribute('required');
-  Clasificacion.removeAttribute('required');
-  U_med.removeAttribute('required');
-  Dimensiones.removeAttribute('required');
+    /*Habilitacion*/
+    Clasificacion.style.display='block';
+    Clasificacionlb.style.display='block';
+    FechaVencimiento.style.display='block'
+    FechaVencimientolb.style.display='block'
+    Clasificacion.setAttribute('required','true');
+    FechaVencimiento.setAttribute('required','true');
 
-  Tallalb.style.display='none';
-  Modelolb.style.display='none';
-  Clasificacionlb.style.display='none';
-  U_medlb.style.display='none';
-  Dimensioneslb.style.display='none';
-}
+  }
+  else if(opcionSeleccionada === '4') /*seleccion de Electrodomesticos en el Dropdown */
+  {
+    Categoria_Prod.value = 'Electrodomesticos';
+    /*deshabilitacion de inputs */
+      Clasificacion.style.display='none';
+      U_med.style.display='none';
+      Dimensiones.style.display='none';
+      Talla.style.display='none';
+      FechaVencimiento.style.display='none'
+      
+      Clasificacion.removeAttribute('required');
+      U_med.removeAttribute('required');
+      Dimensiones.removeAttribute('required');
+      Talla.removeAttribute('required');
+      FechaVencimiento.removeAttribute('required');
+
+      /*deshabilitacion de labels */
+      Clasificacionlb.style.display='none';
+      Dimensioneslb.style.display='none';
+      U_medlb.style.display='none';
+      Tallalb.style.display='none';
+      FechaVencimientolb.style.display = 'none';
+
+      /*Habilitacion*/
+      Modelo.style.display='block';
+      Modelolb.style.display='block';
+      Modelo.setAttribute('required','true');
+  }
+  else if(opcionSeleccionada === '5') /*seleccion de productos plasticos en el Dorpdown */
+  {   
+    Categoria_Prod.value = 'Productos Plasticos';
+
+    /*Habilitacion de inputs */
+      Clasificacion.style.display='none';
+      Talla.style.display='none';
+      Modelo.style.display='none';
+      FechaVencimiento.style.display = 'none';
+
+      Clasificacion.removeAttribute('required');
+      Talla.removeAttribute('required');
+      Modelo.removeAttribute('required');
+      FechaVencimiento.removeAttribute('required');
+
+    /*Habilitacion de labels */
+      Clasificacionlb.style.display='none';
+      Tallalb.style.display='none';
+      Modelolb.style.display='none';
+
+
+    /*Habilitacion*/
+      Dimensiones.style.display='block';
+      Dimensioneslb.style.display='block';
+      U_med.style.display='block';
+      U_medlb.style.display='block';
+      Dimensiones.setAttribute('required','true');
+      U_med.setAttribute('required','true');
+  }
+  else
+  {
+    Talla.style.display='none';
+    Modelo.style.display='none';
+    Clasificacion.style.display='none';
+    U_med .style.display='none';
+    Dimensiones.style.display='none';
+    FechaVencimiento.style.display='none'
+    Talla.removeAttribute('required');
+    Modelo.removeAttribute('required');
+    Clasificacion.removeAttribute('required');
+    U_med.removeAttribute('required');
+    Dimensiones.removeAttribute('required');
+    FechaVencimiento.removeAttribute('required');
+
+    Tallalb.style.display='none';
+    Modelolb.style.display='none';
+    Clasificacionlb.style.display='none';
+    U_medlb.style.display='none';
+    Dimensioneslb.style.display='none';
+    FechaVencimientolb.style.display='none'
+  }
+
 
 document.getElementById('categoria').addEventListener('change',function()
 {
@@ -179,14 +209,18 @@ document.getElementById('categoria').addEventListener('change',function()
       Clasificacion.style.display='none';
       U_med .style.display='none';
       Dimensiones.style.display='none';
+      FechaVencimiento.style.display='none'
+
       Clasificacion.removeAttribute('required');
       U_med.removeAttribute('required');
       Dimensiones.removeAttribute('required');
+      FechaVencimiento.removeAttribute('required');
 
       /*deshabilitacion de labels */
       Clasificacionlb.style.display='none';
       Dimensioneslb.style.display='none';
       U_medlb.style.display='none';
+      FechaVencimientolb.style.display='none'
 
       /*Habilitacion*/
       Talla.style.display='block';
@@ -207,26 +241,30 @@ document.getElementById('categoria').addEventListener('change',function()
         U_med.style.display='none';
         Dimensiones.style.display='none';
         Modelo.style.display='none';
+        FechaVencimiento.style.display='none'
+
         Clasificacion.removeAttribute('required');
         U_med.removeAttribute('required');
         Dimensiones.removeAttribute('required');
         Modelo.removeAttribute('required');
+        FechaVencimiento.removeAttribute('required');
 
         /*deshabilitacion de labels */
         Clasificacionlb.style.display='none';
         U_medlb.style.display='none';
         Dimensioneslb.style.display='none';
         Modelolb.style.display='none';
+        FechaVencimientolb.style.display='none'
 
         /*Habilitacion*/
         Talla.style.display='block';
         Tallalb.style.display='block';
         Talla.setAttribute('required','true');
-
     }
     else if (opcionSeleccionada === '3') /*seleccion de Cosmeticos en el Dropdown */
     {
       Categoria_Prod.value = 'Cosmeticos';
+
       /*deshabilitacion de inputs */
       U_med.style.display='none';
       Dimensiones.style.display='none';
@@ -246,7 +284,10 @@ document.getElementById('categoria').addEventListener('change',function()
       /*Habilitacion*/
       Clasificacion.style.display='block';
       Clasificacionlb.style.display='block';
+      FechaVencimiento.style.display='block'
+      FechaVencimientolb.style.display='block'
       Clasificacion.setAttribute('required','true');
+      FechaVencimiento.setAttribute('required','true');
 
     }
     else if(opcionSeleccionada === '4') /*seleccion de Electrodomesticos en el Dropdown */
@@ -257,16 +298,20 @@ document.getElementById('categoria').addEventListener('change',function()
         U_med.style.display='none';
         Dimensiones.style.display='none';
         Talla.style.display='none';
+        FechaVencimiento.style.display='none'
+        
         Clasificacion.removeAttribute('required');
         U_med.removeAttribute('required');
         Dimensiones.removeAttribute('required');
         Talla.removeAttribute('required');
+        FechaVencimiento.removeAttribute('required');
 
         /*deshabilitacion de labels */
         Clasificacionlb.style.display='none';
         Dimensioneslb.style.display='none';
         U_medlb.style.display='none';
         Tallalb.style.display='none';
+        FechaVencimientolb.style.display = 'none';
 
         /*Habilitacion*/
         Modelo.style.display='block';
@@ -276,18 +321,23 @@ document.getElementById('categoria').addEventListener('change',function()
     else if(opcionSeleccionada === '5') /*seleccion de productos plasticos en el Dorpdown */
     {   
       Categoria_Prod.value = 'Productos Plasticos';
+
       /*Habilitacion de inputs */
         Clasificacion.style.display='none';
         Talla.style.display='none';
         Modelo.style.display='none';
+        FechaVencimiento.style.display = 'none';
+
         Clasificacion.removeAttribute('required');
         Talla.removeAttribute('required');
         Modelo.removeAttribute('required');
+        FechaVencimientolb.removeAttribute('required');
 
       /*Habilitacion de labels */
         Clasificacionlb.style.display='none';
         Tallalb.style.display='none';
         Modelolb.style.display='none';
+
 
       /*Habilitacion*/
         Dimensiones.style.display='block';
@@ -304,17 +354,20 @@ document.getElementById('categoria').addEventListener('change',function()
       Clasificacion.style.display='none';
       U_med .style.display='none';
       Dimensiones.style.display='none';
+      FechaVencimiento.style.display='none'
       Talla.removeAttribute('required');
       Modelo.removeAttribute('required');
       Clasificacion.removeAttribute('required');
       U_med.removeAttribute('required');
       Dimensiones.removeAttribute('required');
+      FechaVencimiento.removeAttribute('required');
 
       Tallalb.style.display='none';
       Modelolb.style.display='none';
       Clasificacionlb.style.display='none';
       U_medlb.style.display='none';
       Dimensioneslb.style.display='none';
+      FechaVencimientolb.style.display='none'
     }
   });
 
@@ -420,3 +473,25 @@ const inputLetra = document.querySelectorAll('input[type="text"]');
       }
     });
   });
+
+  document.querySelectorAll('.tdExistenciaProd').forEach(td => {
+    if (opcionSeleccionada == '1') 
+    { td.innerText += ' Pares'; } 
+    else 
+    { td.innerText += ' Unidades'; }
+  });
+
+function Fecha_Actual()
+{
+  const InputFechaIngreso = document.getElementById('FechaIngreso');
+  // Obtiene la fecha actual
+  var today = new Date();
+
+  // Formatea la fecha a 'YYYY-MM-DD'
+  var day = String(today.getDate()).padStart(2, '0');
+  var month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses comienzan en 0
+  var year = today.getFullYear();
+
+  // Establece el valor del input con la fecha formateada
+  InputFechaIngreso.value = `${year}-${month}-${day}`;
+}

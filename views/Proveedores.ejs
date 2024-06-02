@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Clientes Comercial Jennifer</title>
+    <title>Proveedores Comercial Jennifer</title>
     <!-- FA pencil-->
     <link rel="shortcut icon" href="/resources/images/favicon.ico">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"/>
@@ -23,175 +23,146 @@
     <%- include('sidebar.ejs') %>
 
     <section class="home-section">
+
       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <div class="Container">
           <div>
             <div id="panelRegistroProveedor" class="panel-flotante panel-ancho" style="display: none">
               <div class="panel-content">
-                <h4>Registrar un nuevo proveedor</h4>
+                <h4><b>Registrar a un nuevo proveedor</b></h4>
 
                 <div style="max-height: 300px; overflow-y: auto">
                   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                      <h3>Registrar Proveedor</h3>
 
-                      <form action="" method="post" class="needs-validation" novalidate>
-                        <div class="mb-2">
-                          <label for="Nombre" class="form-label">Nombres</label>
-                          <input type="text" class="form-control" id="Tipo" name="Tipo_cl" placeholder="Tipo" value="Cliente"  hidden/>
-                          <input type="text" class="form-control" id="Nombre" name="Nombre_cl" placeholder="Nombres" required/>
-                          <div class="invalid-feedback">
-                            Es necesario el Nombre
-                          </div>
+                      <form action="/AddProveedor" method="post" class="needs-validation" novalidate>
+
+                        <!-- Nombres -->
+                        <div class="mt-2 mb-2">
+                          <label for="Nombre" class="form-label"><b>Nombres del Proveedor</b></label>
+                          <input type="text" class="form-control" id="Tipo" name="Tipo_pro" placeholder="Tipo" value="Proveedor"  hidden/>
+                          <input type="text" class="form-control" id="Nombre" name="Nombre_pro" placeholder="Nombres del Proveedor" required/>
+                          <div class="invalid-feedback">Por favor ingrese los nombres del proveedor</div>
                         </div>
 
+                        <!-- Apellidos -->
                         <div class="mb-2">
-                          <label for="Apellido" class="form-label"
-                            >Apellidos</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Apellido"
-                            name="Apellido_cl"
-                            placeholder="Apellidos"
-                            required
-                          />
-                          <div
-                            class="invalid-feedback"
-                          >
-                            Es necesario el Apellido
-                          </div>
+                          <label for="Apellido" class="form-label"><b>Apellidos del Proveedor</b></label>
+                          <input type="text" class="form-control" id="Apellido" name="Apellido_pro" placeholder="Apellidos" required/>
+                          <div class="invalid-feedback">Por favor ingrese los apellidos del proveedor</div>
                         </div>
+
+                        <!-- Cedula -->
                         <div class="mb-2">
-                          <label for="Telefono" class="form-label"
-                            >Telefono</label
-                          >
-                          <input
-                            type="number"
-                            class="form-control"
-                            id="Telefono"
-                            name="Telefono_cl"
-                            placeholder="Telefono"
-                            required
-                          />
-                          <div
-                            class="invalid-feedback"
-                          >
-                            Es necesario número teléfonico
-                          </div>
+                          <label for="Cedula" class="form-label"><b>Cedula del Proveedor</b></label>
+                          <input type="text" class="form-control" id="Cedula" name="Cedula_pro" placeholder="Cedula del Proveedor" required/>
+                          <div class="invalid-feedback">Por favor ingrese la cedula del proveedor</div>
                         </div>
+
+                        <!-- Telefono -->
                         <div class="mb-2">
-                          <label for="Cedula" class="form-label">Cedula</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Cedula"
-                            name="Cedula_cl"
-                            placeholder="Cedula"
-                            required
-                          />
-                          <div
-                            class="invalid-feedback"
-                          >
-                            Es necesario número de cédula
-                          </div>
+                          <label for="Telefono" class="form-label"><b>Teléfono del Proveedor</b></label>
+                          <input type="number" class="form-control" id="Telefono" name="Telefono_pro" placeholder="Telefono" required/>
+                          <div class="invalid-feedback">Por favor ingrese el numero de teléfono del proveedor</div>
                         </div>
+
+                        <!-- Comercio -->
+                        <div class="mb-2">
+                          <label for="Comercio" class="form-label"><b>Comercio al que pertenece el Proveedor</b></label>
+                          <input type="text" class="form-control" id="Comercio" name="Comercio_pro" placeholder="Comercio al que pertenece el Proveedor" required/>
+                          <div class="invalid-feedback">Por favor ingrese la cedula del proveedor</div>
+                        </div>
+
+                        <!-- Distrito -->
                         <div class="mb-1 position-relative">
-                          <label for="Distrito_cl" class="form-label"
-                            >Dirección</label
-                          >
-                          <select
-                            id="Distrito"
-                            name="Distrito_cl"
-                            class="form-select mb-2 position-relative"
-                            aria-label="Distrito"
-                            required
-                          >
+                          <h5 class="my-3 fw-bold">Dirección del Comercio</h5>
+
+                          <label for="Distrito_pro" class="form-label"><b>Seleccione el Distrito</b></label>
+                          <select id="Distrito_pro" name="Distrito_pro"  class="form-select mb-2 position-relative" aria-label="Distrito" required>
                             <option selected disabled value="">
                               Seleccionar Distrito...
                             </option>
-                            <option value="I">I</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
-                            <option value="VI">VI</option>
-                            <option value="VII">VII</option>
+                            <option value="I">Distrito I</option>
+                            <option value="II">Distrito II</option>
+                            <option value="III">Distrito III</option>
+                            <option value="IV">Distrito IV</option>
+                            <option value="V">Distrito V</option>
+                            <option value="VI">Distrito VI</option>
+                            <option value="VII">Distrito VII</option>
                           </select>
-                          <div
-                            class="invalid-feedback"
-                          >
-                            Es necesario el Distrito
-                          </div>
+                          <div class="invalid-feedback">Por favor ingrese el distrito</div>
                         </div>
 
+                        <!-- Zona de Residencia -->
                         <div class="mb-2">
-                          <label for="Residencia" class="form-label"
-                            >Zona de Residencia</label
-                          >
+                          <label for="Residencia" class="form-label fw-bold">Zona de Residencia</label>
                           <input
                             type="text"
                             class="form-control"
                             id="Residencia"
-                            name="Residencia_cl"
+                            name="Residencia_pro"
                             placeholder="Zona de Residencia"
                             required
                           />
                           <div
                             class="invalid-feedback"
                           >
-                            Es necesario la zona de residencia
+                            Por favor ingrese la zona donde reside el Comercio
                           </div>
                         </div>
+
+                        <!-- Punto Referencia -->
                         <div class="mb-2">
-                          <label for="PuntoReferencia" class="form-label"
+                          <label for="PuntoReferencia" class="form-label fw-bold"
                             >Punto de Referencia</label
                           >
                           <input
                             type="text"
                             class="form-control"
                             id="PuntoReferencia"
-                            name="PuntoReferencia_cl"
+                            name="PuntoReferencia_pro"
                             placeholder="Punto de Referencia"
                             required
                           />
                           <div
                             class="invalid-feedback"
                           >
-                            Solicitamos un punto de Referencia
+                            Por favor ingrese el punto de referencia de la dirección
                           </div>
                         </div>
+
+                        <!-- Distancia -->
                         <div class="mb-2">
-                          <label for="Distancia" class="form-label"
+                          <label for="Distancia" class="form-label fw-bold"
                             >Distancia</label
                           >
                           <input
                             type="text"
                             class="form-control"
                             id="Distancia"
-                            name="Distancia_cl"
+                            name="Distancia_pro"
                             placeholder="Distancia"
                           />
                         </div>
-                        <div class="mb-2">
-                          <label for="Casa" class="form-label"
-                            >Numero de casa</label
-                          >
+
+                        <!-- Casa -->
+                        <div class="mb-3">
+                          <label for="Casa" class="form-label fw-bold">Información local</label>
                           <input
                             type="text"
                             class="form-control"
                             id="Casa"
-                            name="Casa_cl"
-                            placeholder="N. Casa"
+                            name="Casa_pro"
+                            placeholder="Numero casa y/o color"
                             required
                           />
                           <div
                             class="invalid-feedback"
                           >
-                            Es necesario el número de Casa
+                            Por favor ingrese la información del local
                           </div>
                         </div>
+
                         <div class="d-grid gap-2">
                           <button
                             type="submit"
@@ -211,6 +182,7 @@
                       </form>
                     </div>
                   </div>
+
                   <div class="py-3">
                     <button
                     type="button"
@@ -225,6 +197,7 @@
           </div>
         </div>
       </div>
+
       <div class="Container px-3 py-1 contenedorventas">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"></div>
         <h4>Listado y Registro de proveedores</h4>
@@ -236,107 +209,59 @@
             <div class="px-3 py-2">
               <h4 style="display: flex; justify-content: space-between">
                 Listado de proveedores
-                <button
-                  type="button"
-                  class="btn btn-success"
-                  title="Historial"
-                  onclick="mostrarPanelRegistroProveedor()"
-                >
-                  <i class="fa-solid fa-list"></i> Registrar un nuevo proveedor
+                <button type="button" class="btn btn-success" title="Historial" onclick="mostrarPanelRegistroProveedor()">
+                  <i class="fa-solid fa-user-plus mx-1"></i>    Registrar un nuevo proveedor
                 </button>
               </h4>
             </div>
-            <!-- <nav class="navbar bg-body-tertiary">
-              <div class="container-fluid">
-                <a class="navbar-brand">Buscar cliente</a>
-                <form
-                  action="/SearchCliente"
-                  method="post"
-                  class="d-flex"
-                  role="search"
-                >
-                  <input
-                    id="search"
-                    name="nombreSearch"
-                    class="form-control me-2"
-                    type="search"
-                    placeholder="Buscar..."
-                    aria-label="Search"
-                    onkeyup="SearchCliente()"
-                  />
-                  <button class="btn btn-outline-success" type="submit">
-                    Buscar
-                  </button>
-                </form>
-              </div>
-            </nav> -->
+
             <table class="table primary ml-1 hover" id="TableProveedores">
               <thead>
                 <tr>
                   <th class="centrado">Nombre completo</th>
                   <th class="centrado">Cédula</th>
                   <th class="centrado">Teléfono</th>
-                  <th class="centrado">Dirección</th>
+                  <th class="centrado">Comercio</th>
+                  <th class="centrado">Dirección del Comercio</th>
                   <th class="centrado">Estado Proveedor</th>
-                  <th class="centrado">Acciones</th>
+                  <th class="centrado"></th>
                 </tr>
               </thead>
               <tbody>
-                
-                <tr>
-                  <td class="centrado">Nombre</td>
-                  <td class="centrado">Cedula</td>
-                  <td class="centrado"> Telefono</td>
-                  <td class="centrado">Dirección </td>
-                  <td>Estado_Proveedor</td>
-                  <td>
-                    <!-- Botones de acciones -->
-                    <a
-                      href=""
-                      class="btn btn-success mb-1"
-                      title="Actualizar"
-                      ><svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        class="bi bi-pencil-square"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
-                        />
-                        <path
-                          fill-rule="evenodd"
-                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
-                        /></svg
-                    ></a>
 
-                   <!--  <a
-                      href="#"
-                      class="btn btn-danger"
-                      title="Eliminar"
-                      onclick="confirmDelete('')"
-                      ><svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        class="bi bi-trash"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
-                        />
-                        <path
-                          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
-                        /></svg
-                    ></a> -->
-
-                    
-                  </td>
-                </tr>
-                
+                <% proveedores.forEach((prov) => { %>
+                  <tr>
+                    <td class="centrado"><%= prov.Nombre %></td>
+                    <td class="centrado"><%= prov.Cedula %></td>
+                    <td class="centrado"><%= prov.Telefono %></td>
+                    <td class="centrado"><%= prov.Comercio %></td>
+                    <td class="centrado"><%= prov.Dirección %></td>
+                    <td class="centrado"><%= prov.Estado %></td>
+                    <td>
+                      <!-- Botones de acciones -->
+                      <a
+                        href="/EditClient/<%= prov.Id_Proveedor %>"
+                        class="btn btn-success mb-1"
+                        title="Actualizar"
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-pencil-square"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                          />
+                          <path
+                            fill-rule="evenodd"
+                            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                          /></svg
+                      ></a>
+                    </td>
+                  </tr>
+                  <% }) %>
               </tbody>
             </table>
           </div>
@@ -402,7 +327,7 @@
               ordering: false,
               paging: false,
               "oLanguage": {
-                  "sSearch": "Buscar a un Cliente:"
+                  "sSearch": "Buscar a un Proveedor:"
               },
               "rowCallback": function( row, data ) {
                   if (data[5] === "activo") { // Suponiendo que el estado está en la cuarta columna (índice 3)

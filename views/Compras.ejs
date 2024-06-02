@@ -44,55 +44,50 @@
                         <h5>REGISTRAR UNA NUEVA COMPRA</h5>
                       </button>
                     </h2>
+
                     <div id="flush-collapseOne"class="accordion-collapse collapse"data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
                         <div class="Container"style="background-color: rgb(241, 238, 238)">
                           <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+
                               <!-- Formulario para compra  -->
                               <form class="center">
-                                <div
-                                  class="row px-2"
-                                  id="formularioCompra"
-                                  style="display: block"
-                                >
+                                <div class="row px-2" id="formularioCompra" style="display: block">
                                   <div class="row g-3">
+
+                                    <!-- Proveedor -->
                                     <div class="col">
-                                      <label for="BuscarProveedor" class="form-label" >Buscar un Proveedor</label>
+                                      <label for="btnBuscarProveedor" class="form-label fw-bold" >Buscar un Proveedor</label>
                                       <div class="d-grid gap-2">
+                                        <input id="ProveedorCed" hidden>
                                         <button class="btn btn-outline-success" type="button" id="btnBuscarProveedor" onclick="mostrarProveedorCompras()">Buscar   <i class='bx bx-search'></i></button>
                                       </div>
                                     </div>
+
+                                    <!-- Gerente -->
                                     <div class="col">
-                                      <label
-                                        for="Fecha_Compra"
-                                        class="form-label"
-                                        >Ingrese la fecha de compra</label
-                                      >
-                                      <input
-                                        type="date"
-                                        class="form-control"
-                                        id="Fecha_Compra"
-                                        placeholder="Ingrese la fecha"
-                                        required
-                                      />
-                                      <div class="invalid-feedback">
-                                        El Campo es requerido
+                                      <label for="btnBuscarGerente" class="form-label fw-bold" >Buscar un Comprador</label>
+                                      <div class="d-grid gap-2">
+                                        <button class="btn btn-outline-success" type="button" id="btnBuscarGerente" onclick="mostrarGerenteCompras()">Buscar   <i class='bx bx-search'></i></button>
+                                        <input id="GerenteCed" hidden>
                                       </div>
                                     </div>
 
-                                    <div class="col py-4">
-                                      <button
-                                        type="submit"
-                                        class="btn btn-success"
-                                        title="Agregar Productos"
-                                        onclick="AbrirPanelProductoCompra()"
-                                        required
-                                      >
-                                        <div class="invalid-feedback"></div>
-                                        Agregar Productos
-                                      </button>
+                                    <!-- Fecha Compra -->
+                                    <div class="col">
+                                      <label for="FCompra" class="form-label fw-bold">Ingrese la fecha de compra</label>
+                                      <input type="date"  class="form-control" id="FCompra" placeholder="Ingrese la fecha" required onchange="ActualizarFecha()">
                                     </div>
+                                    
+                                    <!-- Productos -->
+                                    <div class="col py-4">
+                                      <a class="btn btn-success" title="Agregar Productos" onclick="AbrirPanelProductoCompra()" required>
+                                        <i class="fa-solid fa-cart-shopping mr-2"></i>Agregar Productos
+                                      </a>
+                                      <div class="invalid-feedback">Por favor agregue los Productos</div>
+                                    </div>
+                                    
                                   </div>
                                 </div>
                               </form>
@@ -102,66 +97,71 @@
 
                         <div class="Container py-4" id="facturacompra" style="display: block">
                           <div class="row">
-                            <div
-                              class="col-sm-12 col-md-1 col-lg-1 col-xl-1"
-                            ></div>
+                            <div class="col-sm-12 col-md-1 col-lg-1 col-xl-1">
+                            </div>
                             <div class="col-sm-12 col-md-10 col-lg-10 col-xl-10">
+
                               <table class="table" id="tablacompra">
                                 <thead>
                                   <tr>
-                                    <th id="IdVenta" class="centrado">
-                                      N° Venta:
-                                    </th>
+                                    <th id="NumCompra" class="centrado"></th>
                                     <th class="centrado"></th>
                                     <th></th>
+                                    <th class="centrado"></th>
                                     <th class="centrado"></th>
                                     <th class="centrado"></th>
                                   </tr>
                                   <tr>
                                     <th class="centrado">Proveedor</th>
-                                    <th class="centrado">Cliente</th>
-                                    <th></th>
+                                    <th class="centrado">Comprador</th>
                                     <th></th>
                                     <th class="centrado">Fecha Venta</th>
+                                    <th></th>
+                                    <th></th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr>
-                                    <td class="centrado" id="">
-                                      Nombre del proovedor
+                                    <td class="centrado" id="ProveedorFactura">
                                     </td>
-                                    <td class="centrado" id="">
-                                      Almacen Comercial Jennifer
+                                    <td class="centrado" id="GerenteFactura">
                                     </td>
                                     <td></td>
+                                    <td class="centrado"  id="FechatablaCompra"></td>
                                     <td></td>
-                                    <td class="centrado" id="">Fecha Venta</td>
+                                    <td></td>
                                   </tr>
                                   <thead>
                                     <tr>
                                       <th class="centrado">Producto</th>
                                       <th class="centrado">Cantidad Producto</th>
-                                      <th class="centrado">Precio</th>
+                                      <th class="centrado">Precio Compra</th>
+                                      <th class="centrado">Precio Venta</th>
                                       <th class="centrado">Sub Total</th>
                                       <th class="centrado"></th>
                                     </tr>
                                   </thead>
                                 </tbody>
 
-                                <tbody></tbody>
                                 <thead>
-                                  <th></th>
-                                  <th></th>
-                                  <th></th>
-                                  <th></th>
-                                  <th class="centrado">Total</th>
                                 </thead>
                                 <tbody>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td class="centrado" id="celda_total">C$ 0</td>
+                                  <tr>
+                                    <th class="centrado"></th>
+                                    <th class="centrado"></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="centrado">Total</th>
+                                  </tr>
+                                  <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="centrado" id="celda_totalCompra">C$ 0</td>
+                                  </tr>
                                 </tbody>
                               </table>
 
@@ -185,14 +185,14 @@
                 </div>
               </div>
 
-              <div id="CompraProductos"class="panel-flotante panel-ancho"style="display: none">
+              <div id="CompraProducto"class="panel-flotante panel-ancho-Compras"style="display: none">
                 <div class="panel-content">
-                  <h4>Seleccion de productos</h4>
+                  <h4>Seleccione los productos</h4>
                   <div style="max-height: 350px; overflow-y: auto">
                     <div class="row">
                       <div class="col-sm-12 col-md-10 col-lg-10 col-xl-10">
                         <div class="mb-3">
-                          <label for="text" class="form-label" >Seleccionar categoria del producto a añadir</label>
+                          <label for="text" class="form-label" >Seleccione la categoria del producto a añadir</label>
                           <select class=" px-2 form-select" id="categoriaSelect1" onchange="mostrarTablaSegunCategoria()">
                           <label for="Categoria" class="form-label" >Seleccione la categoria del producto que desea</label>
                           <option selected>Seleccione una categoria</option>
@@ -206,6 +206,7 @@
                       </div>
                       <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2"></div>
                       <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+
                         <div id="tablaCalzado" style="display: none">
                           <table class="table primary">
                             <thead>
@@ -213,29 +214,35 @@
                                 <th class="centrado">Nombre del producto</th>
                                 <th class="centrado">Marca</th>
                                 <th class="centrado">Color</th>
-                                <th class="centrado">Tipo</th>
                                 <th class="centrado">Talla</th>
-                                <th class="centrado">Modelo</th>
+                                <th class="centrado">Precio Actual de Venta</th>
+                                <th class="centrado">Precio Actual de Compra</th>
                                 <th class="centrado col-xl-1"></th>
                               </tr>
                               <tbody>
-                                <tr>
-                                  <td class="centrado">Zapato</td>
-                                  <td class="centrado">Nike</td>
-                                  <td class="centrado">Negro</td>
-                                  <td class="centrado">High</td>
-                                  <td class="centrado">42</td>
-                                  <td class="centrado">Retro 1</td>
-                                  <td class="row px-4 ">
-                                    <!-- Botones de acciones -->
-                                    <button type="button" class="btn btn-success px-3" title="Añadir"><i class="fa-solid fa-cart-plus"></i></button>
-                                  </td> 
-                                
-                                </tr>
+                                <% productos.forEach((producto) => { %>
+                                  <% if( producto.Categoria == 'Calzado' ) { %>
+                                    <tr>
+                                      <td class="centrado"><%= producto.Tipo %> <%= producto.Modelo %></td>
+                                      <td class="centrado"><%= producto.Marca %></td>
+                                      <td class="centrado"><%= producto.Color %></td>
+                                      <td class="centrado"><%= producto.Talla %></td>
+                                      <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                      <td class="centrado">C$ <%= producto.Precio_Compra %></td>
+                                      <td class="centrado"></td>
+                                      <td class="row px-4 ">
+                                        <!-- Botones de acciones -->
+                                        <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Modelo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio_Compra %>','<%= producto.Precio_Venta %>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                      </td> 
+                                    </tr>
+                                  <% } %>
+                                <% }) %>
+
                               </tbody>
                             </thead>
                           </table>
                         </div>
+
                         <div id="tablaPrendas" style="display: none">
                           <table class="table primary">
                             <thead>
@@ -243,24 +250,33 @@
                                 <th class="centrado">Nombre del producto</th>
                                 <th class="centrado">Marca</th>
                                 <th class="centrado">Color</th>
-                                <th class="centrado">Tipo</th>
                                 <th class="centrado">Talla</th>
-                                <th class="centrado col-1">Accion</th>
+                                <th class="centrado">Precio Actual de Venta</th>
+                                <th class="centrado">Precio Actual de Compra</th>
+                                <th class="centrado col-1"></th>
                               </tr>
-                              <tbody>
-                                <td class="centrado">Camisa</td>
-                                <td class="centrado">Colombia</td>
-                                <td class="centrado">Azul</td>
-                                <td class="centrado">camisa</td>
-                                <td class="centrado">M</td>
-                                <td class="row px-4 centrado">
-                                  <!-- Botones de acciones -->
-                                  <button type="button" class="btn btn-success px-3" title="Añadir"><i class="fa-solid fa-cart-plus"></i></button>
-                                </td> 
-                              </tbody>
                             </thead>
+                              <tbody>
+                                <% productos.forEach((producto) => { %>
+                                  <% if( producto.Categoria == 'Prendas de Vestir' ) { %>
+                                    <tr>
+                                      <td class="centrado"><%= producto.Tipo %> <%= producto.Modelo %></td>
+                                      <td class="centrado"><%= producto.Marca %></td>
+                                      <td class="centrado"><%= producto.Color %></td>
+                                      <td class="centrado"><%= producto.Talla %></td>
+                                      <td class="centrado"><%= producto.Precio_Venta %></td>
+                                      <td class="centrado"><%= producto.Precio_Compra %></td>
+                                      <td class="row px-4 centrado">
+                                        <!-- Botones de acciones -->
+                                        <button type="button" class="btn btn-success px-3" title="Añadir" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')"><i class="fa-solid fa-cart-plus"></i></button>
+                                      </td> 
+                                    </tr>
+                                  <% } %>
+                                <% }) %>
+                              </tbody>
                           </table>
                         </div>
+
                         <div id="tablaCosmeticos" style="display: none">
                           <table class="table primary">
                             <thead>
@@ -268,49 +284,66 @@
                                 <th class="centrado">Nombre del producto</th>
                                 <th class="centrado">Marca</th>
                                 <th class="centrado">Color</th>
-                                <th class="centrado">Tipo</th>
-                                <th class="centrado">Clasificacion</th>
-                                <th class="centrado col-1">Accion</th>
+                                <th class="centrado">Precio Actual de Venta</th>
+                                <th class="centrado">Precio Actual de Compra</th>
+                                <th class="centrado col-1"><!-- Acción --></th>
                               </tr>
                             </thead>
                             <tbody>
-                              <td class="centrado">Labial</td>
-                              <td class="centrado">FENTY BEAUTY</td>
-                              <td class="centrado">Rojo Pasion</td>
-                              <td class="centrado">lapiz labial</td>
-                              <td class="centrado">lipstick</td>
-                              <td class="row px-4 centrado">
-                                <!-- Botones de acciones -->
-                                <button type="button" class="btn btn-success px-3" title="Añadir"><i class="fa-solid fa-cart-plus"></i></button>
-                              </td> 
+                              <% productos.forEach((producto) => { %>
+                                <% if( producto.Categoria == 'Cosmeticos' ) { %>
+                                  <tr>
+                                    <td class="centrado"><%= producto.Clasificacion %> <%= producto.Tipo %></td>
+                                    <td class="centrado"><%= producto.Marca %></td>
+                                    <td class="centrado"><%= producto.Color %></td>
+                                    <td class="centrado"><%= producto.Existencia %></td>
+                                    <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                    <td class="centrado">C$ <%= producto.Precio_Compra %></td>
+                                    <td class="row px-4 centrado">
+                                      <!-- Botones de acciones -->
+                                      <button type="button" class="btn btn-success px-3" title="Añadir" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Clasificacion %> <%= producto.Tipo %> <%= producto.Marca %> <%= producto.Color %> ','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')" ><i class="fa-solid fa-cart-plus"></i></button>
+                                    </td> 
+                                  </tr>
+                                <% } %>
+                              <% }) %>
                             </tbody>
                           </table>
                         </div>
+
                         <div id="tablaElectrodomesticos" style="display: none">
                           <table class="table primary">
                             <thead>
                               <tr>
                                 <th class="centrado">Nombre del producto</th>
                                 <th class="centrado">Marca</th>
-                                <th class="centrado">Color</th>
-                                <th class="centrado">Tipo</th>
                                 <th class="centrado">Modelo</th>
-                                <th class="centrado col-1">Accion</th>
+                                <th class="centrado">Color</th>
+                                <th class="centrado">Precio Actual de Compra</th>
+                                <th class="centrado">Precio Actual de Venta </th>
+                                <th class="centrado col-1"><!-- Acción --></th>
                               </tr>
                             </thead>
                             <tbody>
-                              <td class="centrado">Lavadora</td>
-                              <td class="centrado">whirlpool</td>
-                              <td class="centrado">Blanco</td>
-                              <td class="centrado">Lava-secadora</td>
-                              <td class="centrado">SCPH21-2303</td>
-                              <td class="row px-4 centrado">
-                                <!-- Botones de acciones -->
-                                <button type="button" class="btn btn-success px-3" title="Añadir"><i class="fa-solid fa-cart-plus"></i></button>
-                              </td> 
+                              <% productos.forEach((producto) => { %>
+                                <% if( producto.Categoria == 'Electrodomesticos' ) { %>
+                                  <tr>
+                                    <td class="centrado"><%= producto.Tipo %></td>
+                                    <td class="centrado"><%= producto.Marca %></td>
+                                    <td class="centrado"><%= producto.Modelo %></td>
+                                    <td class="centrado"><%= producto.Color %></td>
+                                    <td class="centrado"><%= producto.Precio_Compra %></td>
+                                    <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                    <td class="row px-4 centrado">
+                                      <!-- Botones de acciones -->
+                                      <button type="button" class="btn btn-success px-3" title="Añadir" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> <%= producto.Modelo %> Color <%= producto.Color %>','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')" ><i class="fa-solid fa-cart-plus"></i></button>
+                                    </td> 
+                                  </tr>
+                                <% } %>
+                              <% }) %>
                             </tbody>
                           </table>
                         </div>
+
                         <div id="tablaPPlasticos" style="display: none">
                           <table class="table primary">
                             <thead>
@@ -325,16 +358,21 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <td class="centrado">Mesa</td>
-                              <td class="centrado">Plastic</td>
-                              <td class="centrado">Azul</td>
-                              <td class="centrado"> n</td>
-                              <td class="centrado">n</td>
-                              <td class="centrado">n</td>
-                              <td class="row px-4 centrado">
-                                <!-- Botones de acciones -->
-                                <button type="button" class="btn btn-success px-3" title="Añadir"><i class="fa-solid fa-cart-plus"></i></button>
-                              </td>
+                              <% productos.forEach((producto) => { %>
+                                <% if( producto.Categoria == 'Productos Plasticos' && producto.Existencia > 0  ) { %>
+                                  <tr>
+                                    <td class="centrado"><%= producto.Tipo %></td>
+                                    <td class="centrado"><%= producto.Marca %></td>
+                                    <td class="centrado"><%= producto.Color %></td>
+                                    <td class="centrado"><%= producto.Dimensiones %></td>
+                                    <td class="centrado"><%= producto.Existencia %></td>
+                                    <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                    <td class="row px-4 centrado">
+                                      <!-- Botones de acciones -->
+                                      <button type="button" class="btn btn-success px-3" title="Añadir" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %>','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')" ><i class="fa-solid fa-cart-plus"></i></button>
+                                    </td>
+                                <% } %>
+                              <% }) %>
                             </tbody>
                           </table>
                         </div>
@@ -355,14 +393,8 @@
               </div>
               
             </div>
-            <div
-              class="py-1 px-3 mb-2"
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-              "
-            >
+
+            <div class="py-1 px-3 mb-2" style="display: flex; align-items: center; justify-content: space-between;">
               <h4 style="color: black; font-size: 22px">Listado de compras</h4>
               <div style="display: flex; align-items: center">
                 <!-- <button type="button" class="btn btn-success" title="Abonar" style="margin-left: 10px" onclick="mostrarPanelHistorialAbonos()"><i class="fa-solid fa-list"></i>Listar historial de abonos</button>-->
@@ -372,100 +404,102 @@
             <div class="Container">
               <div class="row">
                 <div>
+
                   <table class="table primary px-3 hover" id="TableCompras">
                     <thead>
                       <tr>
-                        <th class="centrado">Nombre del proveedor</th>
-                        <th class="centrado">Nombre de cliente</th>
+                        <th class="centrado">Comercio</th>
+                        <th class="centrado">Nombre del Proveedor</th>
+                        <th class="centrado">Comprador</th>
                         <th class="centrado">Fecha de compra</th>
                         <th class="centrado">Cantidad total</th>
                         <th class="centrado"></th>
                       </tr>
                     </thead>
                     <tbody>
+                      <% compras.forEach((C) => { %>
                       <tr>
-                        <td class="centrado">Proovedor</td>
-                        <td class="centrado">Cliente</td>
-                        <td class="centrado">Fecha_Venta</td>
-                        <td class="centrado">C$ Total_Venta</td>
+                        <td class="centrado"><%= C.Comercio %></td>
+                        <td class="centrado"><%= C.Proveedor %></td>
+                        <td class="centrado"><%= C.Comprador %></td>
+                        <td class="centrado"><%= C.Fecha_Compra %></td>
+                        <td class="centrado">C$ <%= C.Total_Compra %></td>
                         <td class="centrado">
-                          <button
-                            type="button"
-                            class="btn btn-success info-venta"
-                            title="Informacion de la venta"
-                            onclick="mostrarDetallesCompra()"
-                          >
-                            <i class="fa-solid fa-money-check-dollar"></i>
-                          </button>
+                          <button type="button" class="btn btn-success info-venta" title="Informacion de la venta" onclick="mostrarDetallesCompra('<%= C.Id_Compra %>','<%= C.Proveedor %>','<%= C.Comprador %>','<%= C.Fecha_Compra %>','<%= C.Total_Compra %>')"> <i class="fa-solid fa-money-check-dollar"></i> </button>
                         </td>
                       </tr>
+                      <% }); %>
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
 
-            <div
-              id="panelDetalleCompras"
-              class="panel-flotante panel-ancho"
-              style="display: none"
-            >
+            <div id="panelDetalleCompras" class="panel-flotante panel-ancho" style="display: none">
               <div class="panel-content">
-                <h4 id="DetalleTitle">Detalle Compra</h4>
+                <h4 class="fw-bold my-2" id="DetalleCompraTitle">Detalle Compra</h4>
 
                 <div style="max-height: 300px; overflow-y: auto">
                   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <table class="table" id="tablaDetalleVenta">
+
+                    <table class="table" id="tablaDetalleCompra">
+
                       <thead>
                         <tr>
                           <th class="centrado">Proveedor</th>
-                          <th class="centrado">Cliente</th>
+                          <th class="centrado">Comprador</th>
                           <th></th>
                           <th class="centrado">Fecha</th>
                           <th class="centrado"></th>
                           <th class="centrado"></th>
                         </tr>
                       </thead>
+
                       <tbody>
                         <tr>
-                          <td class="centrado" id=""></td>
-                          <td class="centrado" id=""></td>
+                          <td class="" id="ProveedorDetalle"></td>
+                          <td class="centrado" id="CompradorDetalle"></td>
                           <td></td>
-                          <td class="centrado" id=""></td>
-                          <td></td>
-                          <td></td>
+                          <td class="centrado" id="FechaCompraDetalle"></td>
+                          <td></td><td></td>
                         </tr>
+                      
                         <thead>
                           <tr>
                             <th class="centrado">Producto</th>
-                            <th class="centrado">Cantidad Producto</th>
+                            <th class="centrado">Cantidad Adquirida</th>
                             <th class="centrado"></th>
-                            <th class="centrado">Precio</th>
+                            <th class="centrado">Precio Compra</th>
+                            <th class="centrado">Precio Venta</th>
                             <th class="centrado">Sub Total</th>
-                            <th class="centrado"></th>
                           </tr>
                         </thead>
                       </tbody>
 
+                      <!-- //Productos -->
                       <tbody>
-                        <tr></tr>
+                        <tr>
+                          <td>Producto</td>
+                          <td>Cantidad</td>
+                          <td></td>
+                          <td>P Compra</td>
+                          <td>P Venta</td>
+                          <td>SubTotal</td>
+                        </tr>
                       </tbody>
+
                       <thead>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th class="centrado"></th>
+                        <th></th><th></th><th></th><th></th><th></th>
                         <th>Total</th>
-                        <th></th>
                       </thead>
+
                       <tbody>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="centrado" id=""></td>
-                        <td></td>
+                        <tr>
+                          <td></td><td></td><td></td><td ></td><td ></td>
+                          <td class="centrado" id="TotalCompraDetalle"></td>
+                        </tr>
                       </tbody>
+                      
                     </table>
                     <button type="button" class="btn btn-danger" onclick="cerrarDetallesCompra()">Cerrar</button>
                   </div>
@@ -477,19 +511,26 @@
               <div class="panel-content">
                 <h4 id="Title_Compras">Buscar un proveedor</h4>
                 <div style="max-height: 300px; overflow-y: auto">
+                  <a type="button" href="/Proveedores" class="btn btn-success px-3 mt-2 mb-3" title="Agregar Nuevo Proveedor">
+                    Agregar un nuevo Proveedor <i class="fa-solid fa-user-plus mx-1"></i>
+                  </a>
                   <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                       <table class="table primary">
                         <thead>
                           <tr>
+                            <th class="centrado">Comercio </th>
                             <th class="centrado">Proveedor</th>
-                            <th class="centrado">Estado</th>
                             <th class="centrado"></th>
                           </tr>
                           <tbody>
-                            <td class="centrado">Norlan Daniel Gonzalez Fonseca</td>
-                            <td class="centrado">Activo</td> 
-                            <td class="centrado"><button type="button" class="btn btn-success px-3" title="Añadir"><i class='bx bxs-comment-add'></i></button></td>
+                            <% proveedores.forEach((P) => { %>
+                              <tr>
+                                <td class="centrado"><%= P.Comercio %></td>
+                                <td class="centrado"><%= P.Nombre %></td> 
+                                <td class="centrado"><button type="button" class="btn btn-success px-3" title="Añadir" onclick="BuscarProveedor('<%= P.Cedula %>')"><i class="fa-solid fa-user-plus mx-1"></i></i></button></td>
+                              </tr>
+                            <% }) %>
                           </tbody>
                         </thead>
                       </table>
@@ -507,8 +548,44 @@
               </div>
             </div>
 
+            <div id="BuscarGerenteVenta"class="panel-flotante panel-ancho"style="display: none">
+              <div class="panel-content">
+                <h4 id="Title_Gerente">Buscar un Comprador</h4>
+                <div style="max-height: 300px; overflow-y: auto">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                      <table class="table primary">
+                        <thead>
+                          <tr>
+                            <th class="centrado">Comprador </th>
+                            <th class="centrado"></th>
+                          </tr>
+                          <tbody>
+                            <% gerentes.forEach((G) => { %>
+                              <tr>
+                                <td class="centrado"><%= G.Nombre %> <%= G.Apellido %></td>
+                                <td class="centrado"><button type="button" class="btn btn-success px-3" title="Añadir" onclick="BuscarGerente('<%= G.Cedula %>')"><i class="fa-solid fa-user-plus mx-1"></i></i></button></td>
+                              </tr>
+                            <% }) %>
+                          </tbody>
+                        </thead>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  onclick="cerrarGerenteCompras()"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+
           </div>
-          </div>
+        </div>
         </div>
       </div>
     </section>

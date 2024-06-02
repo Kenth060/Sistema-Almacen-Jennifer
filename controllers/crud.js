@@ -15,11 +15,12 @@ exports.AddClient = ( req, res) =>
     const Distancia = req.body.Distancia_cl;
     const Casa = req.body.Casa_cl; 
 
-    conexion.query('CALL InsertarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?)', [Tipo,Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => {
+    conexion.query('CALL InsertarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [Tipo,Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa,null],(error,results) => 
+    {
         if(error)
         { 
             console.log('Hubo un error al Ingresar al cliente -> '+ error);
-            conexion.query('SELECT * from MostrarClientes', (error,results)=>
+            conexion.query('SELECT * from MostrarClientes', (error,results) =>
             {
                 if (error)
                 { console.log('Ha ocurrido un error al mostrar los clientes, el error es => '+error); }
@@ -60,7 +61,6 @@ exports.AddClient = ( req, res) =>
         }
     })
 }
-
 
 exports.UpdateClient = (req, res) => 
 {
@@ -137,7 +137,7 @@ exports.AddVendedor = ( req, res) =>
     const Distancia = req.body.Distancia_vd;
     const Casa = req.body.Casa_vd; 
 
-    conexion.query('CALL InsertarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?)', [Tipo,Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => 
+    conexion.query('CALL InsertarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [Tipo,Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa,null],(error,results) => 
     {
         if(error)
         { 
@@ -249,75 +249,17 @@ exports.UpdateVendedor = (req, res) =>
     })  
 } 
 
-exports.AddProveedor = ( req, res) => 
-    {
-        const Tipo = req.body.Tipo_cl;
-    
-        const Nombre = req.body.Nombre_pro;
-        const Apellido = req.body.Apellido_pro;
-        const Telefono = req.body.Telefono_pro;
-        const Cedula = req.body.Cedula_pro;
-        
-        const Distrito = req.body.Distrito_pro;
-        const Residencia = req.body.Residencia_pro;
-        const PuntoReferencia = req.body.PuntoReferencia_pro;
-        const Distancia = req.body.Distancia_pro;
-        const Casa = req.body.Casa_pro; 
-    
-        conexion.query('CALL InsertarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?)', [Tipo,Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => {
-            if(error)
-            { 
-                console.log('Hubo un error al Ingresar al proveedor -> '+ error);
-                conexion.query('SELECT * from MostrarClientes', (error,results)=>
-                {
-                    if (error)
-                    { console.log('Ha ocurrido un error al mostrar los proveedores, el error es => '+error); }
-                    else
-                    {
-                        res.render('proveedores', { proveedores:results,
-                            alert: true,
-                            alertTitle: "No se pudo completar la operacion",
-                            alertMessage: "No se pudo agregar al proveedor, compruebe los datos e intente nuevamente",
-                            alertIcon: 'error',
-                            showConfirmButton: true,
-                            timer: false,
-                            ruta:'proveedores'
-                        })
-                    }
-                })
-            }
-            else 
-            {
-                console.log('proveedor Ingresado Correctamente');
-                conexion.query('SELECT * from MostrarClientes', (error,results) =>
-                {
-                    if (error)
-                    { console.log('Ha ocurrido un error al mostrar los proveedores, el error es => '+error); }
-                    else
-                    {
-                        res.render('proveedores', { proveedores:results,
-                            alert: true,
-                            alertTitle: "Proveedor agregado",
-                            alertMessage: "¡Se agrego al proveedor correctamente!",
-                            alertIcon: 'success',
-                            showConfirmButton: true,
-                            timer: false,
-                            ruta:'proveedor'
-                        })
-                    }
-                }) 
-            }
-        })
-    }
+
 
 exports.AddProduct = ( req, res) => 
 {
     const Marca = req.body.Marca;
-    const Existencia = req.body.Existencia;
-    const Precio = req.body.Precio;
+    //const Existencia = req.body.Existencia;
+    //const Precio_Compra = req.body.Precio_Compra;
+    //const Precio_Venta = req.body.Precio_Venta;
     const Color = req.body.Color;
     const Tipo = req.body.Tipo;
-    const Fecha = req.body.Fecha;
+    //const Fecha_Ingreso = req.body.Fecha_Ingreso;
     const Categoria = req.body.Categoria_Prod;
 
     const Talla = req.body.Talla;
@@ -325,35 +267,56 @@ exports.AddProduct = ( req, res) =>
     const Clasificacion = req.body.Clasificacion;
     const Dimensiones = req.body.Dimensiones;
     const UnidadMedida = req.body.Unidad_Medida;
+    const Fecha_Vencimiento = req.body.Fecha_Vencimiento;
 
-    conexion.query('CALL InsertarProductos(?,?,?,?,?,?,?,?,?,?,?,?)', [Marca,Existencia,Precio,Color,Tipo,Categoria,Talla,Modelo,Clasificacion,Dimensiones,UnidadMedida,Fecha],(error,results) => {
-        if(error)
-        { 
-            console.log('Hubo un error al agregar el producto => '+error);
+    const params = [
+        Marca,
+        //Precio_Compra,
+        //Precio_Venta,
+        Color,
+        Tipo,
+        //Fecha_Ingreso,
+        Categoria,
+        Talla,
+        Modelo,
+        Clasificacion,
+        Dimensiones,
+        UnidadMedida,
+        Fecha_Vencimiento
+      ];
 
-            res.render('productos', { 
-                alert: true,
-                alertTitle: "No se pudo completar la operacion",
-                alertMessage: "No se pudo agregar el Producto, compruebe los datos e intente nuevamente",
-                alertIcon: 'error',
-                showConfirmButton: true,
-                timer: false,
-                cat: Categoria
-            })
-        }
-        else 
+
+    conexion.query('CALL AddProducto( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', params, (error, results) => 
         {
-            res.render('productos', {
-                alert: true,
-                alertTitle: "Producto agregado",
-                alertMessage: "¡Se agrego el Producto correctamente!",
-                alertIcon: 'success',
-                showConfirmButton: true,
-                timer: false,
-                cat: Categoria
-            })
-        }
-    })
+            if(error)
+            { 
+                console.log('Hubo un error al agregar el producto => '+error);
+
+                res.render('productos', 
+                { 
+                    alert: true,
+                    alertTitle: "No se pudo completar la operacion",
+                    alertMessage: "No se pudo agregar el Producto, compruebe los datos e intente nuevamente",
+                    alertIcon: 'error',
+                    showConfirmButton: true,
+                    timer: false,
+                    cat: Categoria
+                })
+            }
+            else 
+            {
+                res.render('productos', 
+                {
+                    alert: true,
+                    alertTitle: "Producto agregado",
+                    alertMessage: "¡Se agrego el Producto correctamente!",
+                    alertIcon: 'success',
+                    showConfirmButton: true,
+                    timer: false,
+                    cat: Categoria
+                })
+            }
+        }) 
 }
 
 exports.UpdateProduct = (req, res) => 
@@ -552,3 +515,111 @@ exports.DevolverProducto = (req,res) =>
         })
     
 }
+
+exports.AddProveedor = ( req, res) => 
+{
+        const Tipo = req.body.Tipo_pro;
+        
+        const Nombre = req.body.Nombre_pro;
+        const Apellido = req.body.Apellido_pro;
+        const Telefono = req.body.Telefono_pro;
+        const Cedula = req.body.Cedula_pro;
+            
+        const Distrito = req.body.Distrito_pro;
+        const Residencia = req.body.Residencia_pro;
+        const PuntoReferencia = req.body.PuntoReferencia_pro;
+        const Distancia = req.body.Distancia_pro;
+        const Casa = req.body.Casa_pro;
+        const Comercio = req.body.Comercio_pro 
+    
+        console.log('Tipo:', Tipo);
+        console.log('Nombre:', Nombre);
+        console.log('Apellido:', Apellido);
+        console.log('Telefono:', Telefono);
+        console.log('Cedula:', Cedula);
+        console.log('Distrito:', Distrito);
+        console.log('Residencia:', Residencia);
+        console.log('Punto de Referencia:', PuntoReferencia);
+        console.log('Distancia:', Distancia);
+        console.log('Casa:', Casa);
+        console.log('Comercio:', Comercio);
+        
+        conexion.query('CALL InsertarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?,?)', [Tipo,Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa,Comercio],(error,results) => 
+        {
+            if(error)
+            { 
+                console.log('Hubo un error al Ingresar al proveedor -> '+ error);
+                conexion.query('SELECT * from MostrarProveedores', (error,results) =>
+                {
+                    if (error)
+                    { console.log('Ha ocurrido un error al mostrar los proveedores, el error es => '+error); }
+                    else
+                    {
+                        res.render('Proveedores', { proveedores:results,
+                            alert: true,
+                            alertTitle: "No se pudo completar la operacion",
+                            alertMessage: "No se pudo agregar al proveedor, compruebe los datos e intente nuevamente",
+                            alertIcon: 'error',
+                            showConfirmButton: true,
+                            timer: false,
+                            ruta:'Proveedores'
+                        })
+                    }
+                })
+            }
+            else 
+            {
+                console.log('Proveedor Ingresado Correctamente');
+                conexion.query('SELECT * from MostrarProveedores', (error,results) =>
+                {
+                    if (error)
+                    { console.log('Ha ocurrido un error al mostrar los proveedores, el error es => '+error); }
+                    else
+                    {
+                        res.render('Proveedores', { proveedores:results,
+                            alert: true,
+                            alertTitle: "Proveedor agregado",
+                            alertMessage: "¡Se agrego al proveedor correctamente!",
+                            alertIcon: 'success',
+                            showConfirmButton: true,
+                            timer: false,
+                            ruta:'Proveedores'
+                        })
+                    }
+                }) 
+            }
+})}
+
+exports.AddCompra = (req,res) => 
+{
+    const DatosCompra = req.body;
+    
+    console.log(DatosCompra);
+    
+    conexion.query('CALL InsertarCompra(?,?,?,?,?)',[DatosCompra.Id_Compra, DatosCompra.Proveedor, DatosCompra.Comprador, DatosCompra.Fecha_Compra,DatosCompra.Total_compra], (error,results) =>
+    {
+        if(error)
+        { 
+            console.log('Hubo un error al agregar la Compra => '+error);
+            res.status(500).json({ success: false, message: 'Hubo un error al agregar la Compra' });
+        }
+        else
+        {
+            console.log('Compra Agregada');
+            DatosCompra.Productos.forEach((detalle_producto) => 
+            { 
+                conexion.query('CALL InsertarDetallesCompra(?,?,?,?,?)',[DatosCompra.Id_Compra, detalle_producto.IdProducto, detalle_producto.Cantidad, detalle_producto.Precio_Compra,detalle_producto.Precio_Venta], (error,results) =>
+                {
+                    if(error)
+                    {console.log('Hubo un error al agregar el producto a la venta => '+error);}
+                    else
+                    {console.log('Producto Agregado Correctamente :D');}
+                })
+            });
+                
+            res.status(200).json({ success: true, message: 'Compra agregada correctamente' });
+        }
+
+    }) 
+    
+} 

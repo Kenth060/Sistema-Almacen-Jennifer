@@ -28,144 +28,77 @@
           <div>
             <div id="panelRegistroCliente" class="panel-flotante panel-ancho" style="display: none">
               <div class="panel-content">
-                <h4>Registrar un nuevo cliente</h4>
+                <h3 class="fw-bold" style="color:#1e1952">Registrar un nuevo cliente</h3>
 
                 <div style="max-height: 300px; overflow-y: auto">
                   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                      <h3>Registrar Cliente</h3>
 
                       <form action="/AddClient" method="post" class="needs-validation" novalidate>
-                        <div class="mb-2">
-                          <label for="Nombre" class="form-label">Nombres</label>
+
+                        <!-- Nombres -->
+                        <div class="mt-3 mb-2">
+                          <label for="Nombre" class="form-label fw-bold">Nombres del Cliente</label>
                           <input type="text" class="form-control" id="Tipo" name="Tipo_cl" placeholder="Tipo" value="Cliente"  hidden/>
-                          <input type="text" class="form-control" id="Nombre" name="Nombre_cl" placeholder="Nombres" required/>
-                          <div class="invalid-feedback">
-                            Es necesario el Nombre
-                          </div>
+                          <input type="text" class="form-control" id="Nombre" name="Nombre_cl" placeholder="Nombres del Cliente" required/>
+                          <div class="invalid-feedback">Por favor ingrese los Nombres del Cliente</div>
                         </div>
 
+                        <!-- Apellidos -->
                         <div class="mb-2">
-                          <label for="Apellido" class="form-label"
-                            >Apellidos</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Apellido"
-                            name="Apellido_cl"
-                            placeholder="Apellidos"
-                            required
-                          />
-                          <div
-                            class="invalid-feedback"
-                          >
-                            Es necesario el Apellido
-                          </div>
+                          <label for="Apellido" class="form-label fw-bold">Apellidos del cliente</label>
+                          <input type="text" class="form-control" id="Apellido" name="Apellido_cl" placeholder="Apellidos del cliente" required/>
+                          <div class="invalid-feedback">Por favor ingrese los Apellidos del Cliente</div>
                         </div>
+
+                        <!-- Telefono -->
                         <div class="mb-2">
-                          <label for="Telefono" class="form-label"
-                            >Telefono</label
-                          >
-                          <input
-                            type="number"
-                            class="form-control"
-                            id="Telefono"
-                            name="Telefono_cl"
-                            placeholder="Telefono"
-                            required
-                          />
-                          <div
-                            class="invalid-feedback"
-                          >
-                            Es necesario número teléfonico
-                          </div>
+                          <label for="Telefono" class="form-label fw-bold">Teléfono  del cliente</label>
+                          <input type="number" class="form-control" id="Telefono" name="Telefono_cl" placeholder="Teléfono del cliente"required/>
+                          <div class="invalid-feedback">Por favor ingrese el numero de teléfono del Cliente</div>
                         </div>
+
+                        <!-- Cedula -->
                         <div class="mb-2">
-                          <label for="Cedula" class="form-label">Cedula</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Cedula"
-                            name="Cedula_cl"
-                            placeholder="Cedula"
-                            required
-                          />
-                          <div
-                            class="invalid-feedback"
-                          >
-                            Es necesario número de cédula
-                          </div>
+                          <label for="Cedula" class="form-label  fw-bold">Cédula  del cliente</label>
+                          <input type="text" class="form-control" id="Cedula" name="Cedula_cl" placeholder="Cédula del cliente" required/>
+                          <div class="invalid-feedback">Por favor ingrese el número de cédula del cliente</div>
                         </div>
+
+                        <!-- Direccion -->
                         <div class="mb-1 position-relative">
-                          <label for="Distrito_cl" class="form-label"
-                            >Dirección</label
-                          >
-                          <select
-                            id="Distrito"
-                            name="Distrito_cl"
-                            class="form-select mb-2 position-relative"
-                            aria-label="Distrito"
-                            required
-                          >
-                            <option selected disabled value="">
-                              Seleccionar Distrito...
-                            </option>
-                            <option value="I">I</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
-                            <option value="VI">VI</option>
-                            <option value="VII">VII</option>
+                          <h5 class="my-3 fw-bold">Dirección del Cliente</h5>
+                          <label for="Distrito_cl" class="form-label fw-bold">Seleccione el Distrito</label>
+                          <select id="Distrito" name="Distrito_cl" class="form-select mb-2 position-relative" aria-label="Distrito" required>
+                            <option selected disabled value="">Seleccione el  Distrito... </option>
+                            <option value="I">Distrito I</option>
+                            <option value="II">Distrito II</option>
+                            <option value="III">Distrito III</option>
+                            <option value="IV">Distrito IV</option>
+                            <option value="V">Distrito V</option>
+                            <option value="VI">Distrito VI</option>
+                            <option value="VII">Distrito VII</option>
                           </select>
-                          <div
-                            class="invalid-feedback"
-                          >
-                            Es necesario el Distrito
-                          </div>
+                          <div class="invalid-feedback">Por favor ingrese el Distrito</div>
                         </div>
 
+                        <!-- Zona de Residencia -->
                         <div class="mb-2">
-                          <label for="Residencia" class="form-label"
-                            >Zona de Residencia</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="Residencia"
-                            name="Residencia_cl"
-                            placeholder="Zona de Residencia"
-                            required
-                          />
-                          <div
-                            class="invalid-feedback"
-                          >
-                            Es necesario la zona de residencia
-                          </div>
+                          <label for="Residencia" class="form-label fw-bold">Zona de Residencia</label>
+                          <input type="text" class="form-control" id="Residencia" name="Residencia_cl" placeholder="Zona de Residencia" required />
+                          <div class="invalid-feedback">Por favor ingrese la Zona de Residencia</div>
                         </div>
+
+                        <!-- P. Referencia -->
                         <div class="mb-2">
-                          <label for="PuntoReferencia" class="form-label"
-                            >Punto de Referencia</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="PuntoReferencia"
-                            name="PuntoReferencia_cl"
-                            placeholder="Punto de Referencia"
-                            required
-                          />
-                          <div
-                            class="invalid-feedback"
-                          >
-                            Solicitamos un punto de Referencia
-                          </div>
+                          <label for="PuntoReferencia" class="form-label  fw-bold">Punto de Referencia</label>
+                          <input type="text" class="form-control" id="PuntoReferencia" name="PuntoReferencia_cl" placeholder="Punto de Referencia" required/>
+                          <div class="invalid-feedback">Por favor ingrese el Punto de Referencia</div>
                         </div>
+
+                        <!-- Distancia -->
                         <div class="mb-2">
-                          <label for="Distancia" class="form-label"
-                            >Distancia</label
-                          >
+                          <label for="Distancia" class="form-label fw-bold">Distancia</label>
                           <input
                             type="text"
                             class="form-control"
@@ -174,24 +107,23 @@
                             placeholder="Distancia"
                           />
                         </div>
+
+                        <!-- Casa -->
                         <div class="mb-2">
-                          <label for="Casa" class="form-label"
-                            >Numero de casa</label
+                          <label for="Casa" class="form-label fw-bold"
+                            >Información de la casa</label
                           >
                           <input
                             type="text"
                             class="form-control"
                             id="Casa"
                             name="Casa_cl"
-                            placeholder="N. Casa"
+                            placeholder="N. Casa y/o color"
                             required
                           />
-                          <div
-                            class="invalid-feedback"
-                          >
-                            Es necesario el número de Casa
-                          </div>
+                          <div class="invalid-feedback">Por favor ingrese la información de la casa</div>
                         </div>
+
                         <div class="d-grid gap-2">
                           <button
                             type="submit"
@@ -242,7 +174,7 @@
                   title="Historial"
                   onclick="mostrarPanelRegistroCliente()"
                 >
-                  <i class="fa-solid fa-list"></i> Registrar un nuevo cliente
+                <i class="fa-solid fa-user-plus mx-1"></i> Registrar un nuevo cliente
                 </button>
               </h4>
             </div>
@@ -290,7 +222,14 @@
                   <td class="centrado"><%= client.Telefono %></td>
                   <td class="centrado"><%= client.Dirección %></td>
                   <td class="centrado">C$ <%= client.Credito_Disponible %></td>
-                  <td><%= client.Estado_Cliente %></td>
+
+                  <% if (client.Estado_Cliente == 'Activo') { %>
+                    <td class="text-success fw-bold"><%= client.Estado_Cliente %></td>
+                  <% } else if (client.Estado_Cliente == 'Inactivo') { %>
+                    <td class="text-danger fw-bold"><%= client.Estado_Cliente %></td>
+                  <% } else{ %> 
+                    <td><%= client.Estado_Cliente %></td>
+                  <% } %> 
                   <td>
                     <!-- Botones de acciones -->
                     <a
@@ -439,20 +378,23 @@
     <script>
       $(document).ready(function(){
           $('#TableClients').DataTable({
-              info: false,
-              ordering: false,
-              paging: false,
-              "oLanguage": {
-                  "sSearch": "Buscar a un Cliente:"
-              },
-              "rowCallback": function( row, data ) {
-                  if (data[5] === "activo") { // Suponiendo que el estado está en la cuarta columna (índice 3)
-                      $(row).css('background-color', 'green');
-                  } else if (data[5] === "inactivo") {
-                      $(row).css('background-color', 'red');
-                  }
+            info: false,
+            ordering: false,
+            lengthMenu: [5,10,15,20,25,50],
+            "oLanguage": {
+              "sSearch": "Buscar a un Cliente:",
+              "sZeroRecords": "No se encontraron resultados",
+              "sLengthMenu": "Mostrar _MENU_ Clientes",
+              "sZeroRecords": "No se encontraron resultados",
+              "sLoadingRecords": "Cargando...",
+              "oPaginate": {
+                  "sFirst": "Primero",
+                  "sLast": "Último",
+                  "sNext": "Siguiente",
+                  "sPrevious": "Anterior"}
               }
-          });
+          })
+          ;
       });
     </script>
   </body>

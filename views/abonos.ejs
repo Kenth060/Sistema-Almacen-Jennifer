@@ -91,7 +91,7 @@
               <thead>
                 <tr>
                   <th class="centrado">Nombre del cliente</th>
-                  <th class="centrado">Nombrede vendedor</th>
+                  <th class="centrado">Nombre del vendedor</th>
                   <th class="centrado">Fecha de venta</th>
                   <th class="centrado">Plazo de compra</th>
                   <th class="centrado">Frecuencia de abono</th>
@@ -111,8 +111,11 @@
                     <td class="centrado">C$ <%= venta.Total_Venta %></td>
                     <td class="centrado">C$ <%= venta.Saldo_Restante %></td>
                     <td class="centrado">
-                      <button type="button" class="btn btn-success" title="Abonar" onclick= "mostrarPanelAbono('<%= venta.Id_Venta %>','<%= venta.Nombre_Cliente %>','<%= venta.Nombre_Vendedor %>','<%= venta.Saldo_Restante %>')"><i class="fa-solid fa-money-check-dollar"></i></button>
-                      <button type="button" class="btn btn-primary" title="Detalles de abonos" onclick="mostrarPanelHistorialAbonosUnico('<%= venta.Id_Venta %>','<%= venta.Nombre_Cliente %>','<%= venta.Nombre_Vendedor %>')"><i class="fa-solid fa-receipt fa-lg" style="color: #ffffff;"></i></button>
+                      <div class="d-flex align-items-center justify-content-center">
+                        <button type="button" class="btn btn-success mx-1" title="Abonar" onclick= "mostrarPanelAbono('<%= venta.Id_Venta %>','<%= venta.Nombre_Cliente %>','<%= venta.Nombre_Vendedor %>','<%= venta.Saldo_Restante %>')"><i class="fa-solid fa-money-check-dollar"></i></button>
+                        <button type="button" class="btn btn-primary mx-1" title="Detalles de abonos" onclick="mostrarPanelHistorialAbonosUnico('<%= venta.Id_Venta %>','<%= venta.Nombre_Cliente %>','<%= venta.Nombre_Vendedor %>')"><i class="fa-solid fa-receipt fa-lg" style="color: #ffffff;"></i></button>
+                      </div>
+                      
                     </td>
                   </tr>
                 <% }) %>
