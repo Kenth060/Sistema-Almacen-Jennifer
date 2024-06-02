@@ -231,15 +231,7 @@ body{
   font-size: 22px;
   padding: 20px 0 15px 0;
 }
-.register-form input[type="password"],
-.register-form input[type="text"] {
-  width: 100%;
-  padding: 15px;
-  border: 1px solid #ced4da;
-  margin-bottom: 10px;
-  box-sizing:border-box;
-  border-radius: 10px;
-}
+
 
 /* Estilos para el select dropdown */
 .select-css {

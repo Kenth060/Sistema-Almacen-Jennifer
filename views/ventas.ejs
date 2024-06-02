@@ -616,6 +616,12 @@
                   <h4 id="DetalleTitle">Detalle Venta </h4>
 
                   <div style="max-height: 300px; overflow-y: auto">
+                    <button
+                    type="button"
+                    class="btn btn-outline-primary  mt-2 mb-4"
+                    onclick="genPDF()">
+                    Generar Pdf <i class="fas fa-file-pdf mx-1"></i>
+                  </button>
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                       <table class="table" id="tablaDetalleVenta">
                         <thead>
@@ -674,14 +680,7 @@
                   >
                     Cerrar
                   </button>
-                  <button
-                    type="button"
-                    class="btn btn-outline-primary"
-                    onclick="genPDF()"
-                    
-                  >
-                    <i class="fas fa-file-pdf"></i>
-                  </button>
+
                 </div> 
                     <!-- onclick="cerrarDetallesVenta()"
                   >

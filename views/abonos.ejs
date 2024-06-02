@@ -111,16 +111,10 @@
                     <td class="centrado">C$ <%= venta.Total_Venta %></td>
                     <td class="centrado">C$ <%= venta.Saldo_Restante %></td>
                     <td class="centrado">
-<<<<<<< HEAD
                       <div class="d-flex align-items-center justify-content-center">
                         <button type="button" class="btn btn-success mx-1" title="Abonar" onclick= "mostrarPanelAbono('<%= venta.Id_Venta %>','<%= venta.Nombre_Cliente %>','<%= venta.Nombre_Vendedor %>','<%= venta.Saldo_Restante %>')"><i class="fa-solid fa-money-check-dollar"></i></button>
                         <button type="button" class="btn btn-primary mx-1" title="Detalles de abonos" onclick="mostrarPanelHistorialAbonosUnico('<%= venta.Id_Venta %>','<%= venta.Nombre_Cliente %>','<%= venta.Nombre_Vendedor %>')"><i class="fa-solid fa-receipt fa-lg" style="color: #ffffff;"></i></button>
                       </div>
-                      
-=======
-                      <button type="button" class="btn btn-success" title="Abonar" onclick= "mostrarPanelAbono('<%= venta.Id_Venta %>','<%= venta.Nombre_Cliente %>','<%= venta.Nombre_Vendedor %>','<%= venta.Saldo_Restante %>','<%= venta.Fecha_Venta %>')"><i class="fa-solid fa-money-check-dollar"></i></button>
-                      <button type="button" class="btn btn-primary" title="Detalles de abonos" onclick="mostrarPanelHistorialAbonosUnico('<%= venta.Id_Venta %>','<%= venta.Nombre_Cliente %>','<%= venta.Nombre_Vendedor %>')"><i class="fa-solid fa-receipt fa-lg" style="color: #ffffff;"></i></button>
->>>>>>> 06df7154f4789469aa1230ce00b064330796f2df
                     </td>
                   </tr>
                 <% }) %>

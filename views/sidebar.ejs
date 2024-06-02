@@ -17,12 +17,8 @@
         <i class="bx bx-menu" id="btn"></i>
       </div>
       <ul class="nav-list">
-<!--         <li>
-          <i class="bx bx-search"></i>
-          <input type="text" placeholder="Buscar..." />
-          <span class="tooltip">Buscar</span>
-        </li> -->
         
+        <!-- Inicio -->
         <li>
           <a href="/inicio">
             <i class='bx bxs-home'></i>
@@ -30,6 +26,8 @@
           </a>
           <span class="tooltip">Inicio</span>
         </li>
+
+        <!-- Clientes -->
         <li>
           <a href="/clientes">
             <i class="bx bx-user"></i>
@@ -37,20 +35,30 @@
           </a>
           <span class="tooltip">Cliente</span>
         </li>
-        <li>
-          <a href="/vendedores">
-            <i class="bx bx-chat"></i>
-            <span class="links_name">Vendedor</span>
-          </a>
-          <span class="tooltip">Vendedor</span>
-        </li>
-        <li>
-          <a href="/Proveedores">
-            <i class='bx bxs-shopping-bag'></i>
-            <span class="links_name">Proveedores</span>
-          </a>
-          <span class="tooltip">Proveedores</span>
-        </li>
+
+        <!-- Vendedores -->
+        <% if( UserRol == 'Gerente') { %>
+          <li>
+            <a href="/vendedores">
+              <i class="bx bx-chat"></i>
+              <span class="links_name">Vendedor</span>
+            </a>
+            <span class="tooltip">Vendedor</span>
+          </li>
+        <% } %>
+
+        <!-- Proveedores -->
+        <% if( UserRol == 'Gerente') { %>
+          <li>
+            <a href="/Proveedores">
+              <i class='bx bxs-shopping-bag'></i>
+              <span class="links_name">Proveedores</span>
+            </a>
+            <span class="tooltip">Proveedores</span>
+          </li>
+        <% } %>
+        
+        <!-- Productos -->
         <li>
           <a href="/productos">
             <i class="bx bx-purchase-tag-alt"></i>
@@ -59,14 +67,18 @@
           <span class="tooltip">Producto</span>
         </li>
 
-        <li>
-          <a href="/Compras">
-            <i class='bx bxs-shopping-bags'></i>
-            <span class="links_name">Compras</span>
-          </a>
-          <span class="tooltip">Compras</span>
-        </li>
+        <!-- Compras -->
+        <% if( UserRol == 'Gerente') { %>
+          <li>
+            <a href="/Compras">
+              <i class='bx bxs-shopping-bags'></i>
+              <span class="links_name">Compras</span>
+            </a>
+            <span class="tooltip">Compras</span>
+          </li>
+        <% } %>
 
+        <!-- Ventas -->
         <li>
           <a href="/ventas">
             <i class="bx bx-credit-card"></i>
@@ -74,6 +86,9 @@
           </a>
           <span class="tooltip">Ventas</span>
         </li>
+
+
+        <!-- Abonos -->
         <li>
           <a href="/abonos">
             <i class="bx bx-money"></i>
@@ -82,13 +97,36 @@
           <span class="tooltip">Abonos</span>
         </li>
 
+        <!-- Cerrar Sesion -->
         <li>
-          <a href="#">
+          <a onclick="confirmLogOut()">
             <i class='bx bx-log-out' ></i>
             <span class="links_name">Cerrar Sesión</span>
           </a>
           <span class="tooltip">Cerrar Sesión</span>
         </li> 
+
+        <script>
+          function confirmLogOut() 
+          {
+              Swal.fire({
+                  title: '¿Está seguro?',
+                  text: 'Esta a punto de cerrar sesión del sistema. ¿Está seguro?',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#d33',
+                  cancelButtonColor: '#3085d6',
+                  confirmButtonText: 'Sí, Cerrar Sesión',
+                  cancelButtonText: 'Cancelar'
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      // Si el usuario confirma, redirecciona a la ruta de cerrar Sesion
+                      window.location.href = '/logout';
+                  }
+              });
+          }
+        </script>
+
       </ul>
     </div>
 

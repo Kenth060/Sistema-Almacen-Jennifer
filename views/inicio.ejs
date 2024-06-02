@@ -23,7 +23,7 @@
           <div class="container">
             <div class="row">
               <div class="col-lg-9 col-md-8">
-                <h1 class="font-weight-bold mb-0">Bienvenido nuevamente</h1>
+                <h1 class="font-weight-bold mb-0">Bienvenido <%= usuario %></h1>
                 <p class="lead text-muted">Revisa la última información</p>
               </div>
               <div class="col-lg-3 col-md-4 d-flex">
@@ -215,6 +215,7 @@
       integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI="
       crossorigin="anonymous"
     ></script>
+
     <script>
       var valores = JSON.parse("<%- JSON.stringify(VentaContado.map(venta => venta.Cantidad_Ventas)) %>");
       var labels = <%- JSON.stringify(VentaContado.map(venta => venta.Mes)) %>; 
@@ -284,5 +285,22 @@
       function SeeALL()
       { window.location = '/ventas';}
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <% if (Mensaje) { %>
+      <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Accesso Denegado',
+                  text: '<%= Mensaje %>',
+                  timer:1500,
+                  showConfirmButton:false
+              });
+          });
+      </script>
+  <% } %>
+
   </body>
 </html>

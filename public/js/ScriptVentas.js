@@ -643,7 +643,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var panel = document.getElementById("BuscarVendedorVenta");
     panel.style.display = "none";
   }
-<<<<<<< HEAD
 
   function Fecha_Actual(Fecha)
   {
@@ -717,7 +716,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Agregar la fila a la tabla
     tabla.appendChild(nuevaFila);
   }
-=======
+  
   document.addEventListener('DOMContentLoaded', function() {
     // Obtener la referencia al elemento de fecha
     const fechaVentaInput = document.getElementById('plazo_compra');
@@ -778,4 +777,3 @@ function genPDF() {
 }
 
 
->>>>>>> 06df7154f4789469aa1230ce00b064330796f2df

@@ -1,18 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
+const crud = require("./controllers/crud");
 const conexion = require("./database/db");
-
-//1 -> Invocacion a bcryptjs
-const bcryptjs = require("bcryptjs");
-
-//2 -> Var de Session
-const session = require('express-session');
-router.use(session({
-    secret:'secret',
-    resave: true,
-    saveUninitialized: true
-}));
 
 //3 -> Estableciendo las rutas
 router.get ("/", (req, res) => 
@@ -20,8 +9,26 @@ router.get ("/", (req, res) =>
   res.render("login");
 });
 
-router.get ("/register", (req, res) => {
-  res.render("register");
+router.get ("/register", (req, res) => 
+{
+  consultaColaboradores = 
+    `SELECT 
+            P.Id_Persona,
+            CONCAT(P.Nombre,' ',P.Apellido) as 'Nombre'
+    FROM persona P
+    WHERE P.Tipo_Persona != 'Cliente' and P.Tipo_Persona != 'Proveedor' `
+  ;
+  
+  conexion.query(consultaColaboradores, (error, results) => 
+  {
+    if(error)
+    { console.log('Hubo un error al buscar los colaboradores, el error es => ' + error);}
+    else
+    {
+      res.render("register",{Colaboradores:results});
+    }
+
+  });
 });
 
 router.get ("/login", (req, res) => 
@@ -29,11 +36,9 @@ router.get ("/login", (req, res) =>
   res.render("login");
 });
 
-router.get ("/inicio", async (req, res) => 
+router.get ("/inicio", crud.isAuthenticated, async (req, res) => 
 {
-  //if (req.session.loggedin) 
-  if(1)
-  {
+
     let VentaContado = [];
     let VentaCredito = [];
     let Ventas = [];
@@ -199,6 +204,9 @@ router.get ("/inicio", async (req, res) =>
     
     Promise.all([consultaVentasContado, consultaVentasCredito, consultaIngresos,consultaProductosAct,consultaClientes,consultaVentas])
       .then(() => {
+        
+        const errorMessage = req.cookies.errorMessage;
+        res.clearCookie('errorMessage');
         res.render("inicio", 
         {
           VentaContado: VentaContado,
@@ -206,76 +214,76 @@ router.get ("/inicio", async (req, res) =>
           Ingresos: 'C$ '+Ingresos,
           Productos: ProductosAct[0].Total,
           No_Clientes:No_Clientes[0].Total,
-          Ventas:Ventas
+          Ventas:Ventas,
+          usuario: req.user.NombreUsuario,
+          Mensaje: errorMessage,
+          UserRol:req.user.Rol
         });
 
         /* console.log(Ventas); */
 
       })
       .catch(error => {
-        console.log('Hubo un error al obtener los datos => ' + error);
+        console.log('Hubo un error al obtener los datos del inicio => ' + error);
       });
-  } 
-  else 
+/*  } 
+   else 
   {
     res.redirect('/login');
-  }
+  } */
 });
 
-router.get ("/Abonos", (req, res) => 
+router.get ("/Abonos", crud.isAuthenticated , (req, res) => 
 {
-  if (req.session.loggedin) 
+  conexion.query("SELECT * from showventascredito  ", (error, results) => 
   {
-    conexion.query("SELECT * from showventascredito  ", (error, results) => 
-        {
-          if (error) 
-          { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
-          else 
-          {  
-            const Ventas = results.map(venta => 
-                {
-                  const fecha = new Date(venta.Fecha_Venta);
-                  const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-                  const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-
-                  const fechaPlazo = new Date(venta.Plazo_Compra);
-                  const fechaPlazoFormateada = fechaPlazo.toLocaleDateString('es-ES', opciones);
-                  
-                  return {
-                    ...venta,
-                    Fecha_Venta: fechaFormateada,
-                    Plazo_Compra:fechaPlazoFormateada
-                  };
-            });
-        
-            res.render("abonos",{ Ventas_Credito:Ventas });
-          }
-            
-    });
-  } 
-  else 
-  {
-    res.redirect('/login');
-  }
-});
-
-router.get ("/Clientes", (req, res) => 
-{
-  if (req.session.loggedin) 
-  {
-    conexion.query("SELECT * from MostrarClientes", (error, results) => 
+    if (error) 
+    { console.log( "Ha ocurrido un error al mostrar las Ventas, el error es => " + error); } 
+    else 
+    {  
+      const Ventas = results.map(venta => 
       {
-        if (error) 
-        { console.log( "Ha ocurrido un error al mostrar los clientes, el error es => " + error ); } 
-        else 
-        { res.render("clientes", { clientes: results }); }
+        const fecha = new Date(venta.Fecha_Venta);
+        const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+        const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+        
+        const fechaPlazo = new Date(venta.Plazo_Compra);
+        const fechaPlazoFormateada = fechaPlazo.toLocaleDateString('es-ES', opciones);
+                  
+        return { 
+          ...venta,
+          Fecha_Venta: fechaFormateada,
+          Plazo_Compra:fechaPlazoFormateada
+        };
       });
-  } 
-  else 
-  { res.redirect('/login'); }
+        
+      const errorMessage = req.cookies.errorMessage;
+      res.clearCookie('errorMessage');
+
+      res.render("abonos",{ 
+        Ventas_Credito:Ventas ,
+        Mensaje: errorMessage,
+        UserRol:req.user.Rol
+      });
+    }
+            
+  });
 });
 
-router.get("/EditClient/:ID", (req, res) => 
+router.get ("/Clientes", crud.isAuthenticated, (req, res) => 
+{
+  conexion.query("SELECT * from MostrarClientes", (error, results) => 
+  {
+    if (error) 
+    { console.log( "Ha ocurrido un error al mostrar los clientes, el error es => " + error ); } 
+    else 
+    { res.render("clientes", { clientes: results , 
+      usuario: req.user.NombreUsuario,
+      UserRol:req.user.Rol}); }
+  });
+});
+
+router.get("/EditClient/:ID", crud.isAuthenticated,  (req, res) => 
 {
   const id = req.params.ID;
 
@@ -284,17 +292,19 @@ router.get("/EditClient/:ID", (req, res) =>
     if (error) 
     { console.log("Hubo un error al obtener informacion de ese cliente, error => " + error ); }
     else 
-    { res.render("editClient.ejs", { cliente: results[0] }); }
-    //{ res.send(results[0]);}
+    { 
+      res.render("editClient.ejs", 
+      { 
+        cliente: results[0],
+        UserRol:req.user.Rol
+     }); 
+    
+    }
   });
 });
 
-router.get ("/Compras", (req, res) => 
+router.get ("/Compras", crud.isAuthenticated , crud.isGerente, (req, res) => 
 {
-  //if(1)
-  if (req.session.loggedin) 
-  {
-
     let Compras = [];
     let Productos = [];
     let Proveedores = [];
@@ -375,34 +385,46 @@ router.get ("/Compras", (req, res) =>
     Promise.all([consultaCompras , consultaProductos, consultaProveedores,consultaGerente])
     .then(() => 
     {
-      //res.send(Gerentes);
-      res.render("compras", {productos: Productos , compras:Compras,proveedores:Proveedores,gerentes:Gerentes});
+      const errorMessage = req.cookies.errorMessage;
+      res.clearCookie('errorMessage');
+
+      res.render("compras", 
+                  {productos: Productos ,
+                   compras:Compras,
+                   proveedores:Proveedores,
+                   gerentes:Gerentes, 
+                   Mensaje: errorMessage,
+                   UserRol:req.user.Rol
+                  }
+      );
     })
     .catch(error => 
     { console.log('Hubo un error al obtener los datos => ' + error); });    
-  }
-  else 
-  { res.redirect('/login'); }
+
 });
 
-router.get("/Vendedores", (req, res) => 
+router.get("/Vendedores", crud.isAuthenticated , crud.isGerente, (req, res) => 
 {
-  if (req.session.loggedin) 
+  conexion.query("SELECT * FROM mostrarvendedores", (error, results) => 
   {
-    conexion.query("SELECT * FROM mostrarvendedores", (error, results) => 
-      {
-        if (error) 
-        { console.log( "Ha ocurrido un error al mostrar los vendedores, el error es => " + error ); } 
-        else 
-        { res.render("vendedores", { vendedores: results }); }
-      });
-  } 
-  else 
-  { res.redirect('/login'); }
-
+    if (error) 
+    { console.log( "Ha ocurrido un error al mostrar los vendedores, el error es => " + error ); } 
+    else 
+    { 
+      const errorMessage = req.cookies.errorMessage;
+      res.clearCookie('errorMessage');
+      res.render("vendedores", 
+                  { vendedores: results,
+                    Mensaje: errorMessage,
+                    UserRol:req.user.Rol
+                  }       
+      ); 
+    }
+  });
 });
 
-router.get("/EditVendedor/:ID", (req, res) => {
+router.get("/EditVendedor/:ID" , crud.isAuthenticated , crud.isGerente, (req, res) => 
+{
   const id = req.params.ID;
 
   conexion.query("SELECT * FROM persona where Id_Persona = ?", [id], (error, results) => 
@@ -410,40 +432,48 @@ router.get("/EditVendedor/:ID", (req, res) => {
     if (error) 
     { console.log( "Hubo un error al obtener informacion de ese vendedor, error => " + error); } 
     else 
-    {res.render("editvendedor.ejs", { vendedor: results[0] });}
-    // res.send(results[0][0]);}
+    {
+      const errorMessage = req.cookies.errorMessage;
+      res.clearCookie('errorMessage');
+      res.render("editvendedor.ejs", 
+                  { 
+                    vendedor: results[0] ,
+                    Mensaje: errorMessage,
+                    UserRol:req.user.Rol
+                  }
+      );
+    }
   });
 });
 
-router.get ("/Proveedores", (req, res) => 
+router.get ("/Proveedores",  crud.isAuthenticated , crud.isGerente,(req, res) => 
 {
   conexion.query("SELECT * FROM mostrarproveedores", (error, results) => 
   {
     if (error) 
     { console.log( "Ha ocurrido un error al mostrar los proveedores, el error es => " + error ); } 
     else 
-    { res.render("Proveedores", { proveedores: results }); }
+    { 
+      const errorMessage = req.cookies.errorMessage;
+      res.clearCookie('errorMessage');
+      res.render("Proveedores", { proveedores: results, Mensaje: errorMessage,UserRol:req.user.Rol });
+    }
   });
 });
 
-router.get("/Productos", (req, res) => 
-{
-  if (req.session.loggedin) 
-  {   res.render("productos"); } 
-  else 
-  { res.redirect('/login'); }
+router.get("/Productos", crud.isAuthenticated, (req, res) => 
+{ 
+  res.render("productos", { UserRol:req.user.Rol});  
 
 });
 
-router.get ("/Show/ProductosDevueltos", (req, res) => 
+router.get ("/Show/ProductosDevueltos",  crud.isAuthenticated , crud.isGerente, (req, res) => 
 {
   conexion.query('SELECT * FROM ShowProductosDevueltos', (error, results) => {
     if(error)
     { console.log('Hubo un error al mostrar los productos devueltos => '+error); }
     else
     {
-      //res.send(results);
-
       const devoluciones = results.map( devolucion => 
         {
           const fecha = new Date(devolucion.Fecha_Devolucion);
@@ -456,16 +486,15 @@ router.get ("/Show/ProductosDevueltos", (req, res) =>
           };
         });
 
-      res.render("productosDevueltos",{ Devoluciones : devoluciones});
+      const errorMessage = req.cookies.errorMessage;
+      res.clearCookie('errorMessage');
+      res.render("productosDevueltos",{ Devoluciones : devoluciones, Mensaje: errorMessage, UserRol:req.user.Rol});
     }
   })
 });
 
-router.get("/Ventas", (req, res) => 
+router.get("/Ventas",  crud.isAuthenticated , (req, res) => 
 {
-  if(1) 
-  //if (req.session.loggedin)
-  {
     const tipoVenta = req.query.tipoVenta;
 
     let Ventas = [];
@@ -554,31 +583,33 @@ router.get("/Ventas", (req, res) =>
     });
 
     Promise.all([consultaVentas, consultaProductos, consultaClientes , consultaVendedores])
-    .then(() => {
-      
+    .then(() => 
+    {
+      const errorMessage = req.cookies.errorMessage;
+      res.clearCookie('errorMessage');
+
       res.render("ventas", 
       {
         ventas: Ventas, 
         productos: Productos , 
         Tipo:tipoVenta,
         clientes:Clientes,
-        vendedores:Vendedores
+        vendedores:Vendedores,
+        Mensaje: errorMessage,
+        UserRol:req.user.Rol
       });
 
     })
     .catch(error => {
       console.log('Hubo un error al obtener los datos => ' + error);
     });
-  } 
-  else 
-  { res.redirect('/login'); }
+
 
 });
 
-router.get("/ShowProducts/:categoria", (req, res) => {
+router.get("/ShowProducts/:categoria", crud.isAuthenticated,(req, res) => 
+{
 
-  if (req.session.loggedin) 
-  { 
     const categoria = req.params.categoria;
     //res.send(categoria);
 
@@ -601,16 +632,13 @@ router.get("/ShowProducts/:categoria", (req, res) => {
             });
   
         //res.send(productosFormateados);
-        res.render("showProducts.ejs", { Producto: productosFormateados, Categoria: categoria }); 
+        res.render("showProducts.ejs", { Producto: productosFormateados, Categoria: categoria, UserRol:req.user.Rol }); 
       }   
     });  
-  }
-  else 
-  { res.redirect('/login'); }
- 
+
 });
 
-router.get("/EditProduct/:Cat/p/:IdProd", (req, res) => 
+router.get("/EditProduct/:Cat/p/:IdProd" , crud.isAuthenticated , crud.isGerente, (req, res) => 
 {
   const id_prod = req.params.IdProd;
   const  cat = req.params.Cat
@@ -631,16 +659,17 @@ router.get("/EditProduct/:Cat/p/:IdProd", (req, res) =>
             ...producto,
             Fecha_Ingreso: fechaFormateada
           };
-        });
+      });
 
-        //res.send(productosFormateados);
-      res.render("editProducts.ejs", { Producto: productosFormateados[0]});
+      const errorMessage = req.cookies.errorMessage;
+      res.clearCookie('errorMessage');
+      res.render("editProducts.ejs", { Producto: productosFormateados[0], Mensaje: errorMessage, UserRol:req.user.Rol});
     }
   });
 
 }); 
 
-router.get('/buscar-cliente', (req, res) => 
+router.get('/buscar-cliente',  crud.isAuthenticated, (req, res) => 
 {
   const cedula = req.query.cedula;
 
@@ -663,7 +692,7 @@ router.get('/buscar-cliente', (req, res) =>
 
 });
 
-router.get('/buscar-vendedor', (req, res) => 
+router.get('/buscar-vendedor', crud.isAuthenticated,  (req, res) => 
 {
   const cedula = req.query.cedula;
 
@@ -686,7 +715,7 @@ router.get('/buscar-vendedor', (req, res) =>
 
 });
 
-router.get('/buscar-detalleventa', (req, res) => 
+router.get('/buscar-detalleventa', crud.isAuthenticated,  (req, res) => 
 {
   const id = req.query.id;
   conexion.query("SELECT * from mostrardetalleventa WHERE Id_Venta = ?", [id], (error , results) => 
@@ -711,7 +740,7 @@ router.get('/buscar-detalleventa', (req, res) =>
   
 });
 
-router.get('/buscar-abonos', (req, res) => 
+router.get('/buscar-abonos', crud.isAuthenticated,  (req, res) => 
   {
     const id = req.query.id;
     conexion.query("SELECT * FROM historial_abonos WHERE Id_Venta = ?", [id], (error , results) => 
@@ -747,7 +776,7 @@ router.get('/buscar-abonos', (req, res) =>
     
 });
   
-router.get('/buscar-records', (req, res) => 
+router.get('/buscar-records', crud.isAuthenticated,  (req, res) => 
   {
     const id = req.query.id;
     conexion.query("SELECT * FROM record_crediticio WHERE Id_Cliente = ?", [id], (error , results) => 
@@ -783,7 +812,7 @@ router.get('/buscar-records', (req, res) =>
     
 });
 
-router.get('/buscar-prov', (req, res) => 
+router.get('/buscar-prov', crud.isAuthenticated , crud.isGerente,  (req, res) => 
 {
   const cedula = req.query.cedula;
   
@@ -806,7 +835,7 @@ router.get('/buscar-prov', (req, res) =>
   
 });
 
-router.get('/buscar-gerente', (req, res) => 
+router.get('/buscar-gerente' ,crud.isAuthenticated , crud.isGerente, (req, res) => 
   {
     const cedula = req.query.cedula;
     
@@ -828,7 +857,7 @@ router.get('/buscar-gerente', (req, res) =>
     
   });
 
-router.get('/buscar-detallecompra', (req, res) => 
+router.get('/buscar-detallecompra', crud.isAuthenticated , crud.isGerente, (req, res) => 
 {
   const id = req.query.id;
   conexion.query("SELECT * from mostrardetallecompras WHERE Id_Compra = ?", [id], (error , results) => 
@@ -844,102 +873,9 @@ router.get('/buscar-detallecompra', (req, res) =>
       
 });
 
-
-
-
-
-// 4 -> Registro
-router.post ("/register", async (req, res) => 
-  {
-    const user = req.body.user;
-    const name = req.body.name;
-    const rol = req.body.rol;
-    const pass = req.body.pass;
-    //console.log('Abriendo registrar');
-    let passwordHaash = await bcryptjs.hash(pass, 8);
-  
-    conexion.query( "INSERT INTO usuarios SET ?", { Usuario: user, Contraseña: passwordHaash, Rol: rol,Id_Persona:31 }, async (error, results) => 
-    {
-      if (error) 
-      { console.log("Hubo un error al registrar error => " + error); } 
-      else 
-      {
-          res.render("register", 
-          {
-            alert: true,
-            alertTitle: "Registro",
-            alertMessage: "¡Registro de Usuario Exitoso!",
-            alertIcon: "success",
-            showConfirmButton: false,
-            timer: 1500,
-            ruta: "",
-          });
-      }
-    }
-    );
-  });
-
-// 5 -> Autenticacion
-router.post ("/auth", async (req, res) =>
-  {
-    const user = req.body.user;
-    const pass = req.body.pass;
-  
-    let passwordHaash = await bcryptjs.hash(pass, 8);
-  
-    if (user && pass) 
-    {
-      conexion.query( "Select * FROM usuarios WHERE usuario = ?", [user], async (error, results) => 
-      {
-        if ( results.length == 0 || !(await bcryptjs.compare(pass, results[0].Contraseña)) ) 
-        {
-          res.render("login", 
-          {
-              alert: true,
-              alertTitle: "Error",
-              alertMessage: "Usuario y/o contraseña incorrectas",
-              alertIcon: "error",
-              showConfirmButton: true,
-              timer: false,
-              ruta: "login",
-            });
-        } 
-        else 
-        {
-            req.session.loggedin = true;
-            req.session.name = results[0].Usuario;
-            res.render("login", {
-              alert: true,
-              alertTitle: "Conexion Exitosa",
-              alertMessage: "¡Inicio de Sesión Correcto!",
-              alertIcon: "success",
-              showConfirmButton: false,
-              timer: 2500,
-              ruta: "inicio",
-            });
-          }
-        }
-      );
-  
-    } 
-    else 
-    {
-      res.render("login", 
-      {
-        alert: true,
-        alertTitle: "Advertencia",
-        alertMessage: "¡Por favor ingrese un usuario y/o una contraseña!",
-        alertIcon: "warning",
-        showConfirmButton: true,
-        timer: false,
-        ruta: "login",
-      });
-    }
-});
-
 // 6 -> METODOS POST
 
-const crud = require("./controllers/crud");
+
 router.post("/AddClient", crud.AddClient);
 router.post("/UpdateClient", crud.UpdateClient);
 router.post("/AddVendedor", crud.AddVendedor);
@@ -951,6 +887,10 @@ router.post("/AddAbono",crud.AddAbono);
 router.post("/DevolverProducto",crud.DevolverProducto);
 router.post("/AddProveedor",crud.AddProveedor);
 router.post("/AddCompra",crud.AddCompra);
+
+router.post("/register",crud.RegisterUser);
+router.post("/auth",crud.Login);
+router.get("/logout",crud.logout);
 
 module.exports = router;
 

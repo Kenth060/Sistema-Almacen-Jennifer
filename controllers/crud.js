@@ -1,4 +1,181 @@
 const conexion = require('../database/db');
+const jwt = require('jsonwebtoken');
+const bcryptjs = require('bcryptjs');
+
+const {promisify} = require('util');
+
+//Metodo Registro usuarios
+exports.RegisterUser = async (req,res) =>
+{
+    try
+    {
+        const Id_Persona = req.body.ColabName;
+        const user = req.body.ColabUser;
+        const Rol = req.body.ColabRol;
+        const Pass = req.body.ColabPass;
+        let passHash = await bcryptjs.hash(Pass,8);
+
+        conexion.query('Call AddUser(?,?,?,?);',[user,passHash,Rol,Id_Persona], (error, results) =>
+        {
+            if(error)
+            { console.log('Hubo un error al agregar el usuario => '+error); }
+            else
+            { res.redirect('/Login');}
+        });
+    }
+    catch (error)
+    { console.log('Hubo un error al realizar esta operacion => '+error);}
+
+
+    
+
+};
+
+exports.Login = async (req,res) =>
+{
+    try 
+    {
+        const user = req.body.user;
+        const pass = req.body.pass;
+
+        if( !user || !pass)
+        {
+            res.render('login',
+            {
+                alert:true,
+                alertTitle: '¡Faltan Datos!',
+                alertMessage: 'Por favor Ingrese un usuario y contraseña',
+                alertIcon: 'warning',
+                showConfirmButton: true ,
+                timer: false,
+                ruta: 'login'
+            });
+        }
+        else
+        {
+            conexion.query('SELECT * FROM usuarios WHERE usuario = ?',[user], async (error,results) =>
+            {
+                if (error) 
+                { console.log('Hubo un error al buscar al Colaborador con usuario '+user+' ,el error es => '+error); }
+                else
+                {
+                    console.log(results);
+                    if (results.length == 0 || !(await bcryptjs.compare(pass, results[0].Contraseña)) )
+                    {
+                        res.render('login',
+                        {
+                            alert:true,
+                            alertTitle: 'Compruebe los Datos',
+                            alertMessage: 'Usuario y/o contraseña Incorrecta',
+                            alertIcon: 'error',
+                            showConfirmButton: true ,
+                            timer: false,
+                            ruta: 'login'
+                        });
+                    }
+                    else
+                    {
+                        const ID = results[0].Id_Persona;
+                        const Rol = results[0].Rol;
+                        const token = jwt.sign( { Id:ID , rol:Rol } , process.env.JWT_SECRETO , {
+                            expiresIn: process.env.JWT_EXPIRES_TIME
+                        });
+
+                        console.log('El token del usuario es => '+ token);
+
+                        const cookieOptions = {
+                            expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+                            httpOnly:true
+                        }
+
+                        res.cookie('jwt',token,cookieOptions);
+                        res.render('login',
+                        {
+                            alert:true,
+                            alertTitle: 'Operación Completada',
+                            alertMessage: 'Se ha iniciado de Sesion Correctamente',
+                            alertIcon: 'success',
+                            showConfirmButton: true ,
+                            timer: false,
+                            ruta: 'inicio'
+                        });
+
+                    }
+                }
+            });   
+        }
+        
+    } 
+    catch (error) 
+    {console.log('Hubo un error al tratar de iniciar sesion => '+error); }
+};
+
+exports.isAuthenticated = async (req, res, next)=>
+{
+    if (req.cookies.jwt)
+    {
+        try 
+        {
+            const TokenDecodificado = await promisify(jwt.verify)(req.cookies.jwt , process.env.JWT_SECRETO);
+            conexion.query('CALL BuscarUser(?)',[TokenDecodificado.Id], (error,results) => 
+            {
+                if(error)
+                {
+                    console.log('Error en la consulta del de usuario en la base de datos => ' + error);
+                    res.redirect('/login');
+                }
+                else if(!results[0].length)
+                { 
+                    console.log('No existe ese usuario');
+                    res.redirect('/login');
+                }
+                else
+                {
+
+                    //console.log ('Usuario:'+results[0][0].Usuario+ ' NombreUsuario:' +results[0][0].Nombre);
+
+                    const userInfo =
+                    {
+                        Usuario: results[0][0].Usuario,
+                        NombreUsuario: results[0][0].Nombre,
+                    };
+                    req.user = userInfo;
+                    req.user.Rol = TokenDecodificado.rol;
+                    console.log('Variables usuario');
+                    console.log(req.user);
+                    return next();
+                }
+            });
+        } catch (error) 
+        { 
+            console.log('Hubo un error al autenticar => '+error);
+            res.redirect('/login');
+        }
+    }
+    else
+    { 
+        res.redirect('/login');
+    }
+}
+
+exports.isGerente = (req, res, next) =>
+{
+    if (req.user && req.user.Rol === 'Gerente') 
+    {
+        return next();
+    } 
+    else 
+    {
+        res.cookie('errorMessage', 'Solo los gerentes pueden acceder a esta ruta', { httpOnly: true });
+        res.redirect('/inicio');
+    }
+};
+
+exports.logout = (req,res) =>
+{
+    res.clearCookie('jwt');
+    return res.redirect('/inicio');
+} 
 
 exports.AddClient = ( req, res) => 
 {
@@ -248,8 +425,6 @@ exports.UpdateVendedor = (req, res) =>
         }
     })  
 } 
-
-
 
 exports.AddProduct = ( req, res) => 
 {
