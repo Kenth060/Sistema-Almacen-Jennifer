@@ -107,7 +107,18 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, CantidadExistente)
         e.preventDefault(); // Evitar que se ingrese la tecla en el input
     }
 });
-
+  inputCantidad.addEventListener('keypress', (e) => {
+    // Obtener el valor actual del input como un número
+    const cantidadIngresada = parseInt(inputCantidad.value + e.key);
+    
+    // Obtener la existencia del producto como un número
+    const existenciaProducto = producto.Existencia;
+    
+    // Validar si la tecla presionada es un número y si la cantidad ingresada es mayor que la existencia del producto
+    if (cantidadIngresada > existenciaProducto) {
+        e.preventDefault(); // Prevenir la entrada de más caracteres
+    }
+  });
   inputCantidad.onchange = function() 
   {
     var nuevaCantidad = parseInt(inputCantidad.value);
@@ -132,18 +143,6 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio, CantidadExistente)
       });
     }
     
-    inputCantidad.addEventListener('keypress', (e) => {
-      // Obtener el valor actual del input como un número
-      const cantidadIngresada = parseInt(inputCantidad.value + e.key);
-      
-      // Obtener la existencia del producto como un número
-      const existenciaProducto = producto.Existencia;
-      
-      // Validar si la tecla presionada es un número y si la cantidad ingresada es mayor que la existencia del producto
-      if (cantidadIngresada > existenciaProducto) {
-          e.preventDefault(); // Prevenir la entrada de más caracteres
-      }
-    });
     actualizarCantidadProductoEnArreglo(Id_Producto, nuevaCantidad);
     actualizarTotalEnTabla();
     celdaSubtotal.textContent = 'C$' + Precio*inputCantidad.value;
@@ -716,7 +715,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Agregar la fila a la tabla
     tabla.appendChild(nuevaFila);
   }
+<<<<<<< HEAD
   
+=======
+>>>>>>> 95600de0d5e6551336b1206e1f42443400729748
   document.addEventListener('DOMContentLoaded', function() {
     // Obtener la referencia al elemento de fecha
     const fechaVentaInput = document.getElementById('plazo_compra');
@@ -749,13 +751,20 @@ document.addEventListener('DOMContentLoaded', function() {
     fechaVentaInput.setAttribute('min', fechaMinimaISO);
   });
 
-function genPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+  function genPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Título del documento
+    doc.text("Factura", 20, 20);
+    
   
-  // Título del documento
-  doc.text("Factura", 20, 20);
+    const headers = ['Cliente'];
+    const data = filasAgregadas.map(fila => [fila.Cliente]);
+    const headers2 = ['Vendedor','Producto', 'Cantidad', '', 'Precio', 'SubTotal'];
+    const data2 = filasAgregadas.map(fila => [fila.Vendedor,fila.Producto, fila.Cantidad, '', fila.Precio, fila.SubTotal]);
   
+<<<<<<< HEAD
   // Crear la tabla en el PDF en el mismo orden que las filas agregadas
   const headers = ['Cliente'];
   const data = filasAgregadas.map(fila => [fila.Cliente]);
@@ -777,3 +786,18 @@ function genPDF() {
 }
 
 
+=======
+    doc.autoTable({
+      head: [headers],
+      body: data
+    });
+    doc.autoTable({
+      head: [headers2],
+      body: data2
+    });
+    
+    // Guardar el PDF
+    doc.save(`factura_${data}.pdf`);
+    filasAgregadas = [];
+  }
+>>>>>>> 95600de0d5e6551336b1206e1f42443400729748

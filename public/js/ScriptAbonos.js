@@ -14,6 +14,29 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante)
   document.getElementById('Nombre_vendedor_Abono').disabled = true;
 
   var Monto_Abonando = document.getElementById("Monto_Abono");
+<<<<<<< HEAD
+=======
+
+  var fecha = new Date(fechaconvertida);
+  
+  // Incrementar la fecha en un día
+  fecha.setDate(fecha.getDate() + 1);
+  
+  // Convertir la fecha a formato yyyy-mm-dd
+  var fechaMinima = fecha.toISOString().slice(0,10);
+  
+
+  fechaAbonoInput.min = fechaMinima;
+  Monto_Abonando.addEventListener('keypress', (e) => {
+    // Obtener el valor actual del input como un número
+    const cantidadIngresada = parseInt(Monto_Abonando.value + e.key);
+
+    // Validar si la tecla presionada es un número y si la cantidad ingresada es mayor que la existencia del producto
+    if (cantidadIngresada > Saldo_Restante) {
+        e.preventDefault(); // Prevenir la entrada de más caracteres
+    }
+  });
+>>>>>>> 95600de0d5e6551336b1206e1f42443400729748
   Monto_Abonando.onchange = function() 
   {
     var Cantidad = parseInt(Monto_Abonando.value);
@@ -35,15 +58,6 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante)
         timer: false,
       });
     }
-    Monto_Abonando.addEventListener('keypress', (e) => {
-      // Obtener el valor actual del input como un número
-      const cantidadIngresada = parseInt(Monto_Abonando.value + e.key);
-
-      // Validar si la tecla presionada es un número y si la cantidad ingresada es mayor que la existencia del producto
-      if (cantidadIngresada > Saldo_Restante) {
-          e.preventDefault(); // Prevenir la entrada de más caracteres
-      }
-    });
   };
 }
 
