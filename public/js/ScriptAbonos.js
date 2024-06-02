@@ -1,8 +1,10 @@
 //MOSTRAR FORMULARIO PARA REALIZAR ABONOS
-function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante) 
+function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante,fecha_venta) 
 {
   var panel = document.getElementById("panelAbono");
   panel.style.display = "block";
+
+  var fechaconvertida = convertirFecha(fecha_venta);
 
   document.getElementById('Abono_Title').innerText = 'Realizar abono a la Venta N° '+Id_Venta;
 
@@ -13,7 +15,19 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante)
   document.getElementById('Nombre_vendedor_Abono').value = Vendedor;
   document.getElementById('Nombre_vendedor_Abono').disabled = true;
 
+  var fechaAbonoInput = document.getElementById("Fecha_Abono");
   var Monto_Abonando = document.getElementById("Monto_Abono");
+
+  var fecha = new Date(fechaconvertida);
+  
+  // Incrementar la fecha en un día
+  fecha.setDate(fecha.getDate() + 1);
+  
+  // Convertir la fecha a formato yyyy-mm-dd
+  var fechaMinima = fecha.toISOString().slice(0,10);
+  
+
+  fechaAbonoInput.min = fechaMinima;
   Monto_Abonando.onchange = function() 
   {
     var Cantidad = parseInt(Monto_Abonando.value);
@@ -110,38 +124,6 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante)
   }
   //FIN MOSTRAR HISTORIAL
 
-  document.addEventListener('DOMContentLoaded', function() {
-    // Obtener la referencia al elemento de fecha
-    const fechaVentaInput = document.getElementById('Fecha_Abono');
-  
-    // Obtener la fecha actual
-    const fechaActual = new Date();
-  
-    // Obtener la hora y los minutos actuales
-    const horaActual = fechaActual.getHours();
-    const minutosActuales = fechaActual.getMinutes();
-  
-    // Definir la hora y minutos de corte (6:45 PM)
-    const horaCorte = 17; // 6 PM en formato militar
-    const minutosCorte = 0; // 45 minutos
-  
-    // Verificar si la hora actual es después de las 6:45 PM
-    const esDespuesDeLas645PM = horaActual > horaCorte || (horaActual === horaCorte && minutosActuales >= minutosCorte);
-  
-    // Calcular la fecha mínima permitida
-    const fechaMinima = new Date();
-    if (esDespuesDeLas645PM) {
-      // Si es después de las 6:45 PM, permitir seleccionar a partir del día siguiente
-      fechaMinima.setDate(fechaActual.getDate() - 1);
-    } else {
-      // Si es antes de las 6:45 PM, permitir seleccionar a partir de hoy
-      fechaMinima.setDate(fechaActual.getDate());
-    }
-  
-    // Establecer la fecha mínima en el campo de fecha
-    const fechaMinimaISO = fechaMinima.toISOString().split('T')[0];
-    fechaVentaInput.setAttribute('max', fechaMinimaISO);
-  });
 
   const inputnumero = document.querySelectorAll('input[type="number"]');
   inputnumero.forEach(input => {
@@ -185,3 +167,29 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante)
     // Agregar la fila a la tabla
     tabla.appendChild(nuevaFila);
   }
+  function convertirFecha(fecha) {
+    const meses = {
+        "enero": "01",
+        "febrero": "02",
+        "marzo": "03",
+        "abril": "04",
+        "mayo": "05",
+        "junio": "06",
+        "julio": "07",
+        "agosto": "08",
+        "septiembre": "09",
+        "octubre": "10",
+        "noviembre": "11",
+        "diciembre": "12"
+    };
+
+    // Dividir la fecha en partes
+    const partes = fecha.toLowerCase().split(" de ");
+    const dia = partes[0].padStart(2, '0');  // Asegurar que el día tenga dos dígitos
+    const mes = meses[partes[1]];  // Obtener el número del mes
+    const año = partes[2];  // Obtener el año
+
+    // Formatear la fecha en el formato deseado
+    const fechaFormateada = `${año}-${mes}-${dia}`;
+    return fechaFormateada;
+}

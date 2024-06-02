@@ -424,7 +424,7 @@ function generarIdVenta()
   const idVenta = numeroAleatorio;
   return idVenta;
 }
-
+var filasAgregadas = [];
 function AddProductoTabla (Producto,Cantidad,Precio,SubTotal,Id_Venta, Cliente,Vendedor,Id_Producto)
 {
   var tabla = document.getElementById("tablaDetalleVenta").getElementsByTagName('tbody')[1];
@@ -461,6 +461,17 @@ function AddProductoTabla (Producto,Cantidad,Precio,SubTotal,Id_Venta, Cliente,V
   
   // Agregar la fila a la tabla
   tabla.appendChild(nuevaFila);
+  var fila = {
+    Producto: Producto,
+    Cantidad: Cantidad,
+    Precio: Precio,
+    SubTotal: SubTotal,
+    Id_Venta: Id_Venta,
+    Cliente: Cliente,
+    Vendedor: Vendedor,
+    Id_Producto: Id_Producto
+  };
+  filasAgregadas.push(fila);
 }
 
 function ActualizarFecha()
@@ -632,6 +643,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var panel = document.getElementById("BuscarVendedorVenta");
     panel.style.display = "none";
   }
+<<<<<<< HEAD
 
   function Fecha_Actual(Fecha)
   {
@@ -705,3 +717,65 @@ document.addEventListener('DOMContentLoaded', function() {
     // Agregar la fila a la tabla
     tabla.appendChild(nuevaFila);
   }
+=======
+  document.addEventListener('DOMContentLoaded', function() {
+    // Obtener la referencia al elemento de fecha
+    const fechaVentaInput = document.getElementById('plazo_compra');
+  
+    // Obtener la fecha actual
+    const fechaActual = new Date();
+  
+    // Obtener la hora y los minutos actuales
+    const horaActual = fechaActual.getHours();
+    const minutosActuales = fechaActual.getMinutes();
+  
+    const horaCorte = 17;
+    const minutosCorte = 0; 
+  
+    // Verificar si la hora actual es después de las 6:45 PM
+    const esDespuesDeLas645PM = horaActual > horaCorte || (horaActual === horaCorte && minutosActuales >= minutosCorte);
+  
+    // Calcular la fecha mínima permitida
+    const fechaMinima = new Date();
+    if (esDespuesDeLas645PM) {
+      // Si es después de las 
+      fechaMinima.setDate(fechaActual.getDate());
+    } else {
+      // Si es antes de las 
+      fechaMinima.setDate(fechaActual.getDate() + 1);
+    }
+  
+    // Establecer la fecha mínima en el campo de fecha
+    const fechaMinimaISO = fechaMinima.toISOString().split('T')[0];
+    fechaVentaInput.setAttribute('min', fechaMinimaISO);
+  });
+
+function genPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  
+  // Título del documento
+  doc.text("Factura", 20, 20);
+  
+  // Crear la tabla en el PDF en el mismo orden que las filas agregadas
+  const headers = ['Cliente'];
+  const data = filasAgregadas.map(fila => [fila.Cliente]);
+  const headers2 = ['Vendedor','Producto', 'Cantidad', '', 'Precio', 'SubTotal'];
+  const data2 = filasAgregadas.map(fila => [fila.Vendedor,fila.Producto, fila.Cantidad, '', fila.Precio, fila.SubTotal]);
+
+  doc.autoTable({
+    head: [headers],
+    body: data
+  });
+  doc.autoTable({
+    head: [headers2],
+    body: data2
+  });
+  
+  // Guardar el PDF
+  doc.save("factura.pdf");
+  filasAgregadas = [];
+}
+
+
+>>>>>>> 06df7154f4789469aa1230ce00b064330796f2df
