@@ -28,6 +28,15 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante,fecha_venta
   
 
   fechaAbonoInput.min = fechaMinima;
+  Monto_Abonando.addEventListener('keypress', (e) => {
+    // Obtener el valor actual del input como un número
+    const cantidadIngresada = parseInt(Monto_Abonando.value + e.key);
+
+    // Validar si la tecla presionada es un número y si la cantidad ingresada es mayor que la existencia del producto
+    if (cantidadIngresada > Saldo_Restante) {
+        e.preventDefault(); // Prevenir la entrada de más caracteres
+    }
+  });
   Monto_Abonando.onchange = function() 
   {
     var Cantidad = parseInt(Monto_Abonando.value);
@@ -49,15 +58,6 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante,fecha_venta
         timer: false,
       });
     }
-    Monto_Abonando.addEventListener('keypress', (e) => {
-      // Obtener el valor actual del input como un número
-      const cantidadIngresada = parseInt(Monto_Abonando.value + e.key);
-
-      // Validar si la tecla presionada es un número y si la cantidad ingresada es mayor que la existencia del producto
-      if (cantidadIngresada > Saldo_Restante) {
-          e.preventDefault(); // Prevenir la entrada de más caracteres
-      }
-    });
   };
 }
 
