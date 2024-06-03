@@ -14,8 +14,7 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante)
   document.getElementById('Nombre_vendedor_Abono').disabled = true;
 
   var Monto_Abonando = document.getElementById("Monto_Abono");
-<<<<<<< HEAD
-=======
+
 
   var fecha = new Date(fechaconvertida);
   
@@ -36,7 +35,7 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante)
         e.preventDefault(); // Prevenir la entrada de más caracteres
     }
   });
->>>>>>> 95600de0d5e6551336b1206e1f42443400729748
+
   Monto_Abonando.onchange = function() 
   {
     var Cantidad = parseInt(Monto_Abonando.value);
