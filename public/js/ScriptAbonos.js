@@ -14,6 +14,10 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante)
   document.getElementById('Nombre_vendedor_Abono').disabled = true;
 
   var Monto_Abonando = document.getElementById("Monto_Abono");
+<<<<<<< HEAD
+=======
+
+>>>>>>> da877e939a40782e0023f85854982046adc5961a
 
 
   var fecha = new Date(fechaconvertida);
