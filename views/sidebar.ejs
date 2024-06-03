@@ -97,14 +97,32 @@
           <span class="tooltip">Abonos</span>
         </li>
 
-        <!-- Cerrar Sesion -->
-        <li>
-          <a onclick="confirmLogOut()">
-            <i class='bx bx-log-out' ></i>
-            <span class="links_name">Cerrar Sesión</span>
-          </a>
-          <span class="tooltip">Cerrar Sesión</span>
-        </li> 
+        <!-- Configuracion o Cerrar sesion -->
+        <% if( UserRol == 'Gerente') { %>
+          <!-- Configuracion -->
+          <li>
+            <a onclick="AbrirConfig()">
+              <i class='bx bxs-cog' ></i>
+              <span class="links_name">Opciones</span>
+            </a>
+            <span class="tooltip">Opciones</span>
+          </li> 
+        <% } else { %>
+          <!-- Cerrar Sesion -->
+          <li>
+            <a onclick="confirmLogOut()">
+              <i class='bx bx-log-out' ></i>
+              <span class="links_name">Cerrar Sesión</span>
+            </a>
+            <span class="tooltip">Cerrar Sesión</span>
+          </li>
+        <% } %>
+
+
+
+
+
+         
 
         <script>
           function confirmLogOut() 
@@ -130,9 +148,95 @@
       </ul>
     </div>
 
+
+    <!-- <div id="PanelConfig" class="panel-flotante panel-ancho" style="display: none">
+      <div class="panel-content">
+        <h4 class="fw-bold">Opciones del Sistema</h4>
+
+        <div style="max-height: 300px;">
+          <div class="container">
+            <div class="row">
+              <div class="col-6 col-md-3 my-3">
+
+                <a type="button" class="btn btn-info" href="https://www.dropbox.com/scl/fi/20n6r4p9igvkbz5nar5kd/Manual.pdf?rlkey=kvxa66r3jrfn4g5w1l4n61av8&st=wp1rgbj3&dl=1" download>
+                  <i class="fa-solid fa-book-open"></i> Manual de Uso
+                </a>
+              </div>
+
+              <div class="col-6 col-md-3 my-3">
+                <button type="button" class="btn btn-success" onclick="">
+                  <i class="fa-regular fa-floppy-disk"></i> Copia de Seguridad
+                </button>
+              </div>
+
+              <div class="col-6 col-md-3 my-3">
+                <button type="button" class="btn btn-danger " onclick="confirmLogOut()">
+                  <i class='bx bx-log-out'></i> Cerrar  la Sesión
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary mx-2" onclick="cerrarConfig()">Cerrar Configuración</button>
+      </div>
+    </div> -->
+    
+    <div id="PanelConfig" class="panel-flotante panel-ancho" style="display: none">
+      <div class="panel-content">
+        <h4 class="fw-bold">Opciones del Sistema</h4>
+    
+        <div style="max-height: 300px;">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-6 col-md-3 my-3 d-flex justify-content-center">
+                <a type="button" class="btn btn-info" href="https://www.dropbox.com/scl/fi/20n6r4p9igvkbz5nar5kd/Manual.pdf?rlkey=kvxa66r3jrfn4g5w1l4n61av8&st=wp1rgbj3&dl=1" download>
+                  <i class="fa-solid fa-book-open"></i> Manual de Uso
+                </a>
+              </div>
+    
+              <div class="col-6 col-md-3 my-3 d-flex justify-content-center">
+                <a type="button" class="btn btn-success" id="backupButton" href="/respaldar">
+                  <i class="fa-regular fa-floppy-disk"></i> Copia de Seguridad
+                </a>
+              </div>
+
+              
+
+
+    
+              <div class="col-6 col-md-3 my-3 d-flex justify-content-center">
+                <button type="button" class="btn btn-danger" onclick="confirmLogOut()">
+                  <i class='bx bx-log-out'></i> Cerrar la Sesión
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <button type="button" class="btn btn-primary mx-2" onclick="cerrarConfig()">Cerrar Configuración</button>
+      </div>
+    </div>
+    
+
+
     <script src="resources/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
     
+    <script>
+      function AbrirConfig() 
+      {
+        var panel = document.getElementById("PanelConfig");
+        panel.style.display = "block";
+      }
+
+      function cerrarConfig() 
+      {
+        var panel = document.getElementById("PanelConfig");
+        panel.style.display = "none";
+      }
+    </script>
+
   </body>
 </html>

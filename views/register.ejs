@@ -18,14 +18,14 @@
         
             <label for="ColabName" class="fw-bold">Colaborador del Almacen</label>
             <select class="form-select my-2"  aria-label="Miembro del Almacen" id="ColabName" name="ColabName"  required>
-                <option selected disabled value="" >Seleccione un colaborador del Almacen</option>
+                <option disabled value="" >Seleccione un colaborador del Almacen</option>
                 <% Colaboradores.forEach((C) => { %>
-                    <option value="<%= C.Id_Persona %>"><%= C.Nombre %></option>
+                    <option value="<%= C.Id_Persona %>" selected><%= C.Nombre %></option>
                 <% }) %>
             </select>
             
             <label for="user" class="fw-bold mt-1">Nombre de Usuario</label>
-            <input type="text" name="ColabUser" class="form-control my-1" placeholder="Usuario" required>
+            <input type="text" name="ColabUser" class="form-control my-1" placeholder="Usuario"  value="<%= username %>" required>
 
             <label for="rol" class="fw-bold mt-1">Rol del Colaborador</label>
             <select name="ColabRol" id="ColabRol" class="form-select my-1">

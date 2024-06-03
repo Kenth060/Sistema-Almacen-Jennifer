@@ -302,5 +302,19 @@
       </script>
   <% } %>
 
+  <% if (MensajeRespaldo) { %>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Respaldo Creado',
+                text: '<%= MensajeRespaldo %>',
+                timer:1500,
+                showConfirmButton:false
+            });
+        });
+    </script>
+<% } %>
+
   </body>
 </html>

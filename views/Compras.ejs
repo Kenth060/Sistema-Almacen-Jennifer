@@ -185,7 +185,7 @@
                 </div>
               </div>
 
-              <div id="CompraProducto"class="panel-flotante panel-ancho-Compras"style="display: none">
+              <div id="CompraProducto"class="panel-flotante panel-ancho-Compras" style="display: none">
                 <div class="panel-content">
                   <h4>Seleccione los productos</h4>
                   <div style="max-height: 350px; overflow-y: auto">
@@ -204,15 +204,16 @@
                         </select>
                         </div>
                       </div>
-                      <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2"></div>
+                      
+
                       <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
 
                         <div id="tablaCalzado" style="display: none">
-                          <table class="table primary">
+                          <table class="table primary" id="TableCalzadoCompras">
                             <thead>
                               <tr>
-                                <th class="centrado">Nombre del producto</th>
                                 <th class="centrado">Marca</th>
+                                <th class="centrado">Nombre del producto</th>
                                 <th class="centrado">Color</th>
                                 <th class="centrado">Talla</th>
                                 <th class="centrado">Precio Actual de Venta</th>
@@ -223,16 +224,27 @@
                                 <% productos.forEach((producto) => { %>
                                   <% if( producto.Categoria == 'Calzado' ) { %>
                                     <tr>
-                                      <td class="centrado"><%= producto.Tipo %> <%= producto.Modelo %></td>
                                       <td class="centrado"><%= producto.Marca %></td>
+                                      <td class="centrado">Calzado <%= producto.Tipo %> <%= producto.Modelo %></td>
                                       <td class="centrado"><%= producto.Color %></td>
                                       <td class="centrado"><%= producto.Talla %></td>
-                                      <td class="centrado">C$ <%= producto.Precio_Venta %></td>
-                                      <td class="centrado">C$ <%= producto.Precio_Compra %></td>
+                                      
+                                      <% if(producto.Precio_Venta == null){ %>
+                                        <td class="centrado">C$ 0 </td>
+                                      <% }else { %>
+                                        <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                      <% }%>
+                                      
+                                      <% if( producto.Precio_Compra == null){ %>
+                                        <td class="centrado">C$ 0 </td>
+                                      <% }else { %>
+                                        <td class="centrado">C$ <%= producto.Precio_Compra %></td>
+                                      <% }%>
+
                                       <td class="centrado"></td>
-                                      <td class="row px-4 ">
+                                      <td class="centrado ">
                                         <!-- Botones de acciones -->
-                                        <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Modelo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio_Compra %>','<%= producto.Precio_Venta %>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
+                                        <button type="button" onclick="AñadirProducto('<%= producto.Id_Producto %>','Calzado <%= producto.Marca %>  <%= producto.Tipo %> <%= producto.Modelo %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio_Compra %>','<%= producto.Precio_Venta %>')" class="btn btn-success px-3" title="Añadir Producto"><i class="fa-solid fa-cart-plus"></i></button>
                                       </td> 
                                     </tr>
                                   <% } %>
@@ -244,7 +256,7 @@
                         </div>
 
                         <div id="tablaPrendas" style="display: none">
-                          <table class="table primary">
+                          <table class="table primary" id="TablePvCompras">
                             <thead>
                               <tr>
                                 <th class="centrado">Nombre del producto</th>
@@ -264,8 +276,19 @@
                                       <td class="centrado"><%= producto.Marca %></td>
                                       <td class="centrado"><%= producto.Color %></td>
                                       <td class="centrado"><%= producto.Talla %></td>
-                                      <td class="centrado"><%= producto.Precio_Venta %></td>
-                                      <td class="centrado"><%= producto.Precio_Compra %></td>
+                                      
+                                      <% if(producto.Precio_Venta == null){ %>
+                                        <td class="centrado">C$ 0 </td>
+                                      <% }else { %>
+                                        <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                      <% }%>
+                                      
+                                      <% if( producto.Precio_Compra == null){ %>
+                                        <td class="centrado">C$ 0 </td>
+                                      <% }else { %>
+                                        <td class="centrado">C$ <%= producto.Precio_Compra %></td>
+                                      <% }%>
+
                                       <td class="row px-4 centrado">
                                         <!-- Botones de acciones -->
                                         <button type="button" class="btn btn-success px-3" title="Añadir" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %> Talla <%= producto.Talla %>','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')"><i class="fa-solid fa-cart-plus"></i></button>
@@ -278,7 +301,7 @@
                         </div>
 
                         <div id="tablaCosmeticos" style="display: none">
-                          <table class="table primary">
+                          <table class="table primary" id="TableCosmeticCompras">
                             <thead>
                               <tr>
                                 <th class="centrado">Nombre del producto</th>
@@ -296,10 +319,21 @@
                                     <td class="centrado"><%= producto.Clasificacion %> <%= producto.Tipo %></td>
                                     <td class="centrado"><%= producto.Marca %></td>
                                     <td class="centrado"><%= producto.Color %></td>
-                                    <td class="centrado"><%= producto.Existencia %></td>
-                                    <td class="centrado">C$ <%= producto.Precio_Venta %></td>
-                                    <td class="centrado">C$ <%= producto.Precio_Compra %></td>
-                                    <td class="row px-4 centrado">
+
+                                    <% if(producto.Precio_Venta == null){ %>
+                                      <td class="centrado">C$ 0 </td>
+                                    <% }else { %>
+                                      <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                    <% }%>
+                                    
+                                    <% if( producto.Precio_Compra == null){ %>
+                                      <td class="centrado">C$ 0 </td>
+                                    <% }else { %>
+                                      <td class="centrado">C$ <%= producto.Precio_Compra %></td>
+                                    <% }%>
+
+                                    <td></td>
+                                    <td class="centrado">
                                       <!-- Botones de acciones -->
                                       <button type="button" class="btn btn-success px-3" title="Añadir" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Clasificacion %> <%= producto.Tipo %> <%= producto.Marca %> <%= producto.Color %> ','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')" ><i class="fa-solid fa-cart-plus"></i></button>
                                     </td> 
@@ -311,7 +345,7 @@
                         </div>
 
                         <div id="tablaElectrodomesticos" style="display: none">
-                          <table class="table primary">
+                          <table class="table primary" id="TableElectrodomesticosCompras">
                             <thead>
                               <tr>
                                 <th class="centrado">Nombre del producto</th>
@@ -330,9 +364,20 @@
                                     <td class="centrado"><%= producto.Tipo %></td>
                                     <td class="centrado"><%= producto.Marca %></td>
                                     <td class="centrado"><%= producto.Modelo %></td>
-                                    <td class="centrado"><%= producto.Color %></td>
-                                    <td class="centrado"><%= producto.Precio_Compra %></td>
-                                    <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                    <td class="centrado"><%= producto.Color %></td> 
+
+                                    <% if(producto.Precio_Venta == null){ %>
+                                      <td class="centrado">C$ 0 </td>
+                                    <% }else { %>
+                                      <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                    <% }%>
+                                    
+                                    <% if( producto.Precio_Compra == null){ %>
+                                      <td class="centrado">C$ 0 </td>
+                                    <% }else { %>
+                                      <td class="centrado">C$ <%= producto.Precio_Compra %></td>
+                                    <% }%>
+
                                     <td class="row px-4 centrado">
                                       <!-- Botones de acciones -->
                                       <button type="button" class="btn btn-success px-3" title="Añadir" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> <%= producto.Modelo %> Color <%= producto.Color %>','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')" ><i class="fa-solid fa-cart-plus"></i></button>
@@ -345,28 +390,38 @@
                         </div>
 
                         <div id="tablaPPlasticos" style="display: none">
-                          <table class="table primary">
+                          <table class="table primary" id="TablePPCompras">
                             <thead>
                               <tr>
                                 <th class="centrado">Nombre del producto</th>
                                 <th class="centrado">Marca</th>
                                 <th class="centrado">Color</th>
-                                <th class="centrado">Tipo</th>
                                 <th class="centrado">Dimensiones</th>
-                                <th class="centrado">Unidad de medida</th>
-                                <th class="centrado">Accion</th>
+                                <th class="centrado">Precio de Venta</th>
+                                <th class="centrado">Precio de Compra</th>
+                                <th class="centrado"></th>
                               </tr>
                             </thead>
                             <tbody>
                               <% productos.forEach((producto) => { %>
-                                <% if( producto.Categoria == 'Productos Plasticos' && producto.Existencia > 0  ) { %>
+                                <% if( producto.Categoria == 'Productos Plasticos' ) { %>
                                   <tr>
                                     <td class="centrado"><%= producto.Tipo %></td>
                                     <td class="centrado"><%= producto.Marca %></td>
                                     <td class="centrado"><%= producto.Color %></td>
-                                    <td class="centrado"><%= producto.Dimensiones %></td>
-                                    <td class="centrado"><%= producto.Existencia %></td>
-                                    <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                    <td class="centrado"><%= producto.Dimensiones %> <%= producto.Unidad_Medida %></td>
+                                    <% if(producto.Precio_Venta == null){ %>
+                                      <td class="centrado">C$ 0 </td>
+                                    <% }else { %>
+                                      <td class="centrado">C$ <%= producto.Precio_Venta %></td>
+                                    <% }%>
+                                    
+                                    <% if( producto.Precio_Compra == null){ %>
+                                      <td class="centrado">C$ 0 </td>
+                                    <% }else { %>
+                                      <td class="centrado">C$ <%= producto.Precio_Compra %></td>
+                                    <% }%>
+
                                     <td class="row px-4 centrado">
                                       <!-- Botones de acciones -->
                                       <button type="button" class="btn btn-success px-3" title="Añadir" onclick="AñadirProducto('<%= producto.Id_Producto %>','<%= producto.Tipo %> <%= producto.Marca %> Color <%= producto.Color %>','<%= producto.Precio_Venta %>', '<%= producto.Existencia%>')" ><i class="fa-solid fa-cart-plus"></i></button>
@@ -378,7 +433,7 @@
                         </div>
                         
                       </div>
-                      <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2"></div>
+                      
                     </div>
                   </div>
 
@@ -478,14 +533,6 @@
 
                       <!-- //Productos -->
                       <tbody>
-                        <tr>
-                          <td>Producto</td>
-                          <td>Cantidad</td>
-                          <td></td>
-                          <td>P Compra</td>
-                          <td>P Venta</td>
-                          <td>SubTotal</td>
-                        </tr>
                       </tbody>
 
                       <thead>
@@ -636,7 +683,175 @@
       });
     </script> -->
 
+    <script>
+      $(document).ready(function()
+      {
+        $('#TableCalzadoCompras').DataTable({
+          info: false,
+          ordering: false,
+          lengthMenu: [5,10,15,20,25,50],
+          "oLanguage": {
+            "sSearch": "Buscar un Producto:",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLengthMenu": "Mostrar  _MENU_  Productos",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"}
+            }
+        });
+      });
+        
+      $(document).ready(function(){
+        $('#TablePvCompras').DataTable({
+            info: false,
+            ordering: false,
+            lengthMenu: [5,10,15,20,25,50],
+            "oLanguage": {
+              "sSearch": "Buscar un Producto:",
+              "sZeroRecords": "No se encontraron resultados",
+              "sLengthMenu": "Mostrar  _MENU_  Productos",
+              "sZeroRecords": "No se encontraron resultados",
+              "sLoadingRecords": "Cargando...",
+              "oPaginate": {
+                  "sFirst": "Primero",
+                  "sLast": "Último",
+                  "sNext": "Siguiente",
+                  "sPrevious": "Anterior"}
+              }
+          });
+        });
+      
+      $(document).ready(function(){
+          
+        $('#TableCosmeticCompras').DataTable({
+          info: false,
+          ordering: false,
+          lengthMenu: [5,10,15,20,25,50],
+          "oLanguage": {
+            "sSearch": "Buscar un Producto:",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLengthMenu": "Mostrar  _MENU_  Productos",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"}
+            }
+        });
+    });
 
+      $(document).ready(function(){
+          
+        $('#TableElectrodomesticosCompras').DataTable({
+          info: false,
+          ordering: false,
+          lengthMenu: [5,10,15,20,25,50],
+          "oLanguage": {
+            "sSearch": "Buscar un Producto:",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLengthMenu": "Mostrar  _MENU_  Productos",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"}
+            }
+        });
+    });
+
+      $(document).ready(function(){
+          
+        $('#TablePPCompras').DataTable({
+          info: false,
+          ordering: false,
+          lengthMenu: [5,10,15,20,25,50],
+          "oLanguage": {
+            "sSearch": "Buscar un Producto:",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLengthMenu": "Mostrar  _MENU_  Productos",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"}
+            }
+        });
+    });
+
+      $(document).ready(function(){
+        
+      $('#TableCompras').DataTable({
+        info: false,
+        ordering: false,
+        lengthMenu: [5,10,15,20,25,50],
+        "oLanguage": {
+          "sSearch": "Buscar una Compra:",
+          "sZeroRecords": "No se encontraron resultados",
+          "sLengthMenu": "Mostrar  _MENU_  Compras",
+          "sZeroRecords": "No se encontraron resultados",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+              "sFirst": "Primero",
+              "sLast": "Último",
+              "sNext": "Siguiente",
+              "sPrevious": "Anterior"}
+          }
+      });
+  });
+    
+      $(document).ready(function(){
+            
+        $('#TableClientsVenta').DataTable({
+          info: false,
+          ordering: false,
+          lengthMenu: [5,10,15,20,25,50],
+          "oLanguage": {
+            "sSearch": "Buscar un Cliente:",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLengthMenu": "Mostrar  _MENU_  Clientes",
+            "sZeroRecords": "No se encontraron resultados",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"}
+            }
+        });
+    });
+      
+      $(document).ready(function(){
+        
+      $('#TableVendedoresVenta').DataTable({
+        info: false,
+        ordering: false,
+        lengthMenu: [5,10,15,20,25,50],
+        "oLanguage": {
+          "sSearch": "Buscar un Vendedor:",
+          "sZeroRecords": "No se encontraron resultados",
+          "sLengthMenu": "Mostrar  _MENU_  Vendedores",
+          "sZeroRecords": "No se encontraron resultados",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+              "sFirst": "Primero",
+              "sLast": "Último",
+              "sNext": "Siguiente",
+              "sPrevious": "Anterior"}
+          }
+      });
+  });
+    
+    </script> 
     
 
   </body>

@@ -32,72 +32,43 @@
             style="display: none"
           >
             <div class="panel-content">
-              <h4>Registrar un nuevo vendedor</h4>
+              <h2 class="fw-bold">Registrar un nuevo vendedor</h2>
         
               <div style="max-height: 300px; overflow-y: auto">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                  <div class="mt-3 mb-3">
-                    <h2 class="text-secondary"><b>Datos del Vendedor</b></h2>
-                  </div>
+                  
         
                   <form action="/AddVendedor" method="post" class="needs-validation"novalidate>
+                    
+                    <!-- Usuario -->
+                    <div class="mb-2">
+                      <label id="uservd_lb" for="uservd" class="form-label" style="display: none;">Usuario del Vendedor</label>
+                      <input id="uservd" name="uservd" class="form-control" placeholder="Nombre de Usuario" style="display: none;">
+                    </div>
+
+                    <!-- Nombres -->
                     <div class="mb-2">
                       <label for="nombre" class="form-label">Nombres</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="Tipo"
-                        name="Tipo_vd"
-                        placeholder="Tipo"
-                        value="Vendedor"
-                        hidden
-                      />
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="nombre"
-                        name="Nombre_vd"
-                        placeholder="Nombres"
-                        required
-                      />
-                      <div
-                        class="invalid-feedback"
-                      >
-                        Es necesario el Nombre
-                      </div>
-                    </div>
+                      <input type="text" class="form-control" id="Tipo" name="Tipo_vd" placeholder="Tipo" value="Vendedor" hidden/>
+                      <input type="text" class="form-control" id="Nombre_vd" name="Nombre_vd" placeholder="Nombres" onchange="crearUsuario()"required />
+                      <div class="invalid-feedback">Por favor Ingrese el nombre del Vendedor</div>
+                    </di  v>
+
+                    <!-- Apellidos -->
                     <div class="mb-2">
                       <label for="apellido" class="form-label">Apellidos</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="apellido"
-                        name="Apellido_vd"
-                        placeholder="Apellidos"
-                        required
-                      />
-                      <div
-                          class="invalid-feedback"
-                        >
-                          Es necesario el Apellido
-                        </div>
+                      <input type="text" class="form-control" id="Apellido_vd" name="Apellido_vd" placeholder="Apellidos" onchange="crearUsuario()" required />
+                      <div class="invalid-feedback">Por favor Ingrese el apellido del Vendedor</div>
                     </div>
+
+                    <!-- Telefono -->
                     <div class="mb-2">
                       <label for="Telefono" class="form-label">Telefono</label>
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="Telefono"
-                        name="Telefono_vd"
-                        placeholder="Telefono"
-                        required
-                      />
-                      <div
-                          class="invalid-feedback"
-                        >
-                          Es necesario número teléfonico
-                        </div>
+                      <input type="number" class="form-control" id="Telefono" name="Telefono_vd" placeholder="Telefono" required />
+                      <div class="invalid-feedback">Por favor Ingrese el telefono del Vendedor</div>
                     </div>
+
+                    <!-- Cedula -->
                     <div class="mb-2">
                       <label for="Cedula" class="form-label">Cedula</label>
                       <input
@@ -107,17 +78,14 @@
                         name="Cedula_vd"
                         placeholder="Cedula"
                         required
-                      />
-                      <div
-                          class="invalid-feedback"
-                        >
-                          Es necesario número de cédula
-                        </div>
+                        onchange="crearUsuario()"/>
+                      <div class="invalid-feedback">Por favor Ingrese la Cedula del Vendedor</div>
                     </div>
+
+                    <!-- Direccion y Distrito -->
                     <div class="mb-1 position-relative">
-                      <label for="Distrito_cl" class="form-label"
-                        >Dirección</label
-                      >
+                      <h5 class="my-3 fw-bold">Dirección del Cliente</h5> 
+                      <label for="Distrito_cl" class="form-label" >Dirección</label>
                       <select
                         id="selectDistritoVd"
                         class="form-select"
@@ -136,16 +104,12 @@
                         <option value="VI">VI</option>
                         <option value="VII">VII</option>
                       </select>
-                      <div
-                        class="invalid-feedback"
-                      >
-                        Es necesario el Distrito
-                      </div>
+                      <div class="invalid-feedback">Por favor ingrese el Distrito</div>
                     </div>
+                    
+                    <!-- Residencia -->
                     <div class="mb-2 dx-2">
-                      <label for="Residencia" class="form-label"
-                        >Zona de Residencia</label
-                      >
+                      <label for="Residencia" class="form-label">Zona de Residencia</label>
                       <input
                         type="text"
                         class="form-control"
@@ -154,12 +118,10 @@
                         placeholder="Z. Residencia"
                         required
                       />
-                      <div
-                          class="invalid-feedback"
-                        >
-                          Es necesario la zona de residencia
-                        </div>
+                      <div class="invalid-feedback">Por favor ingrese la Zona de Residencia</div>
                     </div>
+
+                    <!-- Punto referencia -->
                     <div class="mb-2">
                       <label for="PuntoReferencia" class="form-label"
                         >Punto de Referencia</label
@@ -172,12 +134,11 @@
                         placeholder="P. Referencia"
                         required
                       />
-                      <div
-                          class="invalid-feedback"
-                        >
-                          Solicitamos un punto de Referencia
-                        </div>
+                      <div class="invalid-feedback">Por favor ingrese el Punto de Referencia</div>
+                        
                     </div>
+
+                    <!-- Distancia -->
                     <div class="mb-2">
                       <label for="Distancia" class="form-label">Distancia</label>
                       <input
@@ -188,22 +149,21 @@
                         placeholder="Distancia"
                       />
                     </div>
+
+                    <!-- Casa -->
                     <div class="mb-2">
-                      <label for="casa" class="form-label">Numero de casa</label>
+                      <label for="casa" class="form-label">Informacion de casa</label>
                       <input
                         type="text"
                         class="form-control"
                         id="casa"
                         name="Casa_vd"
-                        placeholder="N. Casa"
+                        placeholder="N. Casa y/o color"
                         required
                       />
-                      <div
-                          class="invalid-feedback"
-                        >
-                          Es necesario el número de Casa
-                        </div>
+                      <div class="invalid-feedback">Por favor ingrese la información de la casa</div>
                     </div>
+
                     <div class="d-grid gap-2">
                       <button type="submit" class="btn btn-success" title="Guardar">
                         Guardar
@@ -241,7 +201,7 @@
           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <div class="px-3 py-2">
               <h4 style="display: flex; justify-content: space-between">
-                Listado de clientes
+                Listado de Vendedores
                 <button
                   type="button"
                   class="btn btn-success"

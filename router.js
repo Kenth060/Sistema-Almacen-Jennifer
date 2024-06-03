@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const crud = require("./controllers/crud");
 const conexion = require("./database/db");
+const { exec } = require('child_process');
+
 
 //3 -> Estableciendo las rutas
 router.get ("/", (req, res) => 
@@ -12,20 +14,25 @@ router.get ("/", (req, res) =>
 router.get ("/register", (req, res) => 
 {
   consultaColaboradores = 
-    `SELECT 
-            P.Id_Persona,
-            CONCAT(P.Nombre,' ',P.Apellido) as 'Nombre'
-    FROM persona P
-    WHERE P.Tipo_Persona != 'Cliente' and P.Tipo_Persona != 'Proveedor' `
-  ;
+  `SELECT 
+        P.Id_Persona,
+        CONCAT(P.Nombre, ' ', P.Apellido) AS 'Nombre'
+  FROM persona P
+  WHERE Cedula = ?`
   
-  conexion.query(consultaColaboradores, (error, results) => 
+  const usuario = req.cookies.username;
+  const cedula = req.cookies.cedula;
+  res.clearCookie('username');
+  res.clearCookie('cedula');
+
+  conexion.query(consultaColaboradores,[cedula],(error, results) => 
   {
     if(error)
     { console.log('Hubo un error al buscar los colaboradores, el error es => ' + error);}
     else
     {
-      res.render("register",{Colaboradores:results});
+      //res.send(results)
+      res.render("register",{Colaboradores:results, username:usuario});
     }
 
   });
@@ -207,6 +214,11 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
         
         const errorMessage = req.cookies.errorMessage;
         res.clearCookie('errorMessage');
+
+        const successMessage = req.cookies.successMessage;
+        res.clearCookie('successMessage');
+
+
         res.render("inicio", 
         {
           VentaContado: VentaContado,
@@ -217,7 +229,8 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
           Ventas:Ventas,
           usuario: req.user.NombreUsuario,
           Mensaje: errorMessage,
-          UserRol:req.user.Rol
+          UserRol:req.user.Rol,
+          MensajeRespaldo:successMessage
         });
 
         /* console.log(Ventas); */
@@ -413,6 +426,9 @@ router.get("/Vendedores", crud.isAuthenticated , crud.isGerente, (req, res) =>
     { 
       const errorMessage = req.cookies.errorMessage;
       res.clearCookie('errorMessage');
+
+      
+
       res.render("vendedores", 
                   { vendedores: results,
                     Mensaje: errorMessage,
@@ -873,20 +889,66 @@ router.get('/buscar-detallecompra', crud.isAuthenticated , crud.isGerente, (req,
       
 });
 
+
+router.get('/respaldar', (req, res) => 
+{
+  // Ruta al ejecutable mysqldump
+  const rutaMysqldump = 'C:/xampp/mysql/bin/mysqldump.exe'; // Ruta a mysqldump.exe en Windows
+
+  // Comando para ejecutar mysqldump
+  const comandoMysqldump = `${rutaMysqldump} -u ${process.env.DB_USER} comercial_jenny > ${process.env.RUTA}`;
+
+  // Ejecutar el comando mysqldump
+  exec(comandoMysqldump, (error, stdout, stderr) => 
+  {
+    if (error) 
+    {
+      console.error(`Error al ejecutar mysqldump: ${error.message}`);
+      return;
+    }
+    
+    if (stderr) 
+    {
+      console.error(`Error stderr: ${stderr}`);
+      return;
+    }
+
+    console.log(`Respaldo de la base de datos creado exitosamente.`);
+    res.cookie('successMessage', 'El respaldo de la base de datos ha sido creado exitosamente.', { httpOnly: true });
+    res.redirect('/inicio');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 6 -> METODOS POST
 
-
-router.post("/AddClient", crud.AddClient);
-router.post("/UpdateClient", crud.UpdateClient);
-router.post("/AddVendedor", crud.AddVendedor);
-router.post("/UpdateVendedor", crud.UpdateVendedor);
-router.post("/AddProduct", crud.AddProduct);
-router.post("/UpdateProduct", crud.UpdateProduct);
-router.post("/AddVenta",crud.AddVenta);
-router.post("/AddAbono",crud.AddAbono);
-router.post("/DevolverProducto",crud.DevolverProducto);
-router.post("/AddProveedor",crud.AddProveedor);
-router.post("/AddCompra",crud.AddCompra);
+router.post("/AddClient",crud.isAuthenticated, crud.AddClient);
+router.post("/UpdateClient",crud.isAuthenticated, crud.UpdateClient);
+router.post("/AddVendedor", crud.isAuthenticated,crud.AddVendedor);
+router.post("/UpdateVendedor",crud.isAuthenticated, crud.UpdateVendedor);
+router.post("/AddProduct", crud.isAuthenticated,crud.AddProduct);
+router.post("/UpdateProduct",crud.isAuthenticated, crud.UpdateProduct);
+router.post("/AddVenta",crud.isAuthenticated,crud.AddVenta);
+router.post("/AddAbono",crud.isAuthenticated,crud.AddAbono);
+router.post("/DevolverProducto",crud.isAuthenticated,crud.DevolverProducto);
+router.post("/AddProveedor",crud.isAuthenticated,crud.AddProveedor);
+router.post("/AddCompra",crud.isAuthenticated,crud.AddCompra);
 
 router.post("/register",crud.RegisterUser);
 router.post("/auth",crud.Login);

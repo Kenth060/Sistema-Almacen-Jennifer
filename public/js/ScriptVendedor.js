@@ -80,3 +80,31 @@ inputnumero.forEach(input => {
         }
     });
 });
+
+function crearUsuario() 
+{
+    let nombre = document.getElementById('Nombre_vd').value;
+    let apellido = document.getElementById('Apellido_vd').value;
+    let cedula = document.getElementById('Cedula').value;
+
+    if( (nombre != '') && (apellido != '') && (cedula!= '' ))
+    {   
+        document.getElementById('uservd_lb').style.display='block';
+        document.getElementById('uservd').style.display='block';
+
+        // Convertir el nombre y apellido a minúsculas y eliminar espacios
+        nombre = nombre.toLowerCase().trim();
+        apellido = apellido.toLowerCase().trim();
+        
+        // Extraer la fecha de nacimiento del número de cédula
+        // Suponiendo que el formato de cédula es xxx-xxxxxx-xxxx
+        let fechaNacimiento = cedula.split('-')[1];
+        
+        // Crear el nombre de usuario
+        let usuario = nombre.charAt(0) +'.'+ apellido + '.'+fechaNacimiento;
+        
+        console.log(usuario);
+        const input_usuario =document.getElementById('uservd');
+        input_usuario.value=usuario;
+    }
+}

@@ -1,7 +1,6 @@
 const conexion = require('../database/db');
 const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
-
 const {promisify} = require('util');
 
 //Metodo Registro usuarios
@@ -14,23 +13,19 @@ exports.RegisterUser = async (req,res) =>
         const Rol = req.body.ColabRol;
         const Pass = req.body.ColabPass;
         let passHash = await bcryptjs.hash(Pass,8);
-
         conexion.query('Call AddUser(?,?,?,?);',[user,passHash,Rol,Id_Persona], (error, results) =>
         {
             if(error)
             { console.log('Hubo un error al agregar el usuario => '+error); }
             else
-            { res.redirect('/Login');}
+            { res.redirect('/inicio');}
         });
     }
     catch (error)
     { console.log('Hubo un error al realizar esta operacion => '+error);}
-
-
-    
-
 };
 
+// Metodo Iniciar sesion
 exports.Login = async (req,res) =>
 {
     try 
@@ -110,6 +105,7 @@ exports.Login = async (req,res) =>
     {console.log('Hubo un error al tratar de iniciar sesion => '+error); }
 };
 
+//Middleware autenticacion de usuario
 exports.isAuthenticated = async (req, res, next)=>
 {
     if (req.cookies.jwt)
@@ -158,6 +154,7 @@ exports.isAuthenticated = async (req, res, next)=>
     }
 }
 
+// Middleware autenticacion rol
 exports.isGerente = (req, res, next) =>
 {
     if (req.user && req.user.Rol === 'Gerente') 
@@ -171,12 +168,14 @@ exports.isGerente = (req, res, next) =>
     }
 };
 
+// Metodo Cerrar Sesion
 exports.logout = (req,res) =>
 {
     res.clearCookie('jwt');
     return res.redirect('/inicio');
 } 
 
+/* METODOS CRUD */
 exports.AddClient = ( req, res) => 
 {
     const Tipo = req.body.Tipo_cl;
@@ -210,7 +209,8 @@ exports.AddClient = ( req, res) =>
                         alertIcon: 'error',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'clientes'
+                        ruta:'clientes', 
+                        UserRol:req.user.Rol
                     })
                 }
             })
@@ -218,6 +218,7 @@ exports.AddClient = ( req, res) =>
         else 
         {
             console.log('Cliente Ingresado Correctamente');
+            console.log('VALOR EN REQ => '+ req.user.Rol);
             conexion.query('SELECT * from MostrarClientes', (error,results) =>
             {
                 if (error)
@@ -231,7 +232,8 @@ exports.AddClient = ( req, res) =>
                         alertIcon: 'success',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'clientes'
+                        ruta:'clientes',
+                        UserRol: req.user.Rol
                     })
                 }
             }) 
@@ -271,7 +273,8 @@ exports.UpdateClient = (req, res) =>
                         alertIcon: 'error',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'clientes'
+                        ruta:'clientes',
+                        UserRol:req.user.Rol
                     })
                 }
             })
@@ -291,7 +294,8 @@ exports.UpdateClient = (req, res) =>
                         alertIcon: 'success',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'clientes'
+                        ruta:'clientes',
+                        UserRol:req.user.Rol
                     })
                 }
             })
@@ -312,7 +316,9 @@ exports.AddVendedor = ( req, res) =>
     const Residencia = req.body.Residencia_vd;
     const PuntoReferencia = req.body.PuntoReferencia_vd;
     const Distancia = req.body.Distancia_vd;
-    const Casa = req.body.Casa_vd; 
+    const Casa = req.body.Casa_vd;
+
+    const Usuario_vendedor = req.body.uservd;
 
     conexion.query('CALL InsertarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [Tipo,Nombre,Apellido,Cedula,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa,null],(error,results) => 
     {
@@ -323,9 +329,7 @@ exports.AddVendedor = ( req, res) =>
             conexion.query('SELECT * FROM mostrarvendedores', (error,results)=>
             {
                 if(error)
-                { 
-                    console.log('Ha ocurrido un error al mostrar los vendedores, el error es => '+error); 
-                }
+                { console.log('Ha ocurrido un error al mostrar los vendedores, el error es => '+error);  }
                 else
                 {
                     res.render('vendedores', { vendedores:results,
@@ -335,7 +339,8 @@ exports.AddVendedor = ( req, res) =>
                         alertIcon: 'error',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'vendedores'
+                        ruta:'vendedores',
+                        UserRol: req.user.Rol
                     })
                 }
             })
@@ -349,6 +354,9 @@ exports.AddVendedor = ( req, res) =>
                 { console.log('Ha ocurrido un error al mostrar los clientes, el error es => '+error); }
                 else
                 {
+                    res.cookie('username', Usuario_vendedor, { httpOnly: true });
+                    res.cookie('cedula', Cedula, { httpOnly: true });
+
                     res.render('vendedores', { vendedores:results,
                         alert: true,
                         alertTitle: "Vendedor agregado",
@@ -356,7 +364,8 @@ exports.AddVendedor = ( req, res) =>
                         alertIcon: 'success',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'vendedores'
+                        ruta:'register',
+                        UserRol: req.user.Rol
                     })
                 }
             })
@@ -397,7 +406,8 @@ exports.UpdateVendedor = (req, res) =>
                         alertIcon: 'error',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'vendedores'
+                        ruta:'vendedores',
+                        UserRol: req.user.Rol
                     })
                 }
             })
@@ -418,7 +428,8 @@ exports.UpdateVendedor = (req, res) =>
                         alertIcon: 'success',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'vendedores'
+                        ruta:'vendedores',
+                        UserRol: req.user.Rol
                     })
                 }
             })
@@ -475,7 +486,8 @@ exports.AddProduct = ( req, res) =>
                     alertIcon: 'error',
                     showConfirmButton: true,
                     timer: false,
-                    cat: Categoria
+                    cat: Categoria,
+                    UserRol: req.user.Rol
                 })
             }
             else 
@@ -488,7 +500,8 @@ exports.AddProduct = ( req, res) =>
                     alertIcon: 'success',
                     showConfirmButton: true,
                     timer: false,
-                    cat: Categoria
+                    cat: Categoria,
+                    UserRol: req.user.Rol
                 })
             }
         }) 
@@ -524,7 +537,8 @@ exports.UpdateProduct = (req, res) =>
                 alertIcon: 'error',
                 showConfirmButton: true,
                 timer: false,
-                cat: Categoria 
+                cat: Categoria,
+                UserRol: req.user.Rol
             }); 
         }
         else 
@@ -538,7 +552,8 @@ exports.UpdateProduct = (req, res) =>
                 alertIcon: 'success',
                 showConfirmButton: true,
                 timer: false,
-                cat: Categoria
+                cat: Categoria,
+                UserRol: req.user.Rol
             });
         }
     })
@@ -617,7 +632,8 @@ exports.AddAbono = (req,res) =>
                         alertIcon: 'error',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'abonos'
+                        ruta:'abonos',
+                        UserRol: req.user.Rol
                     });
                   }
                     
@@ -654,7 +670,8 @@ exports.AddAbono = (req,res) =>
                         alertIcon: 'success',
                         showConfirmButton: true, 
                         timer: false,
-                        ruta:'abonos'
+                        ruta:'abonos',
+                        UserRol: req.user.Rol
                     });
                   }
                     
@@ -737,7 +754,8 @@ exports.AddProveedor = ( req, res) =>
                             alertIcon: 'error',
                             showConfirmButton: true,
                             timer: false,
-                            ruta:'Proveedores'
+                            ruta:'Proveedores',
+                            UserRol: req.user.Rol
                         })
                     }
                 })
@@ -758,7 +776,8 @@ exports.AddProveedor = ( req, res) =>
                             alertIcon: 'success',
                             showConfirmButton: true,
                             timer: false,
-                            ruta:'Proveedores'
+                            ruta:'Proveedores',
+                            UserRol: req.user.Rol
                         })
                     }
                 }) 
