@@ -715,10 +715,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Agregar la fila a la tabla
     tabla.appendChild(nuevaFila);
   }
-<<<<<<< HEAD
-=======
   
->>>>>>> da877e939a40782e0023f85854982046adc5961a
   document.addEventListener('DOMContentLoaded', function() {
     // Obtener la referencia al elemento de fecha
     const fechaVentaInput = document.getElementById('plazo_compra');
@@ -756,30 +753,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const doc = new jsPDF();
     
     // Título del documento
-<<<<<<< HEAD
-    doc.text("Factura", 20, 20);
-    
-  
-    const headers = ['Cliente'];
-    const data = filasAgregadas.map(fila => [fila.Cliente]);
-    const headers2 = ['Vendedor','Producto', 'Cantidad', '', 'Precio', 'SubTotal'];
-    const data2 = filasAgregadas.map(fila => [fila.Vendedor,fila.Producto, fila.Cantidad, '', fila.Precio, fila.SubTotal]);
-  
-
-    doc.autoTable({
-      head: [headers],
-      body: data
-    });
-    doc.autoTable({
-      head: [headers2],
-      body: data2
-    });
-    
-    // Guardar el PDF
-    doc.save(`factura_${data}.pdf`);
-    filasAgregadas = [];
-  }
-=======
     doc.text("Factura Venta ", 20, 20);
 
   // Crear la tabla en el PDF en el mismo orden que las filas agregadas
@@ -803,5 +776,4 @@ document.addEventListener('DOMContentLoaded', function() {
   filasAgregadas = [];
 }
 
->>>>>>> da877e939a40782e0023f85854982046adc5961a
 
