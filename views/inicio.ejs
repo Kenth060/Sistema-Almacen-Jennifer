@@ -27,7 +27,7 @@
                 <p class="lead text-muted">Revisa la última información</p>
               </div>
               <div class="col-lg-3 col-md-4 d-flex">
-                <button class="btn btn-primary w-100 align-self-center">
+                <button class="btn btn-primary w-100 align-self-center" type="button" onclick="genPDF('<%= Ingresos%>','<%= Productos%>','<%= No_Clientes %>')">
                   Descargar reporte
                 </button>
               </div>
@@ -315,6 +315,9 @@
         });
     </script>
 <% } %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
 
   </body>
 </html>
