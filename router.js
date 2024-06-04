@@ -8,7 +8,7 @@ const { exec } = require('child_process');
 //3 -> Estableciendo las rutas
 router.get ("/", (req, res) => 
 {
-  res.render("login");
+  res.render("inicio");
 });
 
 router.get ("/register", (req, res) => 
@@ -16,7 +16,8 @@ router.get ("/register", (req, res) =>
   consultaColaboradores = 
   `SELECT 
         P.Id_Persona,
-        CONCAT(P.Nombre, ' ', P.Apellido) AS 'Nombre'
+        CONCAT(P.Nombre, ' ', P.Apellido) AS 'Nombre',
+        P.Tipo_Persona
   FROM persona P
   WHERE Cedula = ?`
   
@@ -32,7 +33,7 @@ router.get ("/register", (req, res) =>
     else
     {
       //res.send(results)
-      res.render("register",{Colaboradores:results, username:usuario});
+      res.render("register",{Colaboradores:results, username:usuario,Tipo:results[0].Tipo_Persona});
     }
 
   });
@@ -218,6 +219,9 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
         const successMessage = req.cookies.successMessage;
         res.clearCookie('successMessage');
 
+        const registerMessage = req.cookies.registerMessage;
+        res.clearCookie('registerMessage');
+
 
         res.render("inicio", 
         {
@@ -230,7 +234,8 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
           usuario: req.user.NombreUsuario,
           Mensaje: errorMessage,
           UserRol:req.user.Rol,
-          MensajeRespaldo:successMessage
+          MensajeRespaldo:successMessage,
+          MensajeRegistro:registerMessage
         });
 
         /* console.log(Ventas); */
@@ -309,7 +314,8 @@ router.get("/EditClient/:ID", crud.isAuthenticated,  (req, res) =>
       res.render("editClient.ejs", 
       { 
         cliente: results[0],
-        UserRol:req.user.Rol
+        UserRol:req.user.Rol,
+        tipo:'Cliente'
      }); 
     
     }
@@ -416,9 +422,9 @@ router.get ("/Compras", crud.isAuthenticated , crud.isGerente, (req, res) =>
 
 });
 
-router.get("/Vendedores", crud.isAuthenticated , crud.isGerente, (req, res) => 
+router.get("/Colaboradores", crud.isAuthenticated , crud.isGerente, (req, res) => 
 {
-  conexion.query("SELECT * FROM mostrarvendedores", (error, results) => 
+  conexion.query("SELECT * FROM mostrarcolaboradores ORDER BY Tipo_Persona", (error, results) => 
   {
     if (error) 
     { console.log( "Ha ocurrido un error al mostrar los vendedores, el error es => " + error ); } 
@@ -439,7 +445,7 @@ router.get("/Vendedores", crud.isAuthenticated , crud.isGerente, (req, res) =>
   });
 });
 
-router.get("/EditVendedor/:ID" , crud.isAuthenticated , crud.isGerente, (req, res) => 
+router.get("/EditColaborador/:ID" , crud.isAuthenticated , crud.isGerente, (req, res) => 
 {
   const id = req.params.ID;
 
@@ -454,7 +460,7 @@ router.get("/EditVendedor/:ID" , crud.isAuthenticated , crud.isGerente, (req, re
       res.render("editvendedor.ejs", 
                   { 
                     vendedor: results[0] ,
-                    Mensaje: errorMessage,
+                    /* //Mensaje: errorMessage, */
                     UserRol:req.user.Rol
                   }
       );
@@ -476,6 +482,28 @@ router.get ("/Proveedores",  crud.isAuthenticated , crud.isGerente,(req, res) =>
     }
   });
 });
+
+router.get("/EditProveedor/:ID", crud.isAuthenticated,  (req, res) => 
+  {
+    const id = req.params.ID;
+  
+    conexion.query("SELECT * FROM persona where Id_Persona = ?", [id], (error, results) => 
+    {
+      if (error) 
+      { console.log("Hubo un error al obtener informacion de ese proveedor, error => " + error ); }
+      else 
+      { 
+        res.render("editClient.ejs", 
+        { 
+          cliente: results[0],
+          UserRol:req.user.Rol,
+          tipo:'Proveedor'
+       }); 
+      
+      }
+    });
+  });
+
 
 router.get("/Productos", crud.isAuthenticated, (req, res) => 
 { 
@@ -919,29 +947,12 @@ router.get('/respaldar', (req, res) =>
   });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // 6 -> METODOS POST
 
 router.post("/AddClient",crud.isAuthenticated, crud.AddClient);
 router.post("/UpdateClient",crud.isAuthenticated, crud.UpdateClient);
-router.post("/AddVendedor", crud.isAuthenticated,crud.AddVendedor);
-router.post("/UpdateVendedor",crud.isAuthenticated, crud.UpdateVendedor);
+router.post("/AddColaborador", crud.isAuthenticated,crud.AddColaborador);//
+router.post("/UpdateColaborador",crud.isAuthenticated, crud.UpdateColaborador);//
 router.post("/AddProduct", crud.isAuthenticated,crud.AddProduct);
 router.post("/UpdateProduct",crud.isAuthenticated, crud.UpdateProduct);
 router.post("/AddVenta",crud.isAuthenticated,crud.AddVenta);

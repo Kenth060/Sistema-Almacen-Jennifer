@@ -21,29 +21,73 @@
       <div class="Container px-3">
         <div class="row">
           <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <h2>Datos del Vendedor</h2>
-            <form action="/UpdateVendedor" method="post" class="needs-validation" novalidate>
+            <h2>Datos del Colaborador</h2>
+            <form action="/UpdateColaborador" method="post" class="needs-validation" novalidate>
+
                 <div class="mb-2">
                   <label for="nombre" class="form-label">Nombres</label>
                   <input type="text" class="form-control" id="Id_cl" name="Id_vd" value="<%= vendedor.Id_Persona %>" hidden>
                   <input type="text" class="form-control" id="nombre" name="Nombre_vd" value="<%= vendedor.Nombre %>" required>
                   <div class="invalid-feedback">Es necesario el Nombre</div>
                 </div>
+
                 <div class="mb-2">
                   <label for="apellido" class="form-label">Apellidos</label>
                   <input type="text" class="form-control" id="apellido" name="Apellido_vd" value="<%= vendedor.Apellido %>" required>
                   <div class="invalid-feedback">Es necesario el número Apellido</div>
                 </div>
+
                 <div class="mb-2">
                     <label for="Telefono" class="form-label">Telefono</label>
                     <input type="number" class="form-control" id="Telefono" name="Telefono_vd" value="<%= vendedor.Telefono %>" required>
                     <div class="invalid-feedback">Es necesario el número teléfonico</div>
                   </div>
+
                   <div class="mb-2">
                     <label for="Cedula" class="form-label">Cedula</label>
                     <input type="text" class="form-control" id="Cedula" name="Cedula_vd" value="<%= vendedor.Cedula %>" required>
                     <div class="invalid-feedback">Es necesario el número de cédula</div>
                   </div>
+
+                  <!-- Cargo Colaborador -->
+                  <div class="mb-1 position-relative">
+                    <label for="Distrito_cl" class="form-label fw-bold" >Cargo del Colaborador</label>
+                    <select
+                      id="selectCargoC"
+                      class="form-select mb-2"
+                      aria-label="selectCargoC"
+                      name="selectCargoC"
+                      required
+                    >
+                      <option selected disabled value="">Seleccionar el Cargo...</option>
+                      <% if ( vendedor.Tipo_Persona == 'Vendedor' ){ %>
+                      <option value="Vendedor" selected >Vendedor</option>
+                      <% } else{ %>
+                        <option value="Vendedor"  >Vendedor</option>
+                      <% } %>
+
+                      <% if ( vendedor.Tipo_Persona == 'Gerente' ){ %>
+                        <option value="Gerente" selected >Gerente</option>
+                      <% } else{ %>
+                          <option value="Gerente"  >Gerente</option>
+                      <% } %>
+
+                      <% if ( vendedor.Tipo_Persona == 'Sub-Gerente' ){ %>
+                        <option value="Sub-Gerente" selected >Sub-Gerente</option>
+                      <% } else{ %>
+                          <option value="Sub-Gerente">Sub-Gerente</option>
+                      <% } %>
+
+                      <% if ( vendedor.Tipo_Persona == 'Supervisor' ){ %>
+                        <option value="Supervisor" selected >Supervisor</option>
+                      <% } else{ %>
+                          <option value="Supervisor"  >Supervisor</option>
+                      <% } %>
+
+                    </select>
+                    <div class="invalid-feedback">Por favor ingrese el Cargo</div>
+                  </div>
+
                   <div class="mb-1">
                     <label for="Residencia" class="form-label">Dirección</label>
                     <select class="form-select" aria-label="Distrito" name="Distrito_vd" required>
@@ -105,11 +149,12 @@
               </form>
           </div>
           <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-            <h2>Informacion del Vendedor</h2><br>
+            <h2>Informacion del Colaborador</h2><br>
             <table class="table primary">
                 <thead>
                   <tr>
                     <th class="centrado">Nombre completo</th>
+                    <th class="centrado">Cargo</th>
                     <th class="centrado">Telefono</th>
                     <th class="centrado">Cedula</th>
                     <th class="centrado">Dirección</th>
@@ -119,6 +164,7 @@
 
                     <tr>
                       <td class="centrado"> <%= vendedor.Nombre %> <%= vendedor.Apellido %></td>
+                      <td class="centrado"><%= vendedor.Tipo_Persona %></td>
                       <td class="centrado"><%= vendedor.Cedula %></td>
                       <td class="centrado"><%= vendedor.Telefono %></td>
                       <td class="centrado">Distrito <%= vendedor.Distrito %>,<%= vendedor.Zona_Residencia %>,<%= vendedor.Punto_Referencia %> <%= vendedor.Distancia %>, <%= vendedor.Casa %></td>

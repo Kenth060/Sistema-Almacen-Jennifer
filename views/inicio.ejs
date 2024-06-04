@@ -302,19 +302,34 @@
       </script>
   <% } %>
 
-  <% if (MensajeRespaldo) { %>
+    <% if (MensajeRespaldo) { %>
+      <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Respaldo Creado',
+                  text: '<%= MensajeRespaldo %>',
+                  timer:1500,
+                  showConfirmButton:false
+              });
+          });
+      </script>
+  <% } %>
+
+  <% if (MensajeRegistro) { %>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
                 icon: 'success',
-                title: 'Respaldo Creado',
-                text: '<%= MensajeRespaldo %>',
+                title: 'Operación Completada',
+                text: '<%= MensajeRegistro %>',
                 timer:1500,
                 showConfirmButton:false
             });
         });
     </script>
 <% } %>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>

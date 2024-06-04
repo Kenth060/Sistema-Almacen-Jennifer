@@ -22,6 +22,13 @@
       <div class="Container px-3">
         <div class="row">
           
+
+          <style>
+            form input[type = "text"]{
+              text-transform: uppercase;
+            }
+          </style>
+
           <% if(UserRol == 'Gerente'){ %>
             <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
               <h3><b>Registro de productos</b></h3>
@@ -57,7 +64,7 @@
                 <% } %>
               </select>
   
-              <form action="/AddProduct" method="post" class="row needs-validation g-3 py-3" novalidate> 
+              <form action="/AddProduct" method="post" class="row needs-validation g-3 py-3" autocomplete="off" novalidate> 
   
                 <!-- Marca -->
                 <div class="col-md-6">

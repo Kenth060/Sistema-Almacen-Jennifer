@@ -21,13 +21,13 @@
       <div class="Container px-3">
         <div class="row">
           <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                  <h3>Datos del cliente</h3>
+                  <h3>Datos del <%= tipo %></h3>
                     <form action="/UpdateClient" method="post" class="needs-validation" novalidate>
                         <!-- Nombres -->
                         <div class="mt-3 mb-2">
                           <label for="Nombre" class="form-label fw-bold">Nombres del Cliente</label>
                           <input type="text" class="form-control" id="Id_cl" name="Id_cl" value="<%= cliente.Id_Persona %>" hidden>
-                          <input type="text" class="form-control" id="Tipo" name="Tipo_cl" placeholder="Tipo" value="Cliente"  hidden/>
+                          <input type="text" class="form-control" id="Tipo" name="tipo_edit" placeholder="Tipo" value="<%= tipo %>"/>
                           <input type="text" class="form-control" id="Nombre" name="Nombre_cl" placeholder="Nombres del Cliente" value="<%= cliente.Nombre %>" required/>
                           <div class="invalid-feedback">Por favor ingrese los Nombres del Cliente</div>
                         </div>
@@ -153,7 +153,7 @@
           </div>
 
           <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-                  <h2>Información del Cliente</h2>
+                  <h2>Información del <%= tipo %></h2>
                   <table class="table primary">
                       <thead>
                         <tr>
@@ -161,7 +161,14 @@
                           <th class="centrado">Cedula</th>
                           <th class="centrado">Telefono</th>
                           <th class="centrado">Dirección</th>
-                          <th class="centrado">Credito Disponible</th>
+
+                          <% if(tipo == 'Cliente'){ %>
+                            <th class="centrado">Credito Disponible</th>
+                          <% } %>
+
+                          <% if(tipo == 'Proveedor'){ %>
+                            <th class="centrado">Comercio</th>
+                          <% } %>
                         </tr>
                       </thead>
                       <tbody>
@@ -169,8 +176,14 @@
                         <td class="centrado"><%= cliente.Cedula %></td>
                         <td class="centrado"><%= cliente.Telefono %></td>
                         <td class="centrado">Distrito <%= cliente.Distrito %>,<%= cliente.Zona_Residencia %>,<%= cliente.Punto_Referencia %> <%= cliente.Distancia %>, <%= cliente.Casa %></td>
+                        <% if(tipo == 'Cliente'){ %>
+                          <td class="centrado">C$ <%= cliente.Credito_Disponible %></td>
+                        <% } %>
 
-                        <td class="centrado">C$ <%= cliente.Credito_Disponible %></td>
+                        <% if(tipo == 'Proveedor'){ %>
+                          <td class="centrado"><%= cliente.Comercio %></td>
+                        <% } %>
+                        
                       </tbody>
                   </table>
           </div>

@@ -1,5 +1,6 @@
 Fecha_Actual('FCompra');
 ActualizarFecha();
+var invalidProductFound = false;
 
 var productosSeleccionados = [];
 const Id_Compra = generarIdCompra();
@@ -204,6 +205,12 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio_Compra,Precio_Venta)
 {
   var tabla = document.getElementById("tablacompra").getElementsByTagName('thead')[1];
   const celda_total = document.getElementById("celda_totalCompra");
+
+  if(Precio_Compra == '')
+  {Precio_Compra=0;}
+
+  if(Precio_Venta == '')
+  {Precio_Venta=0;}
 
   var nuevaFila = document.createElement("tr");
   var celdaProducto = document.createElement("th");
@@ -428,7 +435,9 @@ function actualizarPrecioCompraProductoEnArreglo(idProducto, nuevoPrecio)
   productosSeleccionados.forEach(function(producto) 
   {
     if (producto.IdProducto === idProducto) 
-    { producto.Precio_Compra = nuevoPrecio; }
+    { producto.Precio_Compra = nuevoPrecio; 
+      invalidProductFound = false;
+    }
   });
 
 
@@ -439,7 +448,10 @@ function actualizarPrecioVentaProductoEnArreglo(idProducto, nuevoPrecio)
   productosSeleccionados.forEach(function(producto) 
   {
     if (producto.IdProducto === idProducto) 
-    { producto.Precio_Venta = nuevoPrecio; }
+    { 
+      producto.Precio_Venta = nuevoPrecio; 
+      invalidProductFound = false;
+    }
   });
 
 
@@ -469,17 +481,15 @@ function AñadirCompra()
   {
     if(Gerente != '')
     {
-      if (productosSeleccionados.length == 0)
+      if (productosSeleccionados.length != 0)
+      {
+        productosSeleccionados.forEach(function(product) 
         {
-          Swal.fire({
-            title: "No ha agregado Productos",
-            text: "No ha agregado ningun producto a la Compra, por favor agregue productos e intentelo nuevamente",
-            icon: 'warning',
-            showConfirmButton: true,
-            timer: false,
-          });
-        }
-        else  
+          if (product.Precio_Compra == 0 || product.Precio_Venta == 0) 
+          {invalidProductFound = true;}
+        });
+  
+        if(invalidProductFound == false)
         {
           fetch('/AddCompra', 
           {
@@ -527,7 +537,12 @@ function AñadirCompra()
               confirmButtonText: 'Aceptar'
             })
           });
-        } 
+        }
+        else
+        {showAlert('Falta Informacion','No ha agregado precio a uno de los producto a Comprar, por favor agregue el precio e intentelo nuevamente','warning');}
+      }   
+      else
+      {showAlert('No ha agregado Productos','No ha agregado ningun producto a la Compra, por favor agregue productos e intentelo nuevamente','warning');}
     }
     else {showAlert('¡Faltan Datos!','Aun faltan datos por agregar, aun no ha agregado al Gerente', 'warning'); }
   }

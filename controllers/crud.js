@@ -13,12 +13,18 @@ exports.RegisterUser = async (req,res) =>
         const Rol = req.body.ColabRol;
         const Pass = req.body.ColabPass;
         let passHash = await bcryptjs.hash(Pass,8);
+
+
+
         conexion.query('Call AddUser(?,?,?,?);',[user,passHash,Rol,Id_Persona], (error, results) =>
         {
             if(error)
             { console.log('Hubo un error al agregar el usuario => '+error); }
             else
-            { res.redirect('/inicio');}
+            { 
+                res.cookie('registerMessage', 'Se ha registrado el usuario del Colaborador Correctamente', { httpOnly: true });
+                res.redirect('/inicio');
+            }
         });
     }
     catch (error)
@@ -91,7 +97,7 @@ exports.Login = async (req,res) =>
                             alertMessage: 'Se ha iniciado de Sesion Correctamente',
                             alertIcon: 'success',
                             showConfirmButton: true ,
-                            timer: false,
+                            timer: 2000,
                             ruta: 'inicio'
                         });
 
@@ -137,8 +143,8 @@ exports.isAuthenticated = async (req, res, next)=>
                     };
                     req.user = userInfo;
                     req.user.Rol = TokenDecodificado.rol;
-                    console.log('Variables usuario');
-                    console.log(req.user);
+                    /* console.log('Variables usuario');
+                    console.log(req.user); */
                     return next();
                 }
             });
@@ -254,8 +260,17 @@ exports.UpdateClient = (req, res) =>
     const PuntoReferencia = req.body.PuntoReferencia_cl;
     const Distancia = req.body.Distancia_cl;
     const Casa = req.body.Casa_cl; 
+    const tipo = req.body.tipo_edit; 
+    let ruta;
 
-    conexion.query('CALL EditarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?)', [Id_Cliente,Cedula,Nombre,Apellido,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => 
+    if(tipo == 'Cliente')
+    {ruta='clientes'}
+    else if(tipo == 'Proveedor')
+    {ruta='proveedores'}
+
+    
+
+    conexion.query('CALL EditarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?,?)', [Id_Cliente,Cedula,Nombre,Apellido,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa,tipo],(error,results) => 
     {
         if(error)
         { 
@@ -263,17 +278,17 @@ exports.UpdateClient = (req, res) =>
             conexion.query('SELECT * from MostrarClientes', (error,results)=>
             {
                 if(error)
-                { console.log('Ha ocurrido un error al mostrar los clientes, el error es => '+error); }
+                { console.log(`Ha ocurrido un error al mostrar los ${tipo}, el error es => ${error}`); }
                 else
                 {
                     res.render('clientes', { clientes:results,
                         alert: true,
                         alertTitle: "No se pudo completar la operacion",
-                        alertMessage: "No se pudo editar al cliente, compruebe los datos e intente nuevamente",
+                        alertMessage: `No se pudo editar al ${tipo}, compruebe los datos e intente nuevamente`,
                         alertIcon: 'error',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'clientes',
+                        ruta:ruta,
                         UserRol:req.user.Rol
                     })
                 }
@@ -284,17 +299,17 @@ exports.UpdateClient = (req, res) =>
         {
             conexion.query("SELECT * from MostrarClientes", (error,results)=>{
                 if(error)
-                { console.log('Ha ocurrido un error al mostrar los clientes, el error es => '+error); }
+                { console.log(`Ha ocurrido un error al mostrar los ${tipo}, el error es => ${error}`); }
                 else
                 {
                     res.render('clientes', { clientes:results,
                         alert: true,
-                        alertTitle: "Cliente editado",
-                        alertMessage: "¡Se edito al cliente correctamente!",
+                        alertTitle: `${tipo} editado`,
+                        alertMessage: `¡Se edito al ${tipo} correctamente!`,
                         alertIcon: 'success',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'clientes',
+                        ruta:ruta,
                         UserRol:req.user.Rol
                     })
                 }
@@ -303,9 +318,11 @@ exports.UpdateClient = (req, res) =>
     })
 }
 
-exports.AddVendedor = ( req, res) => 
+exports.AddColaborador = ( req, res) => 
 {
-    const Tipo = req.body.Tipo_vd;
+    const Tipo = req.body.selectCargoC;
+
+    console.log(Tipo)
 
     const Nombre = req.body.Nombre_vd;
     const Apellido = req.body.Apellido_vd;
@@ -326,20 +343,21 @@ exports.AddVendedor = ( req, res) =>
         { 
             console.log('Hubo un error al añadir =>'+ error);
 
-            conexion.query('SELECT * FROM mostrarvendedores', (error,results)=>
+            conexion.query('SELECT * FROM mostrarcolaboradores', (error,results)=>
             {
                 if(error)
                 { console.log('Ha ocurrido un error al mostrar los vendedores, el error es => '+error);  }
                 else
                 {
-                    res.render('vendedores', { vendedores:results,
+                    res.render('vendedores', { 
+                        vendedores:results,
                         alert: true,
                         alertTitle: "No se pudo completar la operacion",
-                        alertMessage: "No se pudo agregar al vendedor, compruebe los datos e intente nuevamente",
+                        alertMessage: "No se pudo agregar al colaborador, compruebe los datos e intente nuevamente",
                         alertIcon: 'error',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'vendedores',
+                        ruta:'colaboradores',
                         UserRol: req.user.Rol
                     })
                 }
@@ -348,10 +366,10 @@ exports.AddVendedor = ( req, res) =>
         }
         else 
         {
-            conexion.query('SELECT * FROM mostrarvendedores', (error,results)=>
+            conexion.query('SELECT * FROM mostrarcolaboradores', (error,results)=>
             {
                 if(error)
-                { console.log('Ha ocurrido un error al mostrar los clientes, el error es => '+error); }
+                { console.log('Ha ocurrido un error al mostrar los colaboradores, el error es => '+error); }
                 else
                 {
                     res.cookie('username', Usuario_vendedor, { httpOnly: true });
@@ -359,8 +377,8 @@ exports.AddVendedor = ( req, res) =>
 
                     res.render('vendedores', { vendedores:results,
                         alert: true,
-                        alertTitle: "Vendedor agregado",
-                        alertMessage: "¡Se agrego al vendedor correctamente!",
+                        alertTitle: "Colaborador agregado",
+                        alertMessage: "¡Se agrego al colaborador correctamente!",
                         alertIcon: 'success',
                         showConfirmButton: true,
                         timer: false,
@@ -370,10 +388,10 @@ exports.AddVendedor = ( req, res) =>
                 }
             })
         }
-    })
+    }) 
 }
 
-exports.UpdateVendedor = (req, res) =>
+exports.UpdateColaborador = (req, res) =>
 {
     const Id_Vendedor = req.body.Id_vd;
     const Nombre = req.body.Nombre_vd;
@@ -386,27 +404,30 @@ exports.UpdateVendedor = (req, res) =>
     const PuntoReferencia = req.body.PuntoReferencia_vd;
     const Distancia = req.body.Distancia_vd;
     const Casa = req.body.Casa_vd; 
+    const Tipo = req.body.selectCargoC;
 
-    conexion.query("CALL EditarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?)", [Id_Vendedor,Cedula,Nombre,Apellido,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa],(error,results) => 
+    
+
+    conexion.query("CALL EditarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?,?)", [Id_Vendedor,Cedula,Nombre,Apellido,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa,Tipo],(error,results) => 
     {
         if(error)
         { 
             console.log('Hubo un error al Editar al Vendedor => ' +error);
 
-            conexion.query("SELECT * from MostrarVendedores", (error,results)=>
+            conexion.query("SELECT * from mostrarcolaboradores", (error,results)=>
             {
                 if(error)
-                { console.log('Ha ocurrido un error al mostrar los vendedores, el error es => '+error); }
+                { console.log('Ha ocurrido un error al mostrar los colaboradores, el error es => '+error); }
                 else
                 {
                     res.render('vendedores', { vendedores:results,
                         alert: true,
                         alertTitle: "No se pudo completar la operacion",
-                        alertMessage: "No se pudo editar al vendedor, compruebe los datos e intente nuevamente",
+                        alertMessage: "No se pudo editar al colaborador, compruebe los datos e intente nuevamente",
                         alertIcon: 'error',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'vendedores',
+                        ruta:'colaboradores',
                         UserRol: req.user.Rol
                     })
                 }
@@ -415,20 +436,20 @@ exports.UpdateVendedor = (req, res) =>
         }
         else 
         {
-            conexion.query("SELECT * from MostrarVendedores", (error,results) =>
+            conexion.query("SELECT * from mostrarcolaboradores", (error,results) =>
             {
                 if(error)
-                { console.log('Ha ocurrido un error al mostrar los vendedores, el error es => '+error); }
+                { console.log('Ha ocurrido un error al mostrar los colaboradores, el error es => '+error); }
                 else
                 {
                     res.render('vendedores', { vendedores:results,
                         alert: true,
-                        alertTitle: "Vendedor editado",
-                        alertMessage: "¡Se edito al vendedor correctamente!",
+                        alertTitle: "Colaborador editado",
+                        alertMessage: "¡Se edito al colaborador correctamente!",
                         alertIcon: 'success',
                         showConfirmButton: true,
                         timer: false,
-                        ruta:'vendedores',
+                        ruta:'colaboradores',
                         UserRol: req.user.Rol
                     })
                 }

@@ -29,8 +29,13 @@
 
             <label for="rol" class="fw-bold mt-1">Rol del Colaborador</label>
             <select name="ColabRol" id="ColabRol" class="form-select my-1">
-                <option value="Gerente" selected>Gerente</option>
-                <option value="Vendedor" selected>Vendedor</option>
+                <% if( Tipo != 'Vendedor') { %>
+                    <option value="Gerente" selected><%= Tipo %></option>
+                <% } else{ %>
+                    <option value="Vendedor" selected><%= Tipo %></option>
+                <% } %>
+                
+                
             </select>
 
             <label for="pass" class="fw-bold mt-1">Contraseña</label>

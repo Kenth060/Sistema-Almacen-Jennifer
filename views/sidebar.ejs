@@ -21,7 +21,7 @@
         <!-- Inicio -->
         <li>
           <a href="/inicio">
-            <i class='bx bxs-home'></i>
+            <i class="fa-solid fa-house fa-sm"></i>
             <span class="links_name">Inicio</span>
           </a>
           <span class="tooltip">Inicio</span>
@@ -30,20 +30,20 @@
         <!-- Clientes -->
         <li>
           <a href="/clientes">
-            <i class="bx bx-user"></i>
-            <span class="links_name">Cliente</span>
+            <i class="fa-solid fa-user"></i>
+            <span class="links_name">Clientes</span>
           </a>
-          <span class="tooltip">Cliente</span>
+          <span class="tooltip">Clientes</span>
         </li>
 
-        <!-- Vendedores -->
+        <!-- Colaboradores -->
         <% if( UserRol == 'Gerente') { %>
           <li>
-            <a href="/vendedores">
-              <i class="bx bx-chat"></i>
-              <span class="links_name">Vendedor</span>
+            <a href="/Colaboradores">
+              <i class="fa-solid fa-id-card-clip"></i>
+              <span class="links_name">Colaboradores</span>
             </a>
-            <span class="tooltip">Vendedor</span>
+            <span class="tooltip">Colaboradores</span>
           </li>
         <% } %>
 
@@ -51,7 +51,7 @@
         <% if( UserRol == 'Gerente') { %>
           <li>
             <a href="/Proveedores">
-              <i class='bx bxs-shopping-bag'></i>
+              <i class="fa-solid fa-shop"></i>
               <span class="links_name">Proveedores</span>
             </a>
             <span class="tooltip">Proveedores</span>
@@ -61,17 +61,17 @@
         <!-- Productos -->
         <li>
           <a href="/productos">
-            <i class="bx bx-purchase-tag-alt"></i>
-            <span class="links_name">Producto</span>
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="links_name">Productos</span>
           </a>
-          <span class="tooltip">Producto</span>
+          <span class="tooltip">Productos</span>
         </li>
 
         <!-- Compras -->
         <% if( UserRol == 'Gerente') { %>
           <li>
             <a href="/Compras">
-              <i class='bx bxs-shopping-bags'></i>
+              <i class="fa-solid fa-basket-shopping"></i>
               <span class="links_name">Compras</span>
             </a>
             <span class="tooltip">Compras</span>
@@ -81,7 +81,7 @@
         <!-- Ventas -->
         <li>
           <a href="/ventas">
-            <i class="bx bx-credit-card"></i>
+            <i class="fa-solid fa-cart-shopping"></i>
             <span class="links_name">Ventas</span>
           </a>
           <span class="tooltip">Ventas</span>
@@ -91,7 +91,7 @@
         <!-- Abonos -->
         <li>
           <a href="/abonos">
-            <i class="bx bx-money"></i>
+            <i class="fa-sharp fa-solid fa-money-bill-1-wave"></i>
             <span class="links_name">Abonos</span>
           </a>
           <span class="tooltip">Abonos</span>

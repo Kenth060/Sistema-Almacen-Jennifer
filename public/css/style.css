@@ -273,7 +273,7 @@ body{
   top: 0;
   height: 100%;
   width: 96px;
-  background: #11101D;
+  background: #121029;
   padding: 6px 14px;
   z-index: 99;
   transition: all 0.5s ease;
@@ -402,7 +402,7 @@ body{
   align-items: center;
   text-decoration: none;
   transition: all 0.4s ease;
-  background: #11101D;
+  background: #121029;
 }
 .sidebar li a:hover{
   background: #FFF;
@@ -543,7 +543,7 @@ body{
 /*color del chunche de arriba*/
 .contenedorventas{
   color: white;
-  background-color: #11101D;
+  background-color: #121029;
 }
 
 /*Panel de abonos*/
