@@ -97,9 +97,7 @@ var myChart2 = new Chart(ctx2,
 async function genPDF(ingresos, productosnuevos, clientesactivos) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
-
-  // Título del documento
-  doc.text("REGISTRO DE VENTAS", 40, 20);
+  /*
 
   // Datos para la tabla
   const headers = ['Ingreso', 'Productos Activos', 'No. de Clientes Activos'];
@@ -110,7 +108,7 @@ async function genPDF(ingresos, productosnuevos, clientesactivos) {
     head: [headers],
     body: data,
     startY: 30
-  });
+  });*/
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx codigo marco de las graficas xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   //propiedades del cuadro
   const x = 118; // Posición X del rectángulo
@@ -164,6 +162,31 @@ async function genPDF(ingresos, productosnuevos, clientesactivos) {
   // Añadir segunda imagen con un espacio entre ambas
   const secondImageY = 65 + imgHeight + margin;
   doc.addImage(canvasImg2, 'PNG', x+5, secondImageY, imgWidth, imgHeight);
+
+  // Título del documento
+  doc.text("REGISTRO DE VENTAS", 25, 20);
+
+  const introText = `Este informe detalla el desempeño de ventas a lo largo de los meses, destacando los ingresos mensuales, los productos activos y el número de clientes activos. 
+  Los datos se presentan con gráficos que permiten una visualización clara de las tendencias y el crecimiento de las ventas al crédito y al contado de cada mes. A continuacion
+  se mostrará a más detalle información sobre los ingresos generados en este mes, la cantidad de productos que estan activos, es decir que han sido comprados en los ultimos dias
+  y que son bastante solicitados; La cantidad de Clientes activos que tiene la empresa, es decir el número de clientes que han hecho una compra a la empresa en los ultimos dias.`;
+
+  var textdetallesY2 = 150;
+
+  const splitIntroText = doc.splitTextToSize(introText, 100);
+  doc.setFontSize(12);
+  doc.text(splitIntroText, 20, 35);
+
+  // Agregar datos del mes
+  const monthIncome = "En este mes tenemos un ingreso de ";
+  const activeProducts = "La cantidad de Productos activos son ";
+  const activeClients = "La cantidad de clientes activos es de ";
+
+  
+
+  doc.text(`${monthIncome} ${ingresos}`, 20, textdetallesY2+10);
+  doc.text(`${activeProducts} ${productosnuevos}`, 20, textdetallesY2+20);
+  doc.text(`${activeClients} ${clientesactivos}`, 20, textdetallesY2+30);
   
   // Guardar el documento
   doc.save('Reporte.pdf');
