@@ -19,8 +19,13 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante,fecha_venta
   var fechaConvertida = convertirFecha(fecha_venta);
 
 
-
-  var fechaActual = new Date();
+  var fecha = new Date(fechaconvertida);
+  
+  // Incrementar la fecha en un día
+  fecha.setDate(fecha.getDate() + 1);
+  
+  // Convertir la fecha a formato yyyy-mm-dd
+  var fechaMinima = fecha.toISOString().slice(0,10);
   
 
   // Obtener la hora y los minutos actuales
