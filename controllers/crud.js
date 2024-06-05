@@ -477,18 +477,18 @@ exports.AddProduct = ( req, res) =>
     const Fecha_Vencimiento = req.body.Fecha_Vencimiento;
 
     const params = [
-        Marca,
+        Marca.toUpperCase(),
         //Precio_Compra,
         //Precio_Venta,
-        Color,
-        Tipo,
+        Color.toUpperCase(),
+        Tipo.toUpperCase(),
         //Fecha_Ingreso,
         Categoria,
-        Talla,
-        Modelo,
-        Clasificacion,
-        Dimensiones,
-        UnidadMedida,
+        Talla.toUpperCase(),
+        Modelo.toUpperCase(),
+        Clasificacion.toUpperCase(),
+        Dimensiones.toUpperCase(),
+        UnidadMedida.toUpperCase(),
         Fecha_Vencimiento
       ];
 

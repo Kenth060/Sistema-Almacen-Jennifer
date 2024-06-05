@@ -53,7 +53,8 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
     let Ingresos = null;
     let ProductosAct = null;
     let No_Clientes = null;
-    let ClientesNew = null;
+    let Egresos = null;
+    let Vendedores = [];
 
     const consultaVentasContado = new Promise((resolve, reject) => 
     {
@@ -91,11 +92,7 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
 
     const consultaIngresos = new Promise((resolve, reject) => 
     {
-      const queryIngresos = `SELECT SUM(Total_Venta) AS Ingresos_Mes FROM Venta
-                              WHERE 
-                              MONTH(Fecha_Venta) = MONTH(CURDATE()) AND
-                              YEAR(Fecha_Venta) = YEAR(CURDATE())
-      `;
+      const queryIngresos = `Call IngresosVentasMensuales();`;
 
       conexion.query(queryIngresos, (error, results) => 
       {
@@ -106,12 +103,14 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
         } 
         else 
         {
-          if(results[0].Ingresos_Mes == null)
+          if(results[0][0].Ingresos == null)
           { Ingresos = 0; }
           else
-          { Ingresos = results[0].Ingresos_Mes; }
+          { 
+            Ingresos = results[0][0].Ingresos; 
+          }
           console.log('INGRESOS => C$ '+Ingresos);
-          console.log(results[0].Ingresos_Mes);
+          console.log(results[0][0].Ingresos);
           resolve();
         }
       });                        
@@ -210,7 +209,57 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
       });                        
     });
     
-    Promise.all([consultaVentasContado, consultaVentasCredito, consultaIngresos,consultaProductosAct,consultaClientes,consultaVentas])
+    const consultaEgresos = new Promise((resolve, reject) => 
+      {
+        const queryEgresos = `
+        SELECT SUM(Total_Compra) AS Egresos_Mes FROM Compras
+        WHERE 
+              MONTH(Fecha_Compra) = MONTH(CURDATE()) AND
+              YEAR(Fecha_Compra) = YEAR(CURDATE())
+        `;
+  
+        conexion.query(queryEgresos, (error, results) => 
+        {
+          if (error) 
+          {
+            console.log('HUBO UN ERROR AL MOSTRAR LOS Egresos del Mes => ' + error);
+            reject(error);
+          } 
+          else 
+          {
+            if(results[0].Egresos_Mes == null)
+            { Egresos = 0; }
+            else
+            { 
+              Egresos = results[0].Egresos_Mes; 
+            }
+            console.log('EGRESOS DEL MES => C$ '+Egresos);
+            console.log(results[0].Egresos_Mes);
+            resolve();
+          }
+        });                        
+    });
+    
+    const consultaVendedores = new Promise((resolve, reject) => 
+    {
+      const queryVendedores = `SELECT * FROM Vendedores_mas_Ventas`;
+    
+      conexion.query(queryVendedores, (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL MOSTRAR LOS vendedores con mas ventas del Mes => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          Vendedores = results;
+          resolve();
+        }
+      });                        
+    });
+
+    Promise.all([consultaVentasContado, consultaVentasCredito, consultaIngresos,consultaProductosAct,consultaClientes,consultaVentas,consultaEgresos,consultaVendedores])
       .then(() => {
         
         const errorMessage = req.cookies.errorMessage;
@@ -235,7 +284,9 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
           Mensaje: errorMessage,
           UserRol:req.user.Rol,
           MensajeRespaldo:successMessage,
-          MensajeRegistro:registerMessage
+          MensajeRegistro:registerMessage,
+          Egresos:Egresos,
+          Vendedores:Vendedores
         });
 
         /* console.log(Ventas); */
