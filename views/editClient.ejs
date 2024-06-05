@@ -27,7 +27,7 @@
                         <div class="mt-3 mb-2">
                           <label for="Nombre" class="form-label fw-bold">Nombres del Cliente</label>
                           <input type="text" class="form-control" id="Id_cl" name="Id_cl" value="<%= cliente.Id_Persona %>" hidden>
-                          <input type="text" class="form-control" id="Tipo" name="tipo_edit" placeholder="Tipo" value="<%= tipo %>"/>
+                          <input type="text" class="form-control" id="Tipo" name="tipo_edit" placeholder="Tipo" value="<%= tipo %>" hidden/>
                           <input type="text" class="form-control" id="Nombre" name="Nombre_cl" placeholder="Nombres del Cliente" value="<%= cliente.Nombre %>" required/>
                           <div class="invalid-feedback">Por favor ingrese los Nombres del Cliente</div>
                         </div>
@@ -49,6 +49,13 @@
                         <!-- Cedula -->
                         <div class="mb-2">
                           <label for="Cedula" class="form-label  fw-bold">Cédula  del cliente</label>
+                          <input type="text" class="form-control" id="Cedula" name="Cedula_cl" placeholder="Cédula del cliente" value="<%= cliente.Cedula %>"  required/>
+                          <div class="invalid-feedback">Por favor ingrese el número de cédula del cliente</div>
+                        </div>
+
+                        <!-- Comercio -->
+                        <div class="mb-2">
+                          <label for="Cedula" class="form-label  fw-bold">Comercio</label>
                           <input type="text" class="form-control" id="Cedula" name="Cedula_cl" placeholder="Cédula del cliente" value="<%= cliente.Cedula %>"  required/>
                           <div class="invalid-feedback">Por favor ingrese el número de cédula del cliente</div>
                         </div>
