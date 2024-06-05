@@ -261,16 +261,22 @@ exports.UpdateClient = (req, res) =>
     const Distancia = req.body.Distancia_cl;
     const Casa = req.body.Casa_cl; 
     const tipo = req.body.tipo_edit; 
+    let Comercio =  req.body.Comercio_pv; 
+
     let ruta;
-
-    if(tipo == 'Cliente')
-    {ruta='clientes'}
-    else if(tipo == 'Proveedor')
-    {ruta='proveedores'}
-
     
+    
+    if(tipo == 'Cliente')
+    {
+        ruta='clientes';
+        Comercio = null;
+    }
+    else if(tipo == 'Proveedor')
+    {ruta='proveedores';}
 
-    conexion.query('CALL EditarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?,?)', [Id_Cliente,Cedula,Nombre,Apellido,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa,tipo],(error,results) => 
+    console.log(`Comercio => ${Comercio}\nTipo=> ${tipo}\nRuta => ${ruta}`);
+
+    conexion.query('CALL EditarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)', [Id_Cliente,Cedula,Nombre,Apellido,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa,tipo,Comercio],(error,results) => 
     {
         if(error)
         { 
@@ -281,7 +287,7 @@ exports.UpdateClient = (req, res) =>
                 { console.log(`Ha ocurrido un error al mostrar los ${tipo}, el error es => ${error}`); }
                 else
                 {
-                    res.render('clientes', { clientes:results,
+                    res.render(`clientes`, { clientes:results,
                         alert: true,
                         alertTitle: "No se pudo completar la operacion",
                         alertMessage: `No se pudo editar al ${tipo}, compruebe los datos e intente nuevamente`,
@@ -408,7 +414,7 @@ exports.UpdateColaborador = (req, res) =>
 
     
 
-    conexion.query("CALL EditarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?,?)", [Id_Vendedor,Cedula,Nombre,Apellido,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa,Tipo],(error,results) => 
+    conexion.query("CALL EditarPersona(?,?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)", [Id_Vendedor,Cedula,Nombre,Apellido,Telefono,Distrito,Residencia,PuntoReferencia,Distancia,Casa,Tipo,null],(error,results) => 
     {
         if(error)
         { 

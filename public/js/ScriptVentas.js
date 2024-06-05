@@ -426,6 +426,7 @@ function generarIdVenta()
 var filasAgregadas = [];
 var venta_cliente;
 var venta_vendedor;
+
 function AddProductoTabla (Producto,Cantidad,Precio,SubTotal,Id_Venta, Cliente,Vendedor,Id_Producto)
 {
   var tabla = document.getElementById("tablaDetalleVenta").getElementsByTagName('tbody')[1];
@@ -458,7 +459,7 @@ function AddProductoTabla (Producto,Cantidad,Precio,SubTotal,Id_Venta, Cliente,V
   nuevaFila.appendChild(celda_Vacia);
   nuevaFila.appendChild(celda_Precio);
   nuevaFila.appendChild(celda_Subtotal);
-  nuevaFila.appendChild(celda_boton_devolver);
+  //nuevaFila.appendChild(celda_boton_devolver);
   
   // Agregar la fila a la tabla
   tabla.appendChild(nuevaFila);
