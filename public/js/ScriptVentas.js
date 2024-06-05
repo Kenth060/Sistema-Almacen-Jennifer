@@ -1,5 +1,6 @@
 var productosSeleccionados = [];
 var ID_Venta = generarIdVenta();
+var id_de_venta;
 
 Fecha_Actual('Fecha_Venta');
 ActualizarFecha();
@@ -311,6 +312,7 @@ function mostrarDetallesVenta(Id_Venta, Cliente, Vendedor, Fecha , Total)
 {
   var panel = document.getElementById("panelDetalleVentas");
   panel.style.display = "block";
+  id_de_venta = Id_Venta;
 
   document.getElementById("DetalleTitle").innerText = 'Detalles de la Venta N° '+Id_Venta;
   document.getElementById("ClienteDetalle").textContent = Cliente;
@@ -330,8 +332,6 @@ function mostrarDetallesVenta(Id_Venta, Cliente, Vendedor, Fecha , Total)
 
   })
   .catch(error => console.error('Error:', error)); 
-
-
 
 
 }
@@ -424,6 +424,8 @@ function generarIdVenta()
   return idVenta;
 }
 var filasAgregadas = [];
+var venta_cliente;
+var venta_vendedor;
 function AddProductoTabla (Producto,Cantidad,Precio,SubTotal,Id_Venta, Cliente,Vendedor,Id_Producto)
 {
   var tabla = document.getElementById("tablaDetalleVenta").getElementsByTagName('tbody')[1];
@@ -460,6 +462,9 @@ function AddProductoTabla (Producto,Cantidad,Precio,SubTotal,Id_Venta, Cliente,V
   
   // Agregar la fila a la tabla
   tabla.appendChild(nuevaFila);
+  venta_cliente = Cliente;
+  venta_vendedor = Vendedor;
+  filasAgregadas = [];
   var fila = {
     Producto: Producto,
     Cantidad: Cantidad,
@@ -716,6 +721,7 @@ document.addEventListener('DOMContentLoaded', function() {
     tabla.appendChild(nuevaFila);
   }
   
+  var fechaactual;
   document.addEventListener('DOMContentLoaded', function() {
     // Obtener la referencia al elemento de fecha
     const fechaVentaInput = document.getElementById('plazo_compra');
@@ -745,35 +751,82 @@ document.addEventListener('DOMContentLoaded', function() {
   
     // Establecer la fecha mínima en el campo de fecha
     const fechaMinimaISO = fechaMinima.toISOString().split('T')[0];
+    fechaactual=fechaMinimaISO;
     fechaVentaInput.setAttribute('min', fechaMinimaISO);
   });
 
   function genPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    
-    // Título del documento
-    doc.text("Factura Venta ", 20, 20);
 
-  // Crear la tabla en el PDF en el mismo orden que las filas agregadas
-  const headers = ['Cliente'];
-  const data = filasAgregadas.map(fila => [fila.Cliente]);
-  const headers2 = ['Vendedor','Producto', 'Cantidad', '', 'Precio', 'SubTotal'];
-  const data2 = filasAgregadas.map(fila => [fila.Vendedor,fila.Producto, fila.Cantidad, '', fila.Precio, fila.SubTotal]);
+        // Obtener la fecha actual
+    var fechaActual = new Date();
 
-  doc.autoTable({
-    head: [headers],
-    body: data,
-    startY:30
-  });
-  doc.autoTable({
-    head: [headers2],
-    body: data2
-  });
+    // Obtener el día, mes y año
+    var dia = fechaActual.getDate();
+    var mes = fechaActual.getMonth() + 1; // Los meses empiezan desde 0, por lo que se suma 1
+    var año = fechaActual.getFullYear();
+
+    // Asegurarse de que el día y el mes tengan dos dígitos
+    if (dia < 10) {
+        dia = '0' + dia;
+    }
+    if (mes < 10) {
+        mes = '0' + mes;
+    }
+
+    // Formatear la fecha en dia/mes/año
+    var fechaFormateada = dia + '/' + mes + '/' + año;
+
+    var Y_desplazador = 8;
   
-  // Guardar el PDF
-  doc.save(`factura_.pdf`);
-  filasAgregadas = [];
-}
+    // Agregar el logo en la esquina superior izquierda
+    const logo = '/resources/images/Logo.png'; // Reemplaza con la ruta de tu imagen
+  
+    // Cargar la imagen del logo
+    const img = new Image();
+    img.src = logo;
+  
+    img.onload = function() {
+      // Añadir la imagen al documento
+      doc.addImage(img, 'PNG', 10, 10, 30, 30); // Ajusta las coordenadas y el tamaño según tus necesidades
+  
+      // Título centrado del documento y fecha que se genero el archivo PDF
+      doc.setFontSize(18);
+      doc.text("FACTURA  No "+id_de_venta, doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
+      doc.setFontSize(12);
+      doc.text("Fecha: "+fechaFormateada,180, 20, { align: 'center' });
+  
+      // Info de la Empresa
+      doc.setFontSize(18);
+      doc.text("ALMACEN COMERCIAL JENNIFER", doc.internal.pageSize.getWidth() / 2, 34, { align: 'center' });
+      doc.setFontSize(12);
+      doc.text("De la Nestlé 1 cuadra al sur, 2 cuadras abajo 2 cuadras al sur", doc.internal.pageSize.getWidth() / 2, 36+Y_desplazador, { align: 'center' });
+      doc.setFontSize(12);
+      doc.text("Número Telefónico: 2232-3159", doc.internal.pageSize.getWidth() / 2, 44+Y_desplazador, { align: 'center' });
+
+      doc.setFontSize(12);
+      
+      doc.text("Cliente: "+venta_cliente,20, 64);
+      doc.text("Vendedor: "+filasAgregadas.map(fila => [fila.Vendedor]),20, 70);
+  
+      // Crear la tabla en el PDF en el mismo orden que las filas agregadas
+      /*const headers = ['Cliente'];
+      const data = filasAgregadas.map(fila => [fila.Cliente]);*/
+      const headers2 = ['Producto', 'Cantidad', '', 'Precio', 'SubTotal'];
+      const data2 = filasAgregadas.map(fila => [fila.Producto, fila.Cantidad, '', fila.Precio, fila.SubTotal]);
+  
+      doc.autoTable({
+        head: [headers2],
+        body: data2,
+        startY: 80+Y_desplazador// Añadir espacio entre las tablas
+      });
+  
+      // Guardar el PDF
+      doc.save(`Factura_${venta_cliente}.pdf`);
+      
+    };
+  }
+  
 
 
