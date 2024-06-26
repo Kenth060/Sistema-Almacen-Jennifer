@@ -3,6 +3,12 @@ const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 const {promisify} = require('util');
 
+const buildReporteVentas = require('./pdfBuilder');
+
+const fs = require('fs');
+
+
+
 //Metodo Registro usuarios
 exports.RegisterUser = async (req,res) =>
 {
@@ -60,7 +66,7 @@ exports.Login = async (req,res) =>
                 { console.log('Hubo un error al buscar al Colaborador con usuario '+user+' ,el error es => '+error); }
                 else
                 {
-                    console.log(results);
+                    //console.log(results);
                     if (results.length == 0 || !(await bcryptjs.compare(pass, results[0].Contraseña)) )
                     {
                         res.render('login',
@@ -82,7 +88,7 @@ exports.Login = async (req,res) =>
                             expiresIn: process.env.JWT_EXPIRES_TIME
                         });
 
-                        console.log('El token del usuario es => '+ token);
+                        //console.log('El token del usuario es => '+ token);
 
                         const cookieOptions = {
                             expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
@@ -540,19 +546,31 @@ exports.UpdateProduct = (req, res) =>
     const Categoria = req.body.Categoria_Prod;
 
     const Marca = req.body.Marca;
-    const Existencia = req.body.Existencia;
-    const Precio = req.body.Precio;
     const Color = req.body.Color;
     const Tipo = req.body.Tipo;
-    const Fecha = req.body.Fecha;
 
     const Talla = req.body.Talla;
     const Modelo = req.body.Modelo;
     const Clasificacion = req.body.Clasificacion;
     const Dimensiones = req.body.Dimensiones;
     const UnidadMedida = req.body.Unidad_Medida;
+    const Fecha_Vencimiento = req.body.Fecha_Vencimiento;
 
-    conexion.query('CALL update_producto(?,?,?,?,?,?,?,?,?,?,?,?)', [Id_Producto,Marca,Existencia,Precio,Color,Tipo,Fecha,Talla,Modelo,Clasificacion,Dimensiones,UnidadMedida],(error,results) => {
+    const params = [
+        Id_Producto,
+        Marca.toUpperCase(),
+        Color.toUpperCase(),
+        Tipo.toUpperCase(), 
+        Talla.toUpperCase(),
+        Modelo.toUpperCase(),
+        Clasificacion.toUpperCase(),
+        Dimensiones.toUpperCase(),
+        UnidadMedida.toUpperCase(),
+        Fecha_Vencimiento
+      ];
+
+
+    conexion.query('CALL update_producto(?,?,?,?,?,?,?,?,?,?)', params ,(error,results) => {
         if(error)
         { 
             console.log('Hubo un error al actualizar el producto => '+error);
@@ -843,4 +861,24 @@ exports.AddCompra = (req,res) =>
 
     }) 
     
+} 
+
+exports.ReportVentas = (req,res) => 
+{
+    console.log(`EN PROCESO 🤓☝️`);
+
+    const time = 'del Mes de Junio';
+
+    const stream = res.writeHead(200, {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `inline; filename=Reporte ${time} de ventas Almacen Jennifer.pdf`,
+      });
+
+    buildReporteVentas( 
+        (data) => stream.write(data),
+        () => stream.end()
+    );
+
+    
+
 } 

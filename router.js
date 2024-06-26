@@ -3,12 +3,13 @@ const router = express.Router();
 const crud = require("./controllers/crud");
 const conexion = require("./database/db");
 const { exec } = require('child_process');
+const { required } = require("nodemon/lib/config");
 
 
 //3 -> Estableciendo las rutas
 router.get ("/", (req, res) => 
 {
-  res.render("inicio");
+  res.redirect("inicio");
 });
 
 router.get ("/register", (req, res) => 
@@ -44,6 +45,18 @@ router.get ("/login", (req, res) =>
   res.render("login");
 });
 
+router.get ("/prueba", (req, res) => 
+{
+  conexion.query("CALL ReporteIngresos('mes','','');", (error, results) => 
+  {
+      if (error) 
+      { console.log( "Ha ocurrido un error al mostrar los clientes, el error es => " + error ); } 
+      else 
+      { res.send(results[0])}
+  });
+});
+
+
 router.get ("/inicio", crud.isAuthenticated, async (req, res) => 
 {
 
@@ -55,6 +68,7 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
     let No_Clientes = null;
     let Egresos = null;
     let Vendedores = [];
+    let TopProductos = [];
 
     const consultaVentasContado = new Promise((resolve, reject) => 
     {
@@ -259,7 +273,26 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
       });                        
     });
 
-    Promise.all([consultaVentasContado, consultaVentasCredito, consultaIngresos,consultaProductosAct,consultaClientes,consultaVentas,consultaEgresos,consultaVendedores])
+    const consultaTopProductos = new Promise((resolve, reject) => 
+    {
+      const queryTopProductos = `SELECT * FROM top_10_productos_mas_vendidos`;
+      
+      conexion.query(queryTopProductos, (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL MOSTRAR LOS productos con mas ventas del Mes => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          TopProductos = results;
+          resolve();
+        }
+      });                        
+    });
+
+    Promise.all([consultaVentasContado, consultaVentasCredito, consultaIngresos,consultaProductosAct,consultaClientes,consultaVentas,consultaEgresos,consultaVendedores,consultaTopProductos])
       .then(() => {
         
         const errorMessage = req.cookies.errorMessage;
@@ -271,6 +304,8 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
         const registerMessage = req.cookies.registerMessage;
         res.clearCookie('registerMessage');
 
+
+        //res.send(TopProductos);
 
         res.render("inicio", 
         {
@@ -286,8 +321,9 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
           MensajeRespaldo:successMessage,
           MensajeRegistro:registerMessage,
           Egresos:Egresos,
-          Vendedores:Vendedores
-        });
+          Vendedores:Vendedores,
+          TopProductos: TopProductos
+        }); 
 
         /* console.log(Ventas); */
 
@@ -1016,5 +1052,7 @@ router.post("/register",crud.RegisterUser);
 router.post("/auth",crud.Login);
 router.get("/logout",crud.logout);
 
+//Reportes
+router.get("/ReporteVentas",crud.ReportVentas);
 module.exports = router;
 

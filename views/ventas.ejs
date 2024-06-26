@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/resources/css/style.css" />
     <link rel="shortcut icon" href="/resources/images/favicon.ico">
 
+    
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
 	  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css">
@@ -386,7 +387,11 @@
 
               <div class="py-1 px-3 mb-2" style="display: flex; align-items: center; justify-content: space-between;">
                 <h4 style="color: black; font-size: 22px">Listado de Ventas</h4>
+
+                <a class="btn btn-primary" href="/ReporteVentas">Generar Reporte ventas</a>
+
                 <div style="display: flex; align-items: center">
+
                   <select onchange="Filtrar()" id="filtroTipoVenta"  class="form-select" aria-label="Default select example" style="background-color: rgb(128, 192, 128); color: white;">
                     <option selected>Filtrar tipo de venta</option>
                     <option value="Contado">Ventas al contado</option>

@@ -829,5 +829,9 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
   
+function abrirPanelReportes()
+{
 
 
+  
+}

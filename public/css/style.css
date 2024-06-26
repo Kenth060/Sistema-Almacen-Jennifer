@@ -277,7 +277,27 @@ body{
   padding: 6px 14px;
   z-index: 99;
   transition: all 0.5s ease;
+  overflow-y: auto; /* Permitir scroll vertical */
+  direction: rtl; 
+  overflow-x: hidden;
 }
+
+.sidebar * {
+  direction: ltr; /* Revertir el texto al modo normal */
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #1d1b31;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #575757;
+} 
+
 .sidebar.open{
   width: 250px;
 }
@@ -324,6 +344,8 @@ body{
   font-size: 28px;
   text-align: center;
   line-height: 60px;
+  margin-left: -23px; 
+  padding-left: 2px;
 }
 .sidebar .nav-list{
   margin-top: 20px;
@@ -406,6 +428,7 @@ body{
 }
 .sidebar li a:hover{
   background: #FFF;
+  padding-left: 12px;
 }
 .sidebar li a .links_name{
   color: #fff;
@@ -467,6 +490,8 @@ body{
 .sidebar li.profile .job{
   font-size: 12px;
 }
+
+
 .sidebar .profile #log_out{
   position: absolute;
   top: 50%;
