@@ -9,15 +9,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="shortcut icon" href="/resources/images/favicon.ico">
-
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style2.css">
+    <link rel="stylesheet" href=css/sb-admin-2.min.css">
     <link href="https://fonts.googleapis.com/css?family=Muli:300,700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
   </head>
   <body>
     <%- include('sidebar.ejs') %> 
     <section class="home-section">
+      <nav class="navbar navbar-expand navbar-light width topbar mb-4 static-top shadow">
+        
+
+        <!-- Topbar Navbar -->
+        <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-search fa-fw"></i>
+                </a>
+            </li>
+
+            <!--Alertas-->
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-bell fa-fw"></i>
+                    <span class="badge badge-danger badge-counter">3+</span>
+                </a>
+                <!--SubMenu alertas -->
+                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                    aria-labelledby="alertsDropdown">
+                    <h6 class="dropdown-header">
+                        Centro de alertas
+                    </h6>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                            <div class="icon-circle bg-primary">
+                                <i class="fas fa-file-alt text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-gray-500">Mayo 12, 2024</div>
+                            <span class="font-weight-bold">El nuevo reporte mensual esta listo!</span>
+                        </div>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                            <div class="icon-circle bg-success">
+                                <i class="fas fa-donate text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-gray-500">Mayo 10, 2024</div>
+                            se ha realizado un nuevo abono!
+                        </div>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center width" href="#">
+                        <div class="mr-3">
+                            <div class="icon-circle bg-warning">
+                                <i class="fas fa-exclamation-triangle text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-gray-500">Mayo 2, 2024</div>
+                            Los productos se estan agotando.
+                        </div>
+                    </a>
+                    <a class="dropdown-item text-center small text-gray-500" href="#">Mas...</a>
+                </div>
+            </li>
+
+            
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Navbar - informacion de usuario -->
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle width" href="#" id="userDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Kenito</span>
+                    <img class="img-profile rounded-circle"
+                        src="img/undraw_profile.svg">
+                </a>
+                <!-- SubMenu Informacion -->
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                    aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Perfil
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Configuracion
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Actividad
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Cerrar Sesion
+                    </a>
+                </div>
+            </li>
+
+        </ul>
+
+      </nav>
       <div id="content" class="bg-grey w-100">
         <section class="bg-light py-3">
           <div class="container">
@@ -34,7 +137,7 @@
             </div>
           </div>
         </section>
-  
+
         <section class="bg-mix py-3">
           <div class="container">
             <div class="card rounded-0">
@@ -86,49 +189,272 @@
             </div>
           </div>
         </section>
+
+        <section class="bg-mix py-3">
+          <div class="container">
+            <div class="">
+                <div class="row">
+
+                  <!-- Earnings (Monthly) Card Example -->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card border-left-primary shadow h-100 py-2">
+                          <div class="card-body">
+                              <div class="row no-gutters align-items-center">
+                                  <div class="col mr-2">
+                                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                          Ventas al contado</div>
+                                      <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                  </div>
+                                  <div class="col-auto">
+                                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+      
+                  <!-- Earnings (Monthly) Card Example -->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card border-left-success shadow h-100 py-2">
+                          <div class="card-body">
+                              <div class="row no-gutters align-items-center">
+                                  <div class="col mr-2">
+                                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                          Ventas al credito</div>
+                                      <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                  </div>
+                                  <div class="col-auto">
+                                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+      
+                  <!-- Earnings (Monthly) Card Example -->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card border-left-info shadow h-100 py-2">
+                          <div class="card-body">
+                              <div class="row no-gutters align-items-center">
+                                  <div class="col mr-2">
+                                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Recuperacion de credito
+                                      </div>
+                                      <div class="row no-gutters align-items-center">
+                                          <div class="col-auto">
+                                              <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800 px-3">50%</div>
+                                          </div>
+                                          <div class="col">
+                                              <div class="progress progress-sm mr-2">
+                                                  <div class="progress-bar bg-info" role="progressbar"
+                                                      style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                      aria-valuemax="100"></div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-auto">
+                                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+      
+                  <!-- Pending Requests Card Example -->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card border-left-warning shadow h-100 py-2">
+                          <div class="card-body">
+                              <div class="row no-gutters align-items-center">
+                                  <div class="col mr-2">
+                                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                          Deudas pendientes</div>
+                                      <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                  </div>
+                                  <div class="col-auto">
+                                      <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="container">
+          <div class="">
+            <div class="row">
+
+              <!-- Area Chart -->
+              <div class="col-xl-8 col-lg-12">
+                  <div class="card shadow mb-4">
+                      <!-- Dropdown -->
+                      <div
+                          class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                          <h6 class="m-0 font-weight-bold text-primary">Resumen de ganancias</h6>
+                          <div class="dropdown no-arrow">
+                              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                  aria-labelledby="dropdownMenuLink">
+                                  <div class="dropdown-header">Dropdown Header:</div>
+                                  <a class="dropdown-item" href="#">Ir a historial de ventas</a>
+                                  <div class="dropdown-divider"></div>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- Card Body -->
+                      <div class="card-body" style="height: 260px;">
+                          <div class="chart-area">
+                              <canvas id="myAreaChart"></canvas>
+                          </div>
+                      </div>
+                  </div>
+              </div>
   
+              <!-- Pie Chart -->
+              <div class="col-xl-4 col-lg-5">
+                  <div class="card shadow mb-4">
+                      <!-- Card Header - Dropdown -->
+                      <div
+                          class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                          <h6 class="m-0 font-weight-bold text-primary">Compras a proovedores</h6>
+                          <div class="dropdown no-arrow">
+                              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                  aria-labelledby="dropdownMenuLink">
+                                  <div class="dropdown-header">Dropdown Header:</div>
+                                  <a class="dropdown-item" href="#">Ir a historial de compras</a>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- Card Body -->
+                      <div class="card-body">
+                          <div class="chart-pie pt-4 pb-2">
+                              <canvas id="myPieChart"></canvas>
+                          </div>
+                          <div class="mt-4 text-center small">
+                              <span class="mr-2">
+                                  <i class="fas fa-circle text-primary"></i> Masesa
+                              </span>
+                              <span class="mr-2">
+                                  <i class="fas fa-circle text-success"></i> Tropicon
+                              </span>
+                              <span class="mr-2">
+                                  <i class="fas fa-circle text-info"></i> Pali
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section>
           <div class="container">
             <div class="row">
 
               <div class="col-lg-6 my-3">
-                <div class="card rounded-0">
-                  <div class="card-header bg-light">
-                    <h6 class="font-weight-bold mb-0">
-                      Cantidad de ventas al Contado Mensuales
-                    </h6>
-                  </div>
-                  <div class="card-body">
-                    <canvas id="myChart" width="300" height="150"></canvas>
-                  </div>
+                <div class="card rounded-3 border-0 shadow-lg">
+                    <div class="card-header" style="background: linear-gradient(45deg, #ff6f61, #ffb6c1); border-top-left-radius: .3rem; border-top-right-radius: .3rem;">
+                        <h6 class="font-weight-bold mb-0 text-white text-center">
+                            Cantidad de ventas al Contado Mensuales
+                        </h6>
+                    </div>
+                    <div class="card-body" style="background: #fff3e0; border-bottom-left-radius: .3rem; border-bottom-right-radius: .3rem;">
+                        <canvas id="myChart" width="300" height="150"></canvas>
+                    </div>
                 </div>
               </div>
+            
+            
               
               <div class="col-lg-6 my-3">
-                <div class="card rounded-0">
-                  <div class="card-header bg-light">
-                    <h6 class="font-weight-bold mb-0">
-                      Cantidad de ventas al Credito Mensuales
-                    </h6>
-                  </div>
-                  <div class="card-body">
-                    <canvas id="myChart2" width="300" height="150"></canvas>
-                  </div>
+                <div class="card rounded-3 border-0 shadow-lg">
+                    <div class="card-header" style="background: linear-gradient(45deg, #6a5acd, #b0c4de); border-top-left-radius: .3rem; border-top-right-radius: .3rem;">
+                        <h6 class="font-weight-bold mb-0 text-white text-center">
+                            Cantidad de ventas al Crédito Mensuales
+                        </h6>
+                    </div>
+                    <div class="card-body" style="background: #e0f7fa; border-bottom-left-radius: .3rem; border-bottom-right-radius: .3rem;">
+                        <canvas id="myChart2" width="300" height="150"></canvas>
+                    </div>
                 </div>
               </div>
+            
+            
 
-              <div class="col-lg-6 my-3">
-                <div class="card rounded-0">
-                  <div class="card-header bg-light">
-                    <h6 class="font-weight-bold mb-0">
-                      Vendedores con mas Ventas en el Mes
-                    </h6>
-                  </div>
-                  <div class="card-body">
-                    <canvas id="myChart3" width="300" height="150"></canvas>
+              <section>
+                <div class="container">
+                  <div class="col-lg-12 my-3">
+                    <div class="row">
+                      <div class="col-lg-6 mb-4">
+
+                          <!-- Project Card Example -->
+                          <div class="card shadow mb-4">
+                              <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Categoria de productos</h6>
+                              </div>
+                              <div class="card-body">
+                                  <h4 class="small font-weight-bold">Calzado<span
+                                          class="float-right">20%</span></h4>
+                                  <div class="progress mb-4">
+                                      <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
+                                          aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                                  <h4 class="small font-weight-bold">Cosmeticos <span
+                                          class="float-right">40%</span></h4>
+                                  <div class="progress mb-4">
+                                      <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
+                                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                                  <h4 class="small font-weight-bold">Ropa de vestir <span
+                                          class="float-right">60%</span></h4>
+                                  <div class="progress mb-4">
+                                      <div class="progress-bar" role="progressbar" style="width: 60%"
+                                          aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                                  <h4 class="small font-weight-bold">Productos Platicos <span
+                                          class="float-right">80%</span></h4>
+                                  <div class="progress mb-4">
+                                      <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
+                                          aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                                  <h4 class="small font-weight-bold">Electrodomesticos <span
+                                          class="float-right">Complete!</span></h4>
+                                  <div class="progress">
+                                      <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                                          aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-6 my-3">
+                        <div class="card rounded-3 border-0 shadow-lg">
+                            <div class="card-header" style="background: linear-gradient(45deg, #ff6f61, #ffb6c1); border-top-left-radius: .3rem; border-top-right-radius: .3rem;">
+                                <h6 class="font-weight-bold mb-0 text-white text-center">
+                                    Vendedores con más Ventas en el Mes
+                                </h6>
+                            </div>
+                            <div class="card-body" style="background: #fff3e0; border-bottom-left-radius: .3rem; border-bottom-right-radius: .3rem;">
+                                <canvas id="myChart3" width="300" height="185"></canvas>
+                            </div>
+                        </div>
+                      </div>
+                    
+                    </div>
                   </div>
                 </div>
-              </div>
+              </section>
+
+              
 
               <!-- <div class="col-lg-6 my-3">
                 <div class="card rounded-0">
@@ -143,7 +469,7 @@
                 </div>
               </div> -->
 
-              <div class="col-lg-6 my-3">
+              <div class="col-lg-12 my-3">
                 <div class="card rounded-0">
                   <div class="card-header bg-light">
                     <h6 class="font-weight-bold mb-0">Ventas recientes</h6>
@@ -227,7 +553,8 @@
     </section>
 
     <script src="script.js"></script>
-
+    <script src="/resources/js/Chart.js"></script>
+    <script src="/resources/js/ScriptDashBoard.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"crossorigin="anonymous"></script>
     <script
@@ -310,26 +637,38 @@
 
     <script>
       var valores = JSON.parse("<%- JSON.stringify(Vendedores.map(vendedor => vendedor.Total_Vendido)) %>");
-      var labels = <%- JSON.stringify(Vendedores.map(vendedor => vendedor.Nombre)) %>; 
+      var labels = <%- JSON.stringify(Vendedores.map(vendedor => vendedor.Nombre)) %>;
+
+      // Generar colores aleatorios para cada vendedor
+      function getRandomColor() {
+          var letters = '0123456789ABCDEF';
+          var color = '#';
+          for (var i = 0; i < 6; i++) {
+              color += letters[Math.floor(Math.random() * 16)];
+          }
+          return color;
+      }
+
+      var backgroundColors = labels.map(() => getRandomColor());
 
       var ctx = document.getElementById("myChart3").getContext("2d");
       var myChart = new Chart(ctx, {
-        type: "pie",
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: "Vendedor con mas ventas en este mes",
-              data: valores,
-              backgroundColor: ["#111B54", "#12C9E5", "#12C9E5", "#12C9E5"],
-              maxBarThickness: 30,
-              maxBarLength: 2,
-            },
-          ],
-        },
-
+          type: "pie",
+          data: {
+              labels: labels,
+              datasets: [
+                  {
+                      label: "Vendedor con más ventas en este mes",
+                      data: valores,
+                      backgroundColor: backgroundColors,
+                      maxBarThickness: 30,
+                      maxBarLength: 2,
+                  },
+              ],
+          },
       });
     </script>
+
 
 
     <script>
@@ -406,7 +745,9 @@
         });
     </script>
 <% } %>
-
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
