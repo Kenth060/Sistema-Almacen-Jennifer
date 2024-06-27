@@ -1,6 +1,7 @@
 const PDFDocument = require("pdfkit-table");
+const conexion = require('../database/db');
 
-function buildReporteVentas(dataCallback, endCallback)
+function buildReporteVentas(dataCallback, endCallback , query1,query2,query3)
 {
     const doc = new PDFDocument();
 
@@ -15,11 +16,10 @@ function buildReporteVentas(dataCallback, endCallback)
         
         doc.fillColor('#077E8B')
         // Texto 'Reportes Mensuales'
-        doc.fontSize(18).text('Almacén Comercial Jennifer', 120, 20, { align: 'center' })
+        doc.fontSize(18).text(`Almacén Comercial Jennifer`, 120, 20, { align: 'center' })
         .fillColor('black')
         .moveDown(0.01)
-        .fontSize(15).text(`Reporte de Ventas ${Periodo}`, { align: 'center' })
-        
+        .fontSize(15).text(`Reporte de Ventas ${Periodo}`, { align: 'center' }) 
         .font('Times-Roman')
         .fontSize(12).text('Dirección: De la Nestlé 1 cuadra al sur, 2 cuadras abajo 2 cuadras al sur',{ align: 'center' });
         doc.text('Teléfono:  2232-3159', { align: 'center' });
@@ -29,16 +29,18 @@ function buildReporteVentas(dataCallback, endCallback)
         .lineTo(700, 100)
         .strokeColor('#077E8B')
         .stroke();
+
+        // Agregar contenido de ejemplo (tablas, etc.)
+        doc.fontSize(12).text('',50,110, { align: 'justify' });
     };
 
-    // Agregar el encabezado
-    addHeader('del Mes de Junio del 2024');
-
-    const addTable = async (title, data) => {
+    const addTable = async (title, data) => 
+    {   
         doc.font('Times-Bold').fontSize(14).text(`• ${title}`, { bulletRadius: 5 }).moveDown(0.5);
 
         // Configuración de la tabla
-        const table = {
+        const table = 
+        {
             title: 'Mes de Junio', 
             headers: [
                 { label: 'Producto', align: 'center', headerColor: '#28A745', color: '#FFFFFF' },
@@ -52,10 +54,18 @@ function buildReporteVentas(dataCallback, endCallback)
         await doc.table(table, {
             width: 500
         });
-        doc.moveDown(1); // Espacio después de la tabla
-    };
+        doc.moveDown(2); // Espacio después de la tabla
+    }; 
 
- 
+    const mapearProductos = (productos) => 
+    {
+        return productos.map(producto => [
+            `${producto.Descripcion}`,
+            `${producto.TotalVendido}`,
+            `C$ ${producto.IngresoTotal}`
+        ]);
+    }
+
     // Datos de ejemplo para las tablas
     const exampleData = [
         ['Producto 1', '100', '$1000'],
@@ -74,15 +84,15 @@ function buildReporteVentas(dataCallback, endCallback)
         ['Producto 14', '750', '$7500'],
         ['Producto 15', '800', '$8000']
     ];
-    
 
-    doc.moveDown(2);
-    // Agregar contenido de ejemplo (tablas, etc.)
-    doc.fontSize(12).text('',50,110, { align: 'justify' });
-        // Agregar tablas con datos de ejemplo
-        addTable('Informe de Ventas al Contado', exampleData);
-        addTable('Ingresos de Ventas al Crédito', exampleData);
-        addTable('Otro Tipo de Informe', exampleData);
+    console.log(mapearProductos(query1));
+
+    // Agregar el encabezado
+    addHeader('del Mes de Junio del 2024');
+    // Agregar tablas con datos de ejemplo
+    addTable('Informe de Ventas al Contado',mapearProductos(query1) );
+    addTable('Ingresos de Ventas al Crédito', mapearProductos(query2) );
+    addTable('Ingresos Totales', mapearProductos(query3) ); 
 
     doc.end();
 }

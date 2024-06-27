@@ -865,19 +865,102 @@ exports.AddCompra = (req,res) =>
 
 exports.ReportVentas = (req,res) => 
 {
+
+    const RangoTiempo = 'mes';
+    const FechaInicio = '';
+    const FechaFin = '';
+    let VentaContado = [];
+    let VentaCredito = [];
+    let VentasTotales = [];
+
+    const consultaVentasContado = new Promise((resolve, reject) => 
+    {
+        conexion.query(`CALL ReporteIngresosContado(?,?,?)`,[RangoTiempo,FechaInicio,FechaFin], (error, results) => 
+            {
+                if (error) 
+                {
+                console.log('HUBO UN ERROR AL Buscar los ingresos al contado => ' + error);
+                reject(error);
+                } 
+                else 
+                {
+                VentaContado = results[0];
+                resolve();
+                }
+            });
+    });
+
+    const consultaVentasCredito = new Promise((resolve, reject) => 
+    {
+        conexion.query(`CALL ReporteIngresosCredito(?,?,?)`,[RangoTiempo,FechaInicio,FechaFin], (error, results) => 
+        {
+            if (error) 
+            {
+                console.log('HUBO UN ERROR AL Buscar los ingresos al credito => ' + error);
+                reject(error);
+            } 
+            else 
+            {
+                VentaCredito = results[0];
+                resolve();
+            }
+        });
+    });
+
+    const consultaVentasTotales = new Promise((resolve, reject) => 
+    {
+        conexion.query(`CALL ReporteIngresos(?,?,?)`,[RangoTiempo,FechaInicio,FechaFin], (error, results) => 
+        {
+            if (error) 
+            {
+                console.log('HUBO UN ERROR AL Buscar los ingresos totales => ' + error);
+                reject(error);
+            } 
+            else 
+            {
+                VentasTotales = results[0];
+                resolve();
+            }
+        });
+    });
+
+
+
     console.log(`EN PROCESO 🤓☝️`);
 
     const time = 'del Mes de Junio';
 
-    const stream = res.writeHead(200, {
+    Promise.all([consultaVentasContado,consultaVentasCredito,consultaVentasTotales])
+    .then(() => {
+      
+      const stream = res.writeHead(200, {
         "Content-Type": "application/pdf",
         "Content-Disposition": `inline; filename=Reporte ${time} de ventas Almacen Jennifer.pdf`,
       });
 
     buildReporteVentas( 
         (data) => stream.write(data),
-        () => stream.end()
+        () => stream.end(),
+        VentaContado,
+        VentaCredito,
+        VentasTotales
     );
+
+    })
+    .catch(error => {
+      console.log('Hubo un error al obtener los datos del reporte de ventas => ' + error);
+    });
+
+
+
+
+
+
+
+
+
+
+
 
     
 
