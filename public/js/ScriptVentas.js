@@ -1,4 +1,5 @@
 var productosSeleccionados = [];
+var filasAgregadas = [];
 var ID_Venta = generarIdVenta();
 var id_de_venta;
 
@@ -345,6 +346,7 @@ function cerrarDetallesVenta()
     
     while (tabla.firstChild) 
     { tabla.removeChild(tabla.firstChild);}
+    filasAgregadas=[];
     
 }
 
@@ -423,7 +425,8 @@ function generarIdVenta()
   const idVenta = numeroAleatorio;
   return idVenta;
 }
-var filasAgregadas = [];
+
+//filasAgregadas = [];
 var venta_cliente;
 var venta_vendedor;
 
@@ -465,7 +468,7 @@ function AddProductoTabla (Producto,Cantidad,Precio,SubTotal,Id_Venta, Cliente,V
   tabla.appendChild(nuevaFila);
   venta_cliente = Cliente;
   venta_vendedor = Vendedor;
-  filasAgregadas = [];
+  
   var fila = {
     Producto: Producto,
     Cantidad: Cantidad,
@@ -788,45 +791,95 @@ document.addEventListener('DOMContentLoaded', function() {
     const img = new Image();
     img.src = logo;
   
+    
     img.onload = function() {
+      const totalSubTotal = filasAgregadas.reduce((acumulador, fila) => acumulador + fila.SubTotal, 0);
+  
       // Añadir la imagen al documento
-      doc.addImage(img, 'PNG', 10, 10, 30, 30); // Ajusta las coordenadas y el tamaño según tus necesidades
+      doc.addImage(img, 'PNG', 7, 10, 35, 35); // Ajusta las coordenadas y el tamaño según tus necesidades
   
       // Título centrado del documento y fecha que se genero el archivo PDF
+      doc.setFont("times");
       doc.setFontSize(18);
-      doc.text("FACTURA  No "+id_de_venta, doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
+      doc.text("FACTURA  No " + id_de_venta, doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
       doc.setFontSize(12);
-      doc.text("Fecha: "+fechaFormateada,180, 20, { align: 'center' });
+      doc.text("Fecha: " + fechaFormateada, 180, 20, { align: 'center' });
   
       // Info de la Empresa
-      doc.setFontSize(18);
+      doc.setFont("times","bold");
+      doc.setFontSize(20);
       doc.text("ALMACEN COMERCIAL JENNIFER", doc.internal.pageSize.getWidth() / 2, 34, { align: 'center' });
       doc.setFontSize(12);
-      doc.text("De la Nestlé 1 cuadra al sur, 2 cuadras abajo 2 cuadras al sur", doc.internal.pageSize.getWidth() / 2, 36+Y_desplazador, { align: 'center' });
+      doc.setFont("times","normal");
+      doc.text("De la Nestlé 1 cuadra al sur, 2 cuadras abajo 2 cuadras al sur", doc.internal.pageSize.getWidth() / 2, 36 + Y_desplazador, { align: 'center' });
       doc.setFontSize(12);
-      doc.text("Número Telefónico: 2232-3159", doc.internal.pageSize.getWidth() / 2, 44+Y_desplazador, { align: 'center' });
-
+      doc.text("Número Telefónico: 2232-3159", doc.internal.pageSize.getWidth() / 2, 44 + Y_desplazador, { align: 'center' });
+  
       doc.setFontSize(12);
-      
-      doc.text("Cliente: "+venta_cliente,20, 64);
-      doc.text("Vendedor: "+filasAgregadas.map(fila => [fila.Vendedor]),20, 70);
+  
+      doc.text("Cliente: " + venta_cliente, 20, 64);
+      doc.text("Vendedor: " + venta_vendedor, 20, 70);
   
       // Crear la tabla en el PDF en el mismo orden que las filas agregadas
-      /*const headers = ['Cliente'];
-      const data = filasAgregadas.map(fila => [fila.Cliente]);*/
       const headers2 = ['Producto', 'Cantidad', '', 'Precio', 'SubTotal'];
       const data2 = filasAgregadas.map(fila => [fila.Producto, fila.Cantidad, '', fila.Precio, fila.SubTotal]);
   
       doc.autoTable({
         head: [headers2],
         body: data2,
-        startY: 80+Y_desplazador// Añadir espacio entre las tablas
-      });
+        startY: 80 + Y_desplazador, // Añadir espacio entre las tablas
+        headStyles: {
+            fillColor: [192, 192, 192], // Color gris para el encabezado
+            textColor: [0, 0, 0], // Color negro para el texto del encabezado
+            font: "times", // Fuente Times New Roman para el encabezado
+            halign: "center", 
+            valign: "middle" 
+        },
+        bodyStyles: {
+            fillColor: [255, 255, 255], 
+            textColor: [0, 0, 0], 
+            font: "times", 
+            halign: "center", 
+            valign: "middle" 
+        },
+        styles: {
+            font: "times", 
+            textColor: [0, 0, 0], 
+            halign: "center", 
+            valign: "middle"
+        }
+    });
+      const finalY = doc.lastAutoTable.finalY;
+  
+      const x = 165; // Posición X del rectángulo
+      const y = 7 + finalY; // Posición Y del rectángulo
+      const width = 24; // Ancho del rectángulo
+      const height = 10; // Alto del rectángulo
+      const borderColor = [192, 192, 192];
+      const fillColor = [255, 255, 255]; // Color de relleno (blanco)
+  
+      doc.setDrawColor(0,0,0); 
+      doc.setFillColor(...fillColor); 
+      doc.setLineWidth(0.5);
+      doc.rect(x, y, width, height, 'FD'); 
+      doc.setLineWidth(1);
+      doc.rect(52,276, width + 82, height-5, 'FD'); 
+  
+      doc.setFontSize(10);
+      doc.text(`Total C$:    ${totalSubTotal}`, 150, 13 + finalY);
+      doc.text("NO SE ACEPTAN DEVOLUCIONES, GRACIAS POR SU COMPRA",doc.internal.pageSize.getWidth() / 2, 280,{ align: 'center' });
+
+      doc.setDrawColor(0,0,0);
+      doc.setLineWidth(0.3);var linex=10; 
+      doc.line(25+linex, 255, 75+linex, 255);
+      doc.line(115+linex, 255, 165+linex, 255);
+      doc.text("RECIBI CONFORME                                                               ENTREGUE CONFORME",doc.internal.pageSize.getWidth() / 2,260,{ align: 'center' });
   
       // Guardar el PDF
       doc.save(`Factura_${venta_cliente}.pdf`);
+  
       
-    };
+  };
   }
   
 function abrirPanelReportes()
