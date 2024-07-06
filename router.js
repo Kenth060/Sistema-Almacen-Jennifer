@@ -1053,6 +1053,6 @@ router.post("/auth",crud.Login);
 router.get("/logout",crud.logout);
 
 //Reportes
-router.get("/ReporteVentas",crud.ReportVentas);
+router.post("/ReporteVentas",crud.ReportVentas);
 module.exports = router;
 

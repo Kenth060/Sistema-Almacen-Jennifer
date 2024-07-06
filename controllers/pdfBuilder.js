@@ -1,7 +1,7 @@
 const PDFDocument = require("pdfkit-table");
 const conexion = require('../database/db');
 
-function buildReporteVentas(dataCallback, endCallback , query1,query2,query3)
+function buildReporteVentas(dataCallback, endCallback , Datos )
 {
     const doc = new PDFDocument();
 
@@ -41,7 +41,7 @@ function buildReporteVentas(dataCallback, endCallback , query1,query2,query3)
         // Configuración de la tabla
         const table = 
         {
-            title: 'Mes de Junio', 
+            title: ``, 
             headers: [
                 { label: 'Producto', align: 'center', headerColor: '#28A745', color: '#FFFFFF' },
                 { label: 'Cantidad Vendida', align: 'center', headerColor: '#28A745', color: '#FFFFFF' },
@@ -66,33 +66,12 @@ function buildReporteVentas(dataCallback, endCallback , query1,query2,query3)
         ]);
     }
 
-    // Datos de ejemplo para las tablas
-    const exampleData = [
-        ['Producto 1', '100', '$1000'],
-        ['Producto 2', '150', '$1500'],
-        ['Producto 3', '200', '$2000'],
-        ['Producto 4', '250', '$2500'],
-        ['Producto 5', '300', '$3000'],
-        ['Producto 6', '350', '$3500'],
-        ['Producto 7', '400', '$4000'],
-        ['Producto 8', '450', '$4500'],
-        ['Producto 9', '500', '$5000'],
-        ['Producto 10', '550', '$5500'],
-        ['Producto 11', '600', '$6000'],
-        ['Producto 12', '650', '$6500'],
-        ['Producto 13', '700', '$7000'],
-        ['Producto 14', '750', '$7500'],
-        ['Producto 15', '800', '$8000']
-    ];
-
-    console.log(mapearProductos(query1));
-
     // Agregar el encabezado
-    addHeader('del Mes de Junio del 2024');
+    addHeader(Datos[0].Titulo);
     // Agregar tablas con datos de ejemplo
-    addTable('Informe de Ventas al Contado',mapearProductos(query1) );
-    addTable('Ingresos de Ventas al Crédito', mapearProductos(query2) );
-    addTable('Ingresos Totales', mapearProductos(query3) ); 
+    addTable('Informe de Ventas al Contado',mapearProductos(Datos[1]) );
+    addTable('Ingresos de Ventas al Crédito', mapearProductos(Datos[2]) );
+    addTable('Ingresos Totales', mapearProductos(Datos[3]) ); 
 
     doc.end();
 }

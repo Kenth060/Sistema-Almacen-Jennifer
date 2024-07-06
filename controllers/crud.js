@@ -2,7 +2,7 @@ const conexion = require('../database/db');
 const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 const {promisify} = require('util');
-
+const moment = require('moment'); // Asegúrate de requerir moment.js
 const buildReporteVentas = require('./pdfBuilder');
 
 const fs = require('fs');
@@ -865,29 +865,40 @@ exports.AddCompra = (req,res) =>
 
 exports.ReportVentas = (req,res) => 
 {
+    console.log(`EN PROCESO 🤓☝️`);
 
-    const RangoTiempo = 'mes';
-    const FechaInicio = '';
-    const FechaFin = '';
-    let VentaContado = [];
-    let VentaCredito = [];
-    let VentasTotales = [];
+    const Datos = [];
+    
+    const RangoTiempo = req.body.period;  
+    let FechaInicio = req.body.fecha_inicio;  
+    const FechaFin = req.body.fecha_fin; 
+    console.log(RangoTiempo);
+
+    Datos.push({Titulo:null});
+
+    if (RangoTiempo === 'mes') 
+    {
+        const selectedMonth = req.body['mes-select']; // Esto debe tener el valor en formato 'YYYY-MM'
+        const [year, month] = selectedMonth.split('-');
+        FechaInicio = `${year}-${month}-01`;
+    }
+
 
     const consultaVentasContado = new Promise((resolve, reject) => 
     {
         conexion.query(`CALL ReporteIngresosContado(?,?,?)`,[RangoTiempo,FechaInicio,FechaFin], (error, results) => 
+        {
+            if (error) 
             {
-                if (error) 
-                {
                 console.log('HUBO UN ERROR AL Buscar los ingresos al contado => ' + error);
                 reject(error);
-                } 
-                else 
-                {
-                VentaContado = results[0];
+            } 
+            else 
+            {
+                Datos.push(results[0]);
                 resolve();
-                }
-            });
+            }
+        });
     });
 
     const consultaVentasCredito = new Promise((resolve, reject) => 
@@ -901,7 +912,9 @@ exports.ReportVentas = (req,res) =>
             } 
             else 
             {
-                VentaCredito = results[0];
+                Datos[0].FechaInicio = results[0][0].FechaInicio;
+                Datos[0].FechaFin = results[0][0].FechaFin;
+                Datos.push(results[1]);
                 resolve();
             }
         });
@@ -918,38 +931,62 @@ exports.ReportVentas = (req,res) =>
             } 
             else 
             {
-                VentasTotales = results[0];
-                resolve();
+               Datos.push(results[0]);
+               resolve();
             }
         });
     });
 
-
-
-    console.log(`EN PROCESO 🤓☝️`);
-
-    const time = 'del Mes de Junio';
-
     Promise.all([consultaVentasContado,consultaVentasCredito,consultaVentasTotales])
-    .then(() => {
-      
-      const stream = res.writeHead(200, {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `inline; filename=Reporte ${time} de ventas Almacen Jennifer.pdf`,
-      });
+    .then(() => 
+    {
+        if (RangoTiempo === 'mes') 
+        {
+            const selectedMonth = req.body['mes-select']; // Esto debe tener el valor en formato 'YYYY-MM'
+            const [year, month] = selectedMonth.split('-');
+            moment.locale('es'); // Establece el idioma a español
+            const date = moment(`${year}-${month}-01`, 'YYYY-MM-DD'); // Formato aceptado por moment.js
+            const monthName = date.format('MMMM');
+            Datos[0].Titulo = `del Mes de ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} de ${year}`;
+            Datos[0].Mes= `${monthName.charAt(0).toUpperCase() + monthName.slice(1)}`;
+        }
+        if (RangoTiempo === 'semana') 
+        {
+            moment.locale('es');
+            const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
+            const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            Datos[0].Titulo = `Semana del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
+        }
+        else if (RangoTiempo === 'quincena') 
+        {
+            moment.locale('es');
+            const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
+            const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            Datos[0].Titulo = `Quincena del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
+        }
+        else if (RangoTiempo === 'rango') 
+        {
+            moment.locale('es');
+            const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
+            const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            Datos[0].Titulo = `del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
+        }
 
-    buildReporteVentas( 
-        (data) => stream.write(data),
-        () => stream.end(),
-        VentaContado,
-        VentaCredito,
-        VentasTotales
-    );
+        const stream = res.writeHead(200, 
+        {
+            "Content-Type": "application/pdf",
+            "Content-Disposition": `inline; filename=Reporte de ventas Almacen Jennifer ${Datos[0].Titulo}.pdf`,
+        }); 
 
+         buildReporteVentas( 
+            (data) => stream.write(data),
+            () => stream.end(),
+            Datos
+        );  
+
+       // res.send(Datos);
     })
-    .catch(error => {
-      console.log('Hubo un error al obtener los datos del reporte de ventas => ' + error);
-    });
+    .catch(error =>  { console.log('Hubo un error al obtener los datos del reporte de ventas => ' + error); });
 
 
 
@@ -961,7 +998,5 @@ exports.ReportVentas = (req,res) =>
 
 
 
-
-    
-
+    console.log(`PDF GENERADO 🤓☝️`);
 } 
