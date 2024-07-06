@@ -1,7 +1,6 @@
 {
   "name": "sistema-almacen-jenny",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -28,5 +27,7 @@
     "pdfkit": "^0.15.0",
     "pdfkit-table": "^0.1.99",
     "pdfmake": "^0.2.10"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
