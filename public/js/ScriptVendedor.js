@@ -59,7 +59,7 @@ const inputnumero = document.querySelectorAll('input[type="number"]');
         // Expresión regular para permitir números y guion "-"
         expre = /^[a-zA-Z0-9\sñÑ]+$/; // Solo números del 0-9 y guion "-"
     }else{ 
-        expre = /^[a-zA-Z\sñÑ]+$/; 
+        expre = /^[a-zA-Z\sñÑáéíóúÁÉÍÓÚÜü]+$/; 
       } 
       // Verifica si la tecla presionada cumple con la expresión regular
       if (!expre.test(e.key)) {

@@ -818,6 +818,7 @@ document.addEventListener('DOMContentLoaded', function() {
       doc.text("De la Nestlé 1 cuadra al sur, 2 cuadras abajo 2 cuadras al sur", doc.internal.pageSize.getWidth() / 2, 36 + Y_desplazador, { align: 'center' });
       doc.setFontSize(12);
       doc.text("Número Telefónico: 2232-3159", doc.internal.pageSize.getWidth() / 2, 44 + Y_desplazador, { align: 'center' });
+      doc.text("RUC: 004 160851 0001F", doc.internal.pageSize.getWidth() / 2, 49 + Y_desplazador, { align: 'center' });
   
       doc.setFontSize(12);
   

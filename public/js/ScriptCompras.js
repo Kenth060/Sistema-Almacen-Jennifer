@@ -1,8 +1,10 @@
 Fecha_Actual('FCompra');
 ActualizarFecha();
 var invalidProductFound = false;
+var filasAgregadas = [];
 
 var productosSeleccionados = [];
+var id_de_compra;
 const Id_Compra = generarIdCompra();
 document.getElementById('NumCompra').textContent='N° Compra: '+ Id_Compra;
 
@@ -52,12 +54,15 @@ function CerrarPanelProductoCompra()
     //alert('Cerrar PANEL');
     var panel = document.getElementById("CompraProducto");
     panel.style.display = "none";
+    filasAgregadas=[];
 } 
-
-function mostrarDetallesCompra(Id_Compra, Proveedor, Comprador, Fecha , Total) 
+var proveedor;var comprador;
+function mostrarDetallesCompra(Id_Compra, Proveedor, Comprador, Fecha , Total,prov_nombre) 
 {
+  proveedor=prov_nombre;comprador=Comprador;
   var panel = document.getElementById("panelDetalleCompras");
   panel.style.display = "block";
+  id_de_compra = Id_Compra;
 
   document.getElementById("DetalleCompraTitle").innerText = 'Detalles de la Compra N° '+Id_Compra;
   document.getElementById("ProveedorDetalle").textContent = Proveedor;
@@ -570,7 +575,7 @@ function showAlert(Titulo,Mensaje, icono)
 function AddProductoTabla (Producto,Cantidad,Precio_Compra, Precio_Venta,SubTotal)
 {
   var tabla = document.getElementById("tablaDetalleCompra").getElementsByTagName('tbody')[1];
-
+  
   var nuevaFila = document.createElement("tr");
 
   var celda_Producto = document.createElement("td");
@@ -597,6 +602,14 @@ function AddProductoTabla (Producto,Cantidad,Precio_Compra, Precio_Venta,SubTota
   
   // Agregar la fila a la tabla
   tabla.appendChild(nuevaFila);
+  var fila = {
+    Producto: Producto,
+    cantidad: Cantidad,
+    precio_compra:Precio_Compra,
+    precio_venta:Precio_Venta,
+    subtotal:SubTotal
+  };
+  filasAgregadas.push(fila);
 }
 document.addEventListener('DOMContentLoaded', function() {
   // Obtener la referencia al elemento de fecha
@@ -630,3 +643,90 @@ document.addEventListener('DOMContentLoaded', function() {
   const fechaMinimaISO = fechaMinima.toISOString().split('T')[0];
   fechaVentaInput.setAttribute('max', fechaMinimaISO);
 });
+
+  function genPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Obtener la fecha actual
+    var fechaActual = new Date();
+
+    // Obtener el día, mes y año
+    var dia = fechaActual.getDate();
+    var mes = fechaActual.getMonth() + 1; // Los meses empiezan desde 0, por lo que se suma 1
+    var año = fechaActual.getFullYear();
+
+    // Asegurarse de que el día y el mes tengan dos dígitos
+    if (dia < 10) {
+        dia = '0' + dia;
+    }
+    if (mes < 10) {
+        mes = '0' + mes;
+    }
+
+    // Formatear la fecha en dia/mes/año
+    var fechaFormateada = dia + '/' + mes + '/' + año;
+
+    var Y_desplazador = 8;
+
+    // Crear una imagen HTML para cargar el logo
+    var img = new Image();
+    img.src = '/resources/images/Logo.png'; // Ruta de la imagen
+
+    img.onload = function() {
+        // Añadir la imagen al PDF una vez que esté cargada
+        doc.addImage(img, 'PNG', 10, 10, 30, 30); // Ajusta las coordenadas y el tamaño de la imagen según sea necesario
+
+        // Título centrado del documento y fecha que se generó el archivo PDF
+        doc.setFont("times");
+        doc.setFontSize(18);
+        doc.text("FACTURA COMPRA No " + id_de_compra, doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
+        doc.setFontSize(12);
+        doc.text("Fecha: " + fechaFormateada, 180, 20, { align: 'center' });
+
+        // Info de la Empresa
+        doc.setFont("times", "bold");
+        doc.setFontSize(20);
+        doc.text("ALMACEN COMERCIAL JENNIFER", doc.internal.pageSize.getWidth() / 2, 34, { align: 'center' });
+        doc.setFontSize(12);
+        doc.setFont("times", "normal");
+        doc.text("De la Nestlé 1 cuadra al sur, 2 cuadras abajo 2 cuadras al sur", doc.internal.pageSize.getWidth() / 2, 36 + Y_desplazador, { align: 'center' });
+        doc.setFontSize(12);
+        doc.text("Número Telefónico: 2232-3159", doc.internal.pageSize.getWidth() / 2, 44 + Y_desplazador, { align: 'center' });
+        doc.text("RUC: 004 160851 0001F", doc.internal.pageSize.getWidth() / 2, 49 + Y_desplazador, { align: 'center' });
+
+        const headers2 = ['Producto', 'Cantidad','Precio de Compra', 'Precio de Venta', 'SubTotal'];
+      const data2 = filasAgregadas.map(fila => [fila.Producto,fila.cantidad,fila.precio_compra,fila.precio_venta,fila.subtotal]);
+  
+      doc.autoTable({
+        head: [headers2],
+        body: data2,
+        startY: 70, // Añadir espacio entre las tablas
+        headStyles: {
+          fillColor: [192, 192, 192], // Color gris para el encabezado
+          textColor: [0, 0, 0], // Color negro para el texto del encabezado
+          font: "times", // Fuente Times New Roman para el encabezado
+          halign: "center", 
+          valign: "middle" 
+      },
+      bodyStyles: {
+          fillColor: [255, 255, 255], 
+          textColor: [0, 0, 0], 
+          font: "times", 
+          halign: "center", 
+          valign: "middle" 
+      },
+      styles: {
+          font: "times", 
+          textColor: [0, 0, 0], 
+          halign: "center", 
+          valign: "middle"
+      }
+    });
+        
+      
+
+        // Guardar el PDF
+        doc.save('Factura_.pdf');
+    }
+}
