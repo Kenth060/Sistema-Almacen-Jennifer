@@ -4,7 +4,7 @@ var invalidProductFound = false;
 var filasAgregadas = [];
 
 var productosSeleccionados = [];
-var id_de_compra , proveedor,  comprador;
+var id_de_compra , proveedor,  comprador ,fecha_compra,comercio;
 
 const Id_Compra = generarIdCompra();
 document.getElementById('NumCompra').textContent='N° Compra: '+ Id_Compra;
@@ -57,23 +57,28 @@ function CerrarPanelProductoCompra()
     panel.style.display = "none";
     filasAgregadas=[];
 } 
-<<<<<<< HEAD
 
-function mostrarDetallesCompra(Id_Compra, Proveedor, Comprador, Fecha , Total,prov_nombre) 
+function mostrarDetallesCompra(Id_Compra, Proveedor, Comprador, Fecha , Total,prov_nombre,Comercio) 
 {
   filasAgregadas = []
 
   proveedor=prov_nombre;
   comprador=Comprador;
-=======
-var fecha_compra, proveedor, comprador,comercio;
-function mostrarDetallesCompra(Id_Compra, Proveedor, Comprador, Fecha , Total,Comercio) 
-{
->>>>>>> 39e0b6ad3259bc13faa1f0ab9d9c4c3cd0a66c1b
+  id_de_compra = Id_Compra;
+  fecha_compra = Fecha;
+  proveedor = Proveedor;
+  comprador = Comprador;
+  comercio = Comercio;
+
+  var tabla = document.getElementById("tablaDetalleCompra").getElementsByTagName('tbody')[1];
+    
+  while (tabla.firstChild) 
+  { tabla.removeChild(tabla.firstChild);}
+
+
   var panel = document.getElementById("panelDetalleCompras");
   panel.style.display = "block";
   id_de_compra = Id_Compra;
-  fecha_compra = Fecha;proveedor = Proveedor;comprador = Comprador;comercio = Comercio;
 
   document.getElementById("DetalleCompraTitle").innerText = 'Detalles de la Compra N° '+Id_Compra;
   document.getElementById("ProveedorDetalle").textContent = Proveedor;
@@ -107,11 +112,7 @@ function cerrarDetallesCompra()
     
   while (tabla.firstChild) 
   { tabla.removeChild(tabla.firstChild);}
-<<<<<<< HEAD
   filasAgregadas = []
-=======
-  filasAgregadas = [];
->>>>>>> 39e0b6ad3259bc13faa1f0ab9d9c4c3cd0a66c1b
 }
 
 function mostrarProveedorCompras() 
@@ -671,10 +672,10 @@ async function genPDF()
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    const totalSubTotal = filasAgregadas.reduce((acumulador, fila) => acumulador + fila.subtotal, 0);
-    fechacompra= convertirFecha(fecha_compra);
 
-<<<<<<< HEAD
+    const totalSubTotal = filasAgregadas.reduce((acumulador, fila) => acumulador + fila.subtotal, 0);
+    const fechacompra= convertirFecha(fecha_compra);
+
     // Obtener la fecha actual
     var fechaActual = new Date();
 
@@ -692,8 +693,6 @@ async function genPDF()
 
     // Formatear la fecha en dia/mes/año
     var fechaFormateada = dia + '/' + mes + '/' + año;
-=======
->>>>>>> 39e0b6ad3259bc13faa1f0ab9d9c4c3cd0a66c1b
 
     //var fechaFormateada = new Date().toLocaleDateString('es-mx', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) 
     //var fechaFormateada= new Date().toLocaleDateString('es-mx');
@@ -704,14 +703,10 @@ async function genPDF()
     var img = new Image();
     img.src = '/resources/images/Logo.png'; // Ruta de la imagen
 
-<<<<<<< HEAD
     img.onload = function() 
     {
         // Añadir la imagen al PDF una vez que esté cargada
         doc.addImage(img, 'PNG', 10, 10, 30, 30); // Ajusta las coordenadas y el tamaño de la imagen según sea necesario
-=======
-    img.onload = function() {
->>>>>>> 39e0b6ad3259bc13faa1f0ab9d9c4c3cd0a66c1b
 
         // Título centrado del documento y fecha que se generó el archivo PDF
         doc.setFont("times");
@@ -723,35 +718,24 @@ async function genPDF()
         // Info de la Empresa
         doc.setFont("times", "bold");
         doc.setFontSize(20);
-<<<<<<< HEAD
         doc.text(`${Datos.Comercio}`, doc.internal.pageSize.getWidth() / 2, 34, { align: 'center' });
-=======
-        doc.text(`${comercio}`, doc.internal.pageSize.getWidth() / 2, 34, { align: 'center' });
->>>>>>> 39e0b6ad3259bc13faa1f0ab9d9c4c3cd0a66c1b
         doc.setFontSize(12);
         doc.setFont("times", "normal");
         doc.text(`${Datos.Dirección}`, doc.internal.pageSize.getWidth() / 2, 36 + Y_desplazador, { align: 'center' });
         doc.setFontSize(12);
-<<<<<<< HEAD
-        doc.text(`Número Telefónico: ${Datos.Telefono}`, doc.internal.pageSize.getWidth() / 2, 44 + Y_desplazador, { align: 'center' });
-        doc.text(`RUC: ${Datos.Cedula}`, doc.internal.pageSize.getWidth() / 2, 49 + Y_desplazador, { align: 'center' });
-=======
-        doc.text("Número Telefónico: 2232-3159", doc.internal.pageSize.getWidth() / 2, 44 + Y_desplazador, { align: 'center' });
-        doc.text("RUC: 004 160851 0001F", doc.internal.pageSize.getWidth() / 2, 49 + Y_desplazador, { align: 'center' });
-        doc.setFontSize(12);
-  
+        doc.text(`Número Telefónico: 2232-3159`, doc.internal.pageSize.getWidth() / 2, 44 + Y_desplazador, { align: 'center' });
+        doc.text(`RUC: 004 160851 0001F`, doc.internal.pageSize.getWidth() / 2, 49 + Y_desplazador, { align: 'center' });
+
         doc.text("Comprador: " + comprador, 20, 64);
         doc.text("Proveedor: " + proveedor, 20, 70);
->>>>>>> 39e0b6ad3259bc13faa1f0ab9d9c4c3cd0a66c1b
 
         const headers2 = ['Producto', 'Cantidad','Precio de Compra', 'Precio de Venta', 'SubTotal'];
         const data2 = filasAgregadas.map(fila => [fila.Producto,fila.cantidad,fila.precio_compra,fila.precio_venta,fila.subtotal]);
   
-<<<<<<< HEAD
         doc.autoTable({
           head: [headers2],
           body: data2,
-          startY: 70, // Añadir espacio entre las tablas
+          startY: 80, // Añadir espacio entre las tablas
           headStyles: {
             fillColor: [192, 192, 192], // Color gris para el encabezado
             textColor: [0, 0, 0], // Color negro para el texto del encabezado
@@ -773,12 +757,33 @@ async function genPDF()
             valign: "middle"
         }
       });
-          
+      const finalY = doc.lastAutoTable.finalY;
         
-  
-          // Guardar el PDF
-      doc.save(`Factura de Compra N° ${id_de_compra}.pdf`);
-    }
+      const x = 165; // Posición X del rectángulo
+      const y = 7 + finalY; // Posición Y del rectángulo
+      const width = 24; // Ancho del rectángulo
+      const height = 10; // Alto del rectángulo
+      const borderColor = [192, 192, 192];
+      const fillColor = [255, 255, 255]; // Color de relleno (blanco)
+      
+      doc.setDrawColor(0,0,0); 
+      doc.setFillColor(...fillColor); 
+      doc.setLineWidth(0.5);
+      doc.rect(x, y, width, height, 'FD'); 
+      doc.setLineWidth(1);
+      
+      doc.setFontSize(10);
+      doc.text(`Total C$:    ${totalSubTotal}`, 150, 13 + finalY);
+      
+      doc.setDrawColor(0,0,0);
+      doc.setLineWidth(0.3);var linex=10; 
+      doc.line(25+linex, 255, 75+linex, 255);
+      doc.line(115+linex, 255, 165+linex, 255);
+      doc.text("RECIBI CONFORME                                                               ENTREGUE CONFORME",doc.internal.pageSize.getWidth() / 2,260,{ align: 'center' });
+      
+        // Guardar el PDF
+        doc.save(`Factura_${Datos.Comercio}.pdf`);
+      }
 
   }
   catch (error)
@@ -896,60 +901,6 @@ document.addEventListener('DOMContentLoaded', function ()
       }
   });
 }); 
-=======
-      doc.autoTable({
-        head: [headers2],
-        body: data2,
-        startY: 80, // Añadir espacio entre las tablas
-        headStyles: {
-          fillColor: [192, 192, 192], // Color gris para el encabezado
-          textColor: [0, 0, 0], // Color negro para el texto del encabezado
-          font: "times", // Fuente Times New Roman para el encabezado
-          halign: "center", 
-          valign: "middle" 
-      },
-      bodyStyles: {
-          fillColor: [255, 255, 255], 
-          textColor: [0, 0, 0], 
-          font: "times", 
-          halign: "center", 
-          valign: "middle" 
-      },
-      styles: {
-          font: "times", 
-          textColor: [0, 0, 0], 
-          halign: "center", 
-          valign: "middle"
-      }
-    });
-    const finalY = doc.lastAutoTable.finalY;
-  
-    const x = 165; // Posición X del rectángulo
-    const y = 7 + finalY; // Posición Y del rectángulo
-    const width = 24; // Ancho del rectángulo
-    const height = 10; // Alto del rectángulo
-    const borderColor = [192, 192, 192];
-    const fillColor = [255, 255, 255]; // Color de relleno (blanco)
-
-    doc.setDrawColor(0,0,0); 
-    doc.setFillColor(...fillColor); 
-    doc.setLineWidth(0.5);
-    doc.rect(x, y, width, height, 'FD'); 
-    doc.setLineWidth(1);
-
-    doc.setFontSize(10);
-    doc.text(`Total C$:    ${totalSubTotal}`, 150, 13 + finalY);
-
-    doc.setDrawColor(0,0,0);
-    doc.setLineWidth(0.3);var linex=10; 
-    doc.line(25+linex, 255, 75+linex, 255);
-    doc.line(115+linex, 255, 165+linex, 255);
-    doc.text("RECIBI CONFORME                                                               ENTREGUE CONFORME",doc.internal.pageSize.getWidth() / 2,260,{ align: 'center' });
-
-        // Guardar el PDF
-        doc.save(`Factura_${comercio}.pdf`);
-    }
-}
 
 function convertirFecha(fecha) {
   // Crear un objeto con los meses en español y sus números correspondientes
@@ -981,4 +932,3 @@ function convertirFecha(fecha) {
 
   return fechaFormateada;
 };
->>>>>>> 39e0b6ad3259bc13faa1f0ab9d9c4c3cd0a66c1b

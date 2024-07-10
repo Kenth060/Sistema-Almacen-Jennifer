@@ -18,7 +18,7 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante,fecha_venta
 
   var fechaConvertida = convertirFecha(fecha_venta);
 
-
+  Fecha_Actual('Fecha_Abono')
 
   var fechaActual = new Date();
   
@@ -232,6 +232,20 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante,fecha_venta
 }
 function Limpiar()
 {
-  document.getElementById("Fecha_Abono").value = '';
   document.getElementById("Monto_Abono").value = '';
+}
+
+function Fecha_Actual(Fecha)
+{
+  const InputFecha = document.getElementById(Fecha);
+  // Obtiene la fecha actual
+  var today = new Date();
+
+  // Formatea la fecha a 'YYYY-MM-DD'
+  var day = String(today.getDate()).padStart(2, '0');
+  var month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses comienzan en 0
+  var year = today.getFullYear();
+
+  // Establece el valor del input con la fecha formateada
+  InputFecha.value = `${year}-${month}-${day}`;
 }

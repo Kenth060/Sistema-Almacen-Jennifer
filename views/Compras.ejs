@@ -77,7 +77,7 @@
                                     <!-- Fecha Compra -->
                                     <div class="col">
                                       <label for="FCompra" class="form-label fw-bold">Ingrese la fecha de compra</label>
-                                      <input type="date"  class="form-control" id="FCompra" placeholder="Ingrese la fecha" required onchange="ActualizarFecha()">
+                                      <input disabled type="date"  class="form-control" id="FCompra" placeholder="Ingrese la fecha" required onchange="ActualizarFecha()">
                                     </div>
                                     
                                     <!-- Productos -->
@@ -502,7 +502,6 @@
               <div class="panel-content">
                 <h4 class="fw-bold my-2" id="DetalleCompraTitle">Detalle Compra</h4>
                 <div style="max-height: 300px; overflow-y: auto">
-<<<<<<< HEAD
                   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                       <div style="max-height: 300px; overflow-y: auto">
@@ -565,88 +564,12 @@
                         <button type="button" class="btn btn-danger" onclick="cerrarDetallesCompra()">Cerrar</button>
                       </div>
                     </div>
-=======
-                  <div class="Container">
-                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-
-                      <div class="Container">
-                        
-                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                          <div style="max-height: 300px; overflow-y: auto">
-                            <button
-                            type="button"
-                            class="btn btn-outline-primary  mt-2 mb-4"
-                            onclick="genPDF()">
-                            Generar Pdf <i class="fas fa-file-pdf mx-1"></i>
-                            </button>
-      
-                            <table class="table" id="tablaDetalleCompra">
-      
-                              <thead>
-                                <tr>
-                                  <th class="centrado">Proveedor</th>
-                                  <th class="centrado">Comprador</th>
-                                  <th></th>
-                                  <th class="centrado">Fecha</th>
-                                  <th class="centrado"></th>
-                                  <th class="centrado"></th>
-                                </tr>
-                              </thead>
-      
-                              <tbody>
-                                <tr>
-                                  <td class="" id="ProveedorDetalle"></td>
-                                  <td class="centrado" id="CompradorDetalle"></td>
-                                  <td></td>
-                                  <td class="centrado" id="FechaCompraDetalle"></td>
-                                  <td></td><td></td>
-                                </tr>
-                              
-                                <thead>
-                                  <tr>
-                                    <th class="centrado">Producto</th>
-                                    <th class="centrado">Cantidad Adquirida</th>
-                                    <th class="centrado"></th>
-                                    <th class="centrado">Precio Compra</th>
-                                    <th class="centrado">Precio Venta</th>
-                                    <th class="centrado">Sub Total</th>
-                                  </tr>
-                                </thead>
-                              </tbody>
-      
-                             <!-- //Productos -->
-                              <tbody>
-                              </tbody>
-      
-                              <thead>
-                                <th></th><th></th><th></th><th></th><th></th>
-                                <th>Total</th>
-                              </thead>
-        
-                              <tbody>
-                                <tr>
-                                  <td></td><td></td><td></td><td ></td><td ></td>
-                                  <td class="centrado" id="TotalCompraDetalle"></td>
-                                </tr>
-                              </tbody>
-                            
-                            </table>
-                           <button type="button" class="btn btn-danger" onclick="cerrarDetallesCompra()">Cerrar</button>
-                        </div>
-                        </div>
-                      </div>
->>>>>>> 39e0b6ad3259bc13faa1f0ab9d9c4c3cd0a66c1b
                   </div>
                 </div>
               </div>
             </div>
-<<<<<<< HEAD
-            
-            <div id="BuscarProveedorVenta" class="panel-flotante panel-ancho" style="display: none">
-=======
 
             <div id="BuscarProveedorVenta"class="panel-flotante panel-ancho"style="display: none">
->>>>>>> 39e0b6ad3259bc13faa1f0ab9d9c4c3cd0a66c1b
               <div class="panel-content">
                 <h4 id="Title_Compras">Buscar un proveedor</h4>
                 <div style="max-height: 300px; overflow-y: auto">
