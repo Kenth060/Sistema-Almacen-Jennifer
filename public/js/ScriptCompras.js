@@ -4,7 +4,8 @@ var invalidProductFound = false;
 var filasAgregadas = [];
 
 var productosSeleccionados = [];
-var id_de_compra;
+var id_de_compra , proveedor,  comprador;
+
 const Id_Compra = generarIdCompra();
 document.getElementById('NumCompra').textContent='N° Compra: '+ Id_Compra;
 
@@ -56,10 +57,13 @@ function CerrarPanelProductoCompra()
     panel.style.display = "none";
     filasAgregadas=[];
 } 
-var proveedor;var comprador;
+
 function mostrarDetallesCompra(Id_Compra, Proveedor, Comprador, Fecha , Total,prov_nombre) 
 {
-  proveedor=prov_nombre;comprador=Comprador;
+  filasAgregadas = []
+
+  proveedor=prov_nombre;
+  comprador=Comprador;
   var panel = document.getElementById("panelDetalleCompras");
   panel.style.display = "block";
   id_de_compra = Id_Compra;
@@ -96,13 +100,13 @@ function cerrarDetallesCompra()
     
   while (tabla.firstChild) 
   { tabla.removeChild(tabla.firstChild);}
-  
+  filasAgregadas = []
 }
 
 function mostrarProveedorCompras() 
 {
-    var panel = document.getElementById("BuscarProveedorVenta");
-    panel.style.display = "block";
+  var panel = document.getElementById("BuscarProveedorVenta");
+  panel.style.display = "block";
 }
 
 function cerrarProveedorCompras() 
@@ -373,8 +377,8 @@ function AñadirProducto(Id_Producto,Nombre_Producto,Precio_Compra,Precio_Venta)
     // Agregar las celdas a la fila
     nuevaFila.appendChild(celdaProducto);
     nuevaFila.appendChild(celdaCantidad);
-    nuevaFila.appendChild(celdaPrecioCompra);
     nuevaFila.appendChild(celdaPrecioVenta);
+    nuevaFila.appendChild(celdaPrecioCompra);
     nuevaFila.appendChild(celdaSubtotal);
     nuevaFila.appendChild(celdaBoton);
     
@@ -411,7 +415,6 @@ function EliminarProducto(boton,id)
     productosSeleccionados = productosSeleccionados.filter(producto => producto.IdProducto !== id);
     actualizarTotalEnTabla();
 
-
 }
 
 function actualizarCantidadProductoEnArreglo(idProducto, nuevaCantidad) 
@@ -421,8 +424,6 @@ function actualizarCantidadProductoEnArreglo(idProducto, nuevaCantidad)
     if (producto.IdProducto === idProducto) 
     { producto.Cantidad = nuevaCantidad; }
   });
-
-
 }
 
 function actualizarTotalEnTabla() 
@@ -611,7 +612,9 @@ function AddProductoTabla (Producto,Cantidad,Precio_Compra, Precio_Venta,SubTota
   };
   filasAgregadas.push(fila);
 }
-document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', function() 
+{
   // Obtener la referencia al elemento de fecha
   const fechaVentaInput = document.getElementById('FCompra');
 
@@ -644,7 +647,17 @@ document.addEventListener('DOMContentLoaded', function() {
   fechaVentaInput.setAttribute('max', fechaMinimaISO);
 });
 
-  function genPDF() {
+async function genPDF() 
+{
+  try
+  {
+    const response = await fetch(`/buscar-Compra?id=${encodeURIComponent(id_de_compra)}`);
+    const data = await response.json();
+
+    const Datos= data.Info[0]; 
+
+    console.log(Datos.Comercio)
+
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
@@ -657,9 +670,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var año = fechaActual.getFullYear();
 
     // Asegurarse de que el día y el mes tengan dos dígitos
-    if (dia < 10) {
-        dia = '0' + dia;
-    }
+    if (dia < 10) 
+    { dia = '0' + dia; }
     if (mes < 10) {
         mes = '0' + mes;
     }
@@ -667,13 +679,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Formatear la fecha en dia/mes/año
     var fechaFormateada = dia + '/' + mes + '/' + año;
 
+    //var fechaFormateada = new Date().toLocaleDateString('es-mx', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) 
+    //var fechaFormateada= new Date().toLocaleDateString('es-mx');
+
     var Y_desplazador = 8;
 
     // Crear una imagen HTML para cargar el logo
     var img = new Image();
     img.src = '/resources/images/Logo.png'; // Ruta de la imagen
 
-    img.onload = function() {
+    img.onload = function() 
+    {
         // Añadir la imagen al PDF una vez que esté cargada
         doc.addImage(img, 'PNG', 10, 10, 30, 30); // Ajusta las coordenadas y el tamaño de la imagen según sea necesario
 
@@ -687,46 +703,162 @@ document.addEventListener('DOMContentLoaded', function() {
         // Info de la Empresa
         doc.setFont("times", "bold");
         doc.setFontSize(20);
-        doc.text("ALMACEN COMERCIAL JENNIFER", doc.internal.pageSize.getWidth() / 2, 34, { align: 'center' });
+        doc.text(`${Datos.Comercio}`, doc.internal.pageSize.getWidth() / 2, 34, { align: 'center' });
         doc.setFontSize(12);
         doc.setFont("times", "normal");
-        doc.text("De la Nestlé 1 cuadra al sur, 2 cuadras abajo 2 cuadras al sur", doc.internal.pageSize.getWidth() / 2, 36 + Y_desplazador, { align: 'center' });
+        doc.text(`${Datos.Dirección}`, doc.internal.pageSize.getWidth() / 2, 36 + Y_desplazador, { align: 'center' });
         doc.setFontSize(12);
-        doc.text("Número Telefónico: 2232-3159", doc.internal.pageSize.getWidth() / 2, 44 + Y_desplazador, { align: 'center' });
-        doc.text("RUC: 004 160851 0001F", doc.internal.pageSize.getWidth() / 2, 49 + Y_desplazador, { align: 'center' });
+        doc.text(`Número Telefónico: ${Datos.Telefono}`, doc.internal.pageSize.getWidth() / 2, 44 + Y_desplazador, { align: 'center' });
+        doc.text(`RUC: ${Datos.Cedula}`, doc.internal.pageSize.getWidth() / 2, 49 + Y_desplazador, { align: 'center' });
 
         const headers2 = ['Producto', 'Cantidad','Precio de Compra', 'Precio de Venta', 'SubTotal'];
-      const data2 = filasAgregadas.map(fila => [fila.Producto,fila.cantidad,fila.precio_compra,fila.precio_venta,fila.subtotal]);
+        const data2 = filasAgregadas.map(fila => [fila.Producto,fila.cantidad,fila.precio_compra,fila.precio_venta,fila.subtotal]);
   
-      doc.autoTable({
-        head: [headers2],
-        body: data2,
-        startY: 70, // Añadir espacio entre las tablas
-        headStyles: {
-          fillColor: [192, 192, 192], // Color gris para el encabezado
-          textColor: [0, 0, 0], // Color negro para el texto del encabezado
-          font: "times", // Fuente Times New Roman para el encabezado
-          halign: "center", 
-          valign: "middle" 
-      },
-      bodyStyles: {
-          fillColor: [255, 255, 255], 
-          textColor: [0, 0, 0], 
-          font: "times", 
-          halign: "center", 
-          valign: "middle" 
-      },
-      styles: {
-          font: "times", 
-          textColor: [0, 0, 0], 
-          halign: "center", 
-          valign: "middle"
-      }
-    });
+        doc.autoTable({
+          head: [headers2],
+          body: data2,
+          startY: 70, // Añadir espacio entre las tablas
+          headStyles: {
+            fillColor: [192, 192, 192], // Color gris para el encabezado
+            textColor: [0, 0, 0], // Color negro para el texto del encabezado
+            font: "times", // Fuente Times New Roman para el encabezado
+            halign: "center", 
+            valign: "middle" 
+        },
+        bodyStyles: {
+            fillColor: [255, 255, 255], 
+            textColor: [0, 0, 0], 
+            font: "times", 
+            halign: "center", 
+            valign: "middle" 
+        },
+        styles: {
+            font: "times", 
+            textColor: [0, 0, 0], 
+            halign: "center", 
+            valign: "middle"
+        }
+      });
+          
         
-      
-
-        // Guardar el PDF
-        doc.save('Factura_.pdf');
+  
+          // Guardar el PDF
+      doc.save(`Factura de Compra N° ${id_de_compra}.pdf`);
     }
+
+  }
+  catch (error)
+  { console.log('Error al General el PDF => ', error) }
+
+  
 }
+
+function abrirPanelReportes()
+{
+  console.log('Abriendo panel de reportes siuu');
+
+  var panel = document.getElementById("PanelReportes");
+  panel.style.display = "block";
+
+}
+
+function cerrarPanelReportes()
+{
+  console.log('Cerrando panel de reportes siuu');
+
+  var panel = document.getElementById("PanelReportes");
+  panel.style.display = "none";
+
+}
+
+
+document.addEventListener('DOMContentLoaded', function () 
+{
+  const periodRadios = document.querySelectorAll('input[name="period"]');
+  const selectMesDiv = document.getElementById('select-mes');
+  const rangoFechasInputs = document.getElementById('rango-fechas-inputs');
+  const mesSelect = document.getElementById('mes-select');
+  const fechaInicioInput = document.getElementById('fecha_inicio');
+  const fechaFinInput = document.getElementById('fecha_fin');
+  const reportForm = document.getElementById('report-form');
+
+  periodRadios.forEach(radio => {
+      radio.addEventListener('change', function () {
+          if (this.value === 'mes') {
+              selectMesDiv.style.display = 'block';
+              rangoFechasInputs.style.display = 'none';
+              populateMonths();
+          } else if (this.value === 'rango') {
+              selectMesDiv.style.display = 'none';
+              rangoFechasInputs.style.display = 'block';
+              setDateRange();
+          } else {
+              selectMesDiv.style.display = 'none';
+              rangoFechasInputs.style.display = 'none';
+          }
+      });
+  });
+
+  function populateMonths() {
+      mesSelect.innerHTML = ''; // Clear previous options
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentMonth = now.getMonth();
+      const startYear = 2023;
+      const startMonth = 11; // December (0-based index)
+      
+      for (let year = startYear; year <= currentYear; year++) {
+          const monthStart = (year === startYear) ? startMonth : 0;
+          const monthEnd = (year === currentYear) ? currentMonth : 11;
+          
+          for (let month = monthStart; month <= monthEnd; month++) {
+              const monthName = new Date(year, month).toLocaleString('es-ES', { month: 'long' });
+              const option = document.createElement('option');
+              option.value = `${year}-${month + 1}`;
+              option.text = `${monthName.charAt(0).toUpperCase() + monthName.slice(1)} ${year}`;
+              mesSelect.appendChild(option);
+          }
+      }
+  }
+
+  function setDateRange() {
+      const now = new Date();
+      const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      
+      fechaInicioInput.value = firstDayOfMonth.toISOString().substr(0, 10);
+      fechaFinInput.value = now.toISOString().substr(0, 10);
+  }
+
+  reportForm.addEventListener('submit', function (event) {
+      const selectedPeriod = document.querySelector('input[name="period"]:checked');
+      if (!selectedPeriod) {
+          event.preventDefault();
+          Swal.fire({
+              icon: 'warning',
+              title: 'Atención',
+              text: 'Debe seleccionar una opción de periodo de tiempo.'
+          });
+          return;
+      }
+
+      if (selectedPeriod.value === 'mes' && !mesSelect.value) {
+          event.preventDefault();
+          Swal.fire({
+              icon: 'warning',
+              title: 'Atención',
+              text: 'Debe seleccionar un mes.'
+          });
+          return;
+      }
+
+      if (selectedPeriod.value === 'rango' && (!fechaInicioInput.value || !fechaFinInput.value)) {
+          event.preventDefault();
+          Swal.fire({
+              icon: 'warning',
+              title: 'Atención',
+              text: 'Debe seleccionar una fecha de inicio y una fecha de fin.'
+          });
+          return;
+      }
+  });
+}); 

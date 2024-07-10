@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 const {promisify} = require('util');
 const moment = require('moment'); // Asegúrate de requerir moment.js
-const buildReporteVentas = require('./pdfBuilder');
+const { buildReporteCompras , buildReporteVentas , buildReporteVendedor , buildReporteMorosos} = require('./pdfBuilder');
+
 
 const fs = require('fs');
 
@@ -146,6 +147,7 @@ exports.isAuthenticated = async (req, res, next)=>
                     {
                         Usuario: results[0][0].Usuario,
                         NombreUsuario: results[0][0].Nombre,
+                        Id_Persona: results[0][0].Id_Persona
                     };
                     req.user = userInfo;
                     req.user.Rol = TokenDecodificado.rol;
@@ -873,6 +875,8 @@ exports.ReportVentas = (req,res) =>
     let FechaInicio = req.body.fecha_inicio;  
     const FechaFin = req.body.fecha_fin; 
     console.log(RangoTiempo);
+    console.log(FechaInicio);
+    console.log(FechaFin);
 
     Datos.push({Titulo:null});
 
@@ -955,6 +959,8 @@ exports.ReportVentas = (req,res) =>
             moment.locale('es');
             const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
             const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            console.log(fechaInicioFormateada);
+            console.log(fechaFinFormateada);
             Datos[0].Titulo = `Semana del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
         }
         else if (RangoTiempo === 'quincena') 
@@ -962,6 +968,8 @@ exports.ReportVentas = (req,res) =>
             moment.locale('es');
             const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
             const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            console.log(fechaInicioFormateada);
+            console.log(fechaFinFormateada);
             Datos[0].Titulo = `Quincena del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
         }
         else if (RangoTiempo === 'rango') 
@@ -969,22 +977,24 @@ exports.ReportVentas = (req,res) =>
             moment.locale('es');
             const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
             const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            console.log(fechaInicioFormateada);
+            console.log(fechaFinFormateada);
             Datos[0].Titulo = `del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
         }
 
         const stream = res.writeHead(200, 
         {
             "Content-Type": "application/pdf",
-            "Content-Disposition": `inline; filename=Reporte de ventas Almacen Jennifer ${Datos[0].Titulo}.pdf`,
+            "Content-Disposition": `attachment; filename=Reporte de ventas Almacen Jennifer ${Datos[0].Titulo}.pdf`,
         }); 
 
          buildReporteVentas( 
             (data) => stream.write(data),
             () => stream.end(),
             Datos
-        );  
+        );   
 
-       // res.send(Datos);
+       //res.send(Datos);
     })
     .catch(error =>  { console.log('Hubo un error al obtener los datos del reporte de ventas => ' + error); });
 
@@ -1000,3 +1010,315 @@ exports.ReportVentas = (req,res) =>
 
     console.log(`PDF GENERADO 🤓☝️`);
 } 
+
+exports.ReportCompras = (req,res) => 
+{
+    console.log(`EN PROCESO las Compras 🤓☝️`);
+    
+    const Datos = [];
+        
+    const RangoTiempo = req.body.period;  
+    let FechaInicio = req.body.fecha_inicio;  
+    const FechaFin = req.body.fecha_fin; 
+    console.log(RangoTiempo);
+    console.log(FechaInicio);
+    console.log(FechaFin);
+    
+    Datos.push({Titulo:null});
+    
+    if (RangoTiempo === 'mes') 
+    {
+        const selectedMonth = req.body['mes-select']; // Esto debe tener el valor en formato 'YYYY-MM'
+        const [year, month] = selectedMonth.split('-');
+        FechaInicio = `${year}-${month}-01`;
+    }
+    
+    const consultaCompras = new Promise((resolve, reject) => 
+    {
+        conexion.query(`CALL ReporteCompras(?,?,?)`,[RangoTiempo,FechaInicio,FechaFin], (error, results) => 
+        {
+            if (error) 
+            {
+                console.log('HUBO UN ERROR AL Buscar los ingresos al contado => ' + error);
+                reject(error);
+            } 
+            else 
+            {
+                //res.send(results);
+                Datos.push(results[1]);
+                Datos[0].FechaInicio = results[0][0].FechaInicio;
+                Datos[0].FechaFin = results[0][0].FechaFin; 
+                resolve();
+            }
+         });
+    });
+    
+    Promise.all([consultaCompras])
+    .then(() => 
+    {
+        if (RangoTiempo === 'mes') 
+        {
+            const selectedMonth = req.body['mes-select']; // Esto debe tener el valor en formato 'YYYY-MM'
+            const [year, month] = selectedMonth.split('-');
+            moment.locale('es'); // Establece el idioma a español
+            const date = moment(`${year}-${month}-01`, 'YYYY-MM-DD'); // Formato aceptado por moment.js
+            const monthName = date.format('MMMM');
+            Datos[0].Titulo = `del Mes de ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} de ${year}`;
+            Datos[0].Mes= `${monthName.charAt(0).toUpperCase() + monthName.slice(1)}`;
+        }
+        if (RangoTiempo === 'semana') 
+        {
+            moment.locale('es');
+            const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
+            const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            console.log(fechaInicioFormateada);
+            console.log(fechaFinFormateada);
+            Datos[0].Titulo = `Semana del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
+        }
+        else if (RangoTiempo === 'quincena') 
+        {
+            moment.locale('es');
+            const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
+            const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            console.log(fechaInicioFormateada);
+            console.log(fechaFinFormateada);
+            Datos[0].Titulo = `Quincena del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
+        }
+        else if (RangoTiempo === 'rango') 
+        {
+            moment.locale('es');
+            const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
+            const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            console.log(fechaInicioFormateada);
+            console.log(fechaFinFormateada);
+            Datos[0].Titulo = `del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
+        }
+
+        const stream = res.writeHead(200, 
+        {
+            "Content-Type": "application/pdf",
+            "Content-Disposition": `attachment; filename=Reporte de Compras Almacen Jennifer ${Datos[0].Titulo}.pdf`,
+        }); 
+
+        buildReporteCompras
+        ( 
+            (data) => stream.write(data),
+            () => stream.end(),
+            Datos
+        );    
+
+        //res.send(Datos);
+    })
+    .catch(error =>  { console.log('Hubo un error al obtener los datos del reporte de Compras => ' + error); });
+
+    console.log(`PDF GENERADO 🤓☝️`);
+} 
+    
+exports.ReportVendedor = (req,res) => 
+{
+    console.log(`EN PROCESO 🤓☝️`);
+
+    const Datos = [];
+    
+    const Id_Vendedor = req.body.select_vendedor;
+    const vendedorName = req.body.vendedor_name;
+
+    const RangoTiempo = req.body.period;  
+    let FechaInicio = req.body.fecha_inicio;  
+    const FechaFin = req.body.fecha_fin; 
+    console.log(Id_Vendedor);
+    console.log(RangoTiempo);
+    console.log(FechaInicio);
+    console.log(FechaFin);
+    console.log(vendedorName);
+
+    Datos.push({Titulo:null, Vendedor:vendedorName});
+
+    if (RangoTiempo === 'mes') 
+    {
+        const selectedMonth = req.body['mes-select']; // Esto debe tener el valor en formato 'YYYY-MM'
+        const [year, month] = selectedMonth.split('-');
+        FechaInicio = `${year}-${month}-01`;
+        console.log(FechaInicio);
+    }
+
+
+    const consultaVentasContado = new Promise((resolve, reject) => 
+    {
+        conexion.query(`CALL ReporteIngresosContadoVendedor(?,?,?,?)`,[RangoTiempo,FechaInicio,FechaFin,Id_Vendedor], (error, results) => 
+        {
+            if (error) 
+            {
+                console.log('HUBO UN ERROR AL Buscar los ingresos al contado => ' + error);
+                reject(error);
+            } 
+            else 
+            {
+                Datos.push(results[0]);
+                resolve();
+            }
+        });
+    });
+
+    const consultaVentasCredito = new Promise((resolve, reject) => 
+    {
+        conexion.query(`CALL ReporteIngresosCreditoVendedor(?,?,?,?)`,[RangoTiempo,FechaInicio,FechaFin,Id_Vendedor], (error, results) => 
+        {
+            if (error) 
+            {
+                console.log('HUBO UN ERROR AL Buscar los ingresos al credito => ' + error);
+                reject(error);
+            } 
+            else 
+            {
+                Datos[0].FechaInicio = results[0][0].FechaInicio;
+                Datos[0].FechaFin = results[0][0].FechaFin;
+                Datos.push(results[1]);
+                resolve();
+            }
+        });
+    });
+
+    const consultaVentasTotales = new Promise((resolve, reject) => 
+    {
+        conexion.query(`CALL ReporteIngresosVendedor(?,?,?,?)`,[RangoTiempo,FechaInicio,FechaFin,Id_Vendedor], (error, results) => 
+        {
+            if (error) 
+            {
+                console.log('HUBO UN ERROR AL Buscar los ingresos totales => ' + error);
+                reject(error);
+            } 
+            else 
+            {
+                Datos.push(results[0]);
+                resolve();
+            }
+        });
+    });
+
+    Promise.all([consultaVentasContado,consultaVentasCredito,consultaVentasTotales])
+    .then(() => 
+    {
+        if (RangoTiempo === 'mes') 
+        {
+            const selectedMonth = req.body['mes-select']; // Esto debe tener el valor en formato 'YYYY-MM'
+            const [year, month] = selectedMonth.split('-');
+            moment.locale('es'); // Establece el idioma a español
+            const date = moment(`${year}-${month}-01`, 'YYYY-MM-DD'); // Formato aceptado por moment.js
+            const monthName = date.format('MMMM');
+            Datos[0].Titulo = `del Mes de ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} de ${year}`;
+            Datos[0].Mes= `${monthName.charAt(0).toUpperCase() + monthName.slice(1)}`;
+        }
+        if (RangoTiempo === 'semana') 
+        {
+            moment.locale('es');
+            const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
+            const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            console.log(fechaInicioFormateada);
+            console.log(fechaFinFormateada);
+            Datos[0].Titulo = `Semana del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
+        }
+        else if (RangoTiempo === 'quincena') 
+        {
+            moment.locale('es');
+            const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
+            const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            console.log(fechaInicioFormateada);
+            console.log(fechaFinFormateada);
+            Datos[0].Titulo = `Quincena del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
+        }
+        else if (RangoTiempo === 'rango') 
+        {
+            moment.locale('es');
+            const fechaInicioFormateada = moment(Datos[0].FechaInicio).format('DD [de] MMMM [del] YYYY');
+            const fechaFinFormateada = moment(Datos[0].FechaFin).format('DD [de] MMMM [del] YYYY');
+            console.log(fechaInicioFormateada);
+            console.log(fechaFinFormateada);
+            Datos[0].Titulo = `del ${fechaInicioFormateada} al ${fechaFinFormateada}`;
+        }
+
+        const stream = res.writeHead(200, 
+        {
+            "Content-Type": "application/pdf",
+            "Content-Disposition": `attachment; filename=Reporte del Vendedor ${vendedorName} Almacen Jennifer ${Datos[0].Titulo}.pdf`,
+        }); 
+
+            buildReporteVendedor( 
+            (data) => stream.write(data),
+            () => stream.end(),
+            Datos
+        );   
+
+        //res.send(Datos);
+    })
+    .catch(error =>  { console.log('Hubo un error al obtener los datos del reporte de ventas del vendedor => ' + error); });
+
+
+
+
+
+
+ 
+
+
+
+
+    console.log(`PDF GENERADO 🤓☝️`);
+}
+
+exports.ReportMorosos = (req,res) => 
+{
+    console.log(`EN PROCESO 🤓☝️`);
+
+    const Datos = [];
+    const fecha = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
+    console.log(fecha)
+    Datos.push({Titulo:''});
+
+    const [year, month] = fecha.split('-');
+    moment.locale('es'); // Establece el idioma a español
+    const date = moment(`${year}-${month}-01`, 'YYYY-MM-DD'); // Formato aceptado por moment.js
+    const monthName = date.format('MMMM');
+    Datos[0].Titulo = `del Mes de ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} de ${year}`;
+    Datos[0].Mes= `${monthName.charAt(0).toUpperCase() + monthName.slice(1)}`;
+
+
+    const consultaMorosos = new Promise((resolve, reject) => 
+    {
+        conexion.query(`SELECT * FROM showdeudores`, (error, results) => 
+        {
+            if (error) 
+            {
+                console.log('HUBO UN ERROR AL Buscar los Clientes con deuda=> ' + error);
+                reject(error);
+            } 
+            else 
+            {
+                Datos.push(results);
+                resolve();
+            }
+        });
+    });
+
+
+    Promise.all([consultaMorosos])
+    .then(() => 
+    {
+        const stream = res.writeHead(200, 
+        {
+            "Content-Type": "application/pdf",
+            "Content-Disposition": `attachment; filename=Reporte de Clientes en deuda Almacen Jennifer ${Datos[0].Titulo}.pdf`,
+        }); 
+
+            buildReporteMorosos( 
+            (data) => stream.write(data),
+            () => stream.end(),
+            Datos
+        );    
+
+        //res.send(Datos);
+    })
+    .catch(error =>  { console.log('Hubo un error al obtener los datos del reporte de Clientes en Deuda => ' + error); });
+ 
+    console.log(`PDF GENERADO 🤓☝️`);
+}

@@ -388,7 +388,10 @@
               <div class="py-1 px-3 mb-2" style="display: flex; align-items: center; justify-content: space-between;">
                 <h4 style="color: black; font-size: 22px">Listado de Ventas</h4>
 
-                <a class="btn btn-primary" onclick="abrirPanelReportes()">Generar Reporte ventas</a>
+                <% if( UserRol == 'Gerente') { %>
+                  <a class="btn btn-primary" onclick="abrirPanelReportes()">Generar Reporte ventas</a> 
+                <% } %>
+                
 
                 <div style="display: flex; align-items: center">
 

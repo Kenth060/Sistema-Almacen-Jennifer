@@ -168,6 +168,11 @@
             <div class="px-3 py-2">
               <h4 style="display: flex; justify-content: space-between">
                 Listado de clientes
+
+                <% if( UserRol == 'Gerente') { %>
+                  <a class="btn btn-primary" href="/ReporteClientesDeuda">Generar Reporte de Clientes en Deuda</a> 
+                <% } %>
+
                 <button
                   type="button"
                   class="btn btn-success"

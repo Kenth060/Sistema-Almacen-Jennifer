@@ -221,6 +221,11 @@
             <div class="px-3 py-2">
               <h4 style="display: flex; justify-content: space-between">
                 Listado de Colaboradores
+
+                <% if( UserRol == 'Gerente') { %>
+                  <a class="btn btn-primary" onclick="abrirPanelReportes()">Generar Reporte de Vendedores</a> 
+                <% } %>
+
                 <button
                   type="button"
                   class="btn btn-success"
@@ -267,7 +272,80 @@
                   <% }) %> 
                 </tbody>
             </table>
+
+            <div id="PanelReportes"class="panel-flotante panel-ancho"style="display: none">
+              <div class="panel-content">
+                <h3>Generar Reporte de un Vendedor</h3>
+                <div class="container my-2">
+                  <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Seleccione el Vendedor para el reporte</h5>
+
+                          <form id="report-form" action="/ReporteVendedor" method="post">
+
+                            <div class="form-group" id="Divselect-vendedor">
+                              <select class="form-control my-3" id="select-vendedor" name="select_vendedor" onchange="updateVendedorName()">
+                                <option value="0">Seleccione a un Vendedor</option>
+                                <% vendedores.forEach((vendedor) => { %>
+                                  <% if (vendedor.Tipo_Persona == 'Vendedor'){ %> 
+                                    <option value="<%= vendedor.Id_Vendedor %>"><%= vendedor.Nombre %></option>
+                                  <% } %> 
+                                <% }) %> 
+                              </select>
+                              <input hidden name="vendedor_name" id="vendedor-name">
+                            </div>
+
+                            <h5 class="card-title">Seleccione el periodo de tiempo para el reporte</h5>
+
+                            <div class="form-group">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="period" id="mes" value="mes">
+                                    <label class="form-check-label" for="mes">Mes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="period" id="semana" value="semana">
+                                    <label class="form-check-label" for="semana">Semana</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="period" id="quincena" value="quincena">
+                                    <label class="form-check-label" for="quincena">Quincena</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="period" id="rango-fechas" value="rango">
+                                    <label class="form-check-label" for="rango-fechas">Rango de Fechas</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="select-mes" style="display: none;">
+                                <label for="mes-select">Seleccione el mes</label>
+                                <select class="form-control" id="mes-select" name="mes-select">
+                                    <!-- Opciones se agregarán dinámicamente -->
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="rango-fechas-inputs" style="display: none;">
+                                <label for="fecha_inicio">Fecha de inicio</label>
+                                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
+                                <label for="fecha_fin" class="mt-2">Fecha de fin</label>
+                                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin">
+                            </div>
+                            
+                            <div class="mt-3">
+                              <button type="submit" class="btn btn-info"><i class="fa-solid fa-file-pdf"></i> Generar Reporte</button>
+                              <button type="button" class="btn btn-danger" onclick="cerrarPanelReportes()"><i class="fa-solid fa-xmark"></i> Cancelar </button>
+                            </div>
+                              
+                          </form>
+                      </div>
+                  </div>
+                </div>
+                
+                
+              </div>
+            </div>
           </div>
+
+
         </div>
       </div>
     </section>

@@ -129,11 +129,7 @@
                 <h1 class="font-weight-bold mb-0">Bienvenido <%= usuario %></h1>
                 <p class="lead text-muted">Revisa la última información</p>
               </div>
-              <div class="col-lg-3 col-md-4 d-flex">
-                <button class="btn btn-primary w-100 align-self-center" type="button" onclick="genPDF('<%= Ingresos%>','<%= Productos%>','<%= No_Clientes %>')">
-                  Descargar reporte
-                </button>
-              </div>
+              
             </div>
           </div>
         </section>
@@ -143,7 +139,6 @@
             <div class="card rounded-0">
               <div class="card-body">
                 <div class="row">
-
                   <div class="col-lg-3 col-md-6 d-flex stat my-3">
                     <div class="mx-auto">
                       <h6 class="text-muted">Ingresos del Mes</h6>
@@ -153,7 +148,7 @@
                       </h6>
                     </div>
                   </div>
-
+        
                   <div class="col-lg-3 col-md-6 d-flex stat my-3">
                     <div class="mx-auto">
                       <h6 class="text-muted">Productos activos</h6>
@@ -163,7 +158,7 @@
                       </h6>
                     </div>
                   </div>
-
+        
                   <div class="col-lg-3 col-md-6 d-flex stat my-3">
                     <div class="mx-auto">
                       <h6 class="text-muted">No. Clientes Activos</h6>
@@ -173,22 +168,25 @@
                       </h6>
                     </div>
                   </div>
-
-                  <div class="col-lg-3 col-md-6 d-flex my-3">
-                    <div class="mx-auto">
-                      <h6 class="text-muted">Egresos del Mes</h6>
-                      <h3 class="font-weight-bold">C$ <%= Egresos %></h3>
-                      <h6 class="text-success">
-                        <i class="icon ion-md-arrow-dropup-circle"></i> 15.50%
-                      </h6>
+        
+                  <% if( UserRol == 'Gerente') { %>
+                    <div class="col-lg-3 col-md-6 d-flex stat my-3">
+                      <div class="mx-auto">
+                        <h6 class="text-muted">Egresos del Mes</h6>
+                        <h3 class="font-weight-bold">C$ <%= Egresos %></h3>
+                        <h6 class="text-success">
+                          <i class="icon ion-md-arrow-dropup-circle"></i> 15.50%
+                        </h6>
+                      </div>
                     </div>
-                  </div>
-
+                  <% } %>
+        
                 </div>
               </div>
             </div>
           </div>
         </section>
+        
 
         <section>
           <div class="container">
@@ -198,7 +196,7 @@
                 <div class="card rounded-3 border-0 shadow-lg">
                     <div class="card-header" style=" border-top-left-radius: .3rem; border-top-right-radius: .3rem;">
                         <h6 class="font-weight-bold mb-0 text-center" style="color: black;">
-                            Cantidad de ventas al Contado Mensuales
+                            Ingresos de ventas al Contado Mensuales
                         </h6>
                     </div>
                     <div class="card-body" style="border-bottom-left-radius: .3rem; border-bottom-right-radius: .3rem;">
@@ -213,7 +211,7 @@
                 <div class="card rounded-3 border-0 shadow-lg">
                     <div class="card-header" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;">
                         <h6 class="font-weight-bold mb-0 text-center" style="color: black;">
-                            Cantidad de ventas al Crédito Mensuales
+                            Ingresos de ventas al Crédito Mensuales
                         </h6>
                     </div>
                     <div class="card-body" style="border-bottom-left-radius: .3rem; border-bottom-right-radius: .3rem;">
@@ -222,31 +220,23 @@
                 </div>
               </div>
             
-              <div class="col-lg-6 my-3">
-                <div class="card rounded-3 border-0 shadow-lg">
-                    <div class="card-header">
-                        <h6 class="font-weight-bold mb-0  text-center" style="color: black;">
-                            Vendedores con más Ventas en el Mes
-                        </h6>
-                    </div>
-                    <div class="card-body" style="border-bottom-left-radius: .3rem; border-bottom-right-radius: .3rem;">
-                        <canvas id="myChart3" width="300" height="185"></canvas>
-                    </div>
+              <% if( UserRol == 'Gerente') { %>
+                <div class="col-lg-6 my-3">
+                  <div class="card rounded-3 border-0 shadow-lg">
+                      <div class="card-header">
+                          <h6 class="font-weight-bold mb-0  text-center" style="color: black;">
+                              Vendedores con más Ventas en el Mes
+                          </h6>
+                      </div>
+                      <div class="card-body" style="border-bottom-left-radius: .3rem; border-bottom-right-radius: .3rem;">
+                          <canvas id="myChart3" width="300" height="185"></canvas>
+                      </div>
+                  </div>
                 </div>
-              </div>
+              <% } %>
+              
 
-              <!-- <div class="col-lg-6 my-3">
-                <div class="card rounded-0">
-                  <div class="card-header bg-light">
-                    <h6 class="font-weight-bold mb-0">
-                      Productos mas vendidos en el mes
-                    </h6>
-                  </div>
-                  <div class="card-body">
-                    <canvas id="myChart4" width="300" height="150"></canvas>
-                  </div>
-                </div>
-              </div> -->
+              
 
               <div class="col-lg-6 my-3">
                 <div class="card rounded-0">
@@ -348,7 +338,7 @@
     ></script>
 
     <script>
-      var valores = JSON.parse("<%- JSON.stringify(VentaContado.map(venta => venta.Cantidad_Ventas)) %>");
+      var valores = JSON.parse("<%- JSON.stringify(VentaContado.map(venta => venta.Total_Ventas)) %>");
       var labels = <%- JSON.stringify(VentaContado.map(venta => venta.Mes)) %>; 
       var ctx = document.getElementById("myChart").getContext("2d");
 
@@ -382,7 +372,7 @@
     </script>
 
     <script>
-      var valores = JSON.parse("<%- JSON.stringify(VentaCredito.map(venta => venta.Cantidad_Ventas)) %>");
+      var valores = JSON.parse("<%- JSON.stringify(VentaCredito.map(venta => venta.IngresoTotal)) %>");
       var labels = <%- JSON.stringify(VentaCredito.map(venta => venta.Mes)) %>; 
 
       var ctx = document.getElementById("myChart2").getContext("2d");
@@ -450,28 +440,6 @@
 
 
 
-    <script>
-      var valores = JSON.parse("<%- JSON.stringify(TopProductos.map(P => P.IngresoTotal)) %>");
-      var labels = <%- JSON.stringify(TopProductos.map(P => P.Descripcion)) %>; 
-
-      var ctx = document.getElementById("myChart4").getContext("2d");
-      var myChart = new Chart(ctx, {
-        type: "pie",
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: "Productos con mas ventas en este mes",
-              data: valores,
-              backgroundColor: ["#111B54", "#12C9E5", "#12C9E5", "#12C9E5", "#12C9E5"],
-              maxBarThickness: 30,
-              maxBarLength: 2,
-            },
-          ],
-        },
-
-      });
-    </script>
     
 
 

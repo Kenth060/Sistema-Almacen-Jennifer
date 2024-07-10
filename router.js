@@ -69,85 +69,217 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
     let Egresos = null;
     let Vendedores = [];
     let TopProductos = [];
+    let consultaVentas, consultaVentasContado, consultaVentasCredito, consultaEgresos, consultaIngresos;
 
-    const consultaVentasContado = new Promise((resolve, reject) => 
+    console.log(req.user);
+
+    const consultaFormato = new Promise((resolve, reject) => 
     {
-      conexion.query("SELECT * FROM ventasContxmes;", (error, results) => 
+      conexion.query(`SET lc_time_names = 'es_ES';`, (error, results) => 
       {
         if (error) 
         {
-          console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CONTADO => ' + error);
+          console.log('HUBO UN ERROR AL SETEAR EL FORMATO => ' + error);
           reject(error);
         } 
         else 
         {
-          VentaContado = results;
           resolve();
         }
       });
     });
-
-    const consultaVentasCredito = new Promise((resolve, reject) => 
+    
+    if(req.user.Rol == 'Gerente')
     {
-      conexion.query("SELECT * FROM ventasCredxmes;", (error, results) => 
-      { 
-        if (error) 
-        {
-          console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CREDITO => ' + error);
-          reject(error);
-        } 
-        else
-        {
-          VentaCredito = results;
-          resolve();
-        }
-      });
-    });
-
-    const consultaIngresos = new Promise((resolve, reject) => 
-    {
-      const queryIngresos = `Call IngresosVentasMensuales();`;
-
-      conexion.query(queryIngresos, (error, results) => 
+      consultaVentasContado = new Promise((resolve, reject) => 
       {
-        if (error) 
-        {
-          console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CONTADO => ' + error);
-          reject(error);
-        } 
-        else 
-        {
-          if(results[0][0].Ingresos == null)
-          { Ingresos = 0; }
-          else
-          { 
-            Ingresos = results[0][0].Ingresos; 
-          }
-          console.log('INGRESOS => C$ '+Ingresos);
-          console.log(results[0][0].Ingresos);
-          resolve();
-        }
-      });                        
-    });
-
-    const consultaProductosAct = new Promise((resolve, reject) => 
-      {
-        const queryProductosAct = `SELECT COUNT(productos.Id_Producto) AS Total FROM productos where productos.Estado_Producto = 'Activo'`;
-  
-        conexion.query(queryProductosAct, (error, results) => 
+        conexion.query(`SELECT * FROM ventasContxmes;`, (error, results) => 
         {
           if (error) 
           {
-            console.log('HUBO UN ERROR AL MOSTRAR EL Buscar los Productos Activos => ' + error);
+            console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CONTADO => ' + error);
             reject(error);
           } 
           else 
           {
-            ProductosAct = results;
+            VentaContado = results;
+            resolve();
+          }
+        });
+      });
+    }
+    else if(req.user.Rol == 'Vendedor')
+    {
+      const query = `
+        SELECT
+          v.Id_Vendedor,
+            DATE_FORMAT(v.Fecha_Venta, '%M %Y') AS 'Mes',
+            SUM(v.Total_Venta) AS Total_Ventas
+        FROM
+            venta v
+        WHERE
+            v.Fecha_Venta >= DATE_FORMAT(
+                CURDATE() - INTERVAL 4 month, '%Y-%m-01') AND v.Tipo_Venta = 'Contado' AND v.Id_Vendedor = ${req.user.Id_Persona}
+            GROUP BY
+                DATE_FORMAT(v.Fecha_Venta, '%Y-%m')
+            ORDER BY
+                v.Fecha_Venta
+      `;
+
+      consultaVentasContado = new Promise((resolve, reject) => 
+        {
+          conexion.query( query, (error, results) => 
+          {
+            if (error) 
+            {
+              console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CONTADO => ' + error);
+              reject(error);
+            } 
+            else 
+            {
+              VentaContado = results;
+              resolve();
+            }
+          });
+        });
+    }
+
+    if(req.user.Rol == 'Gerente')
+    {
+      consultaVentasCredito = new Promise((resolve, reject) => 
+      {
+        conexion.query("SELECT * FROM ventasCredxmes;", (error, results) => 
+        { 
+          if (error) 
+          {
+            console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CREDITO => ' + error);
+            reject(error);
+          } 
+          else
+          {
+            VentaCredito = results;
+            resolve();
+          }
+        });
+      });
+    }
+    else if(req.user.Rol == 'Vendedor')
+    {
+      const query = `
+        SELECT
+          v.Id_Vendedor,
+            DATE_FORMAT(v.Fecha_Venta, '%M %Y') AS 'Mes',
+            SUM(a.Monto_Abonado) AS 'IngresoTotal'
+        FROM
+          venta v
+            INNER JOIN abonos a
+            ON a.Id_Venta = v.Id_Venta
+        WHERE
+            v.Fecha_Venta >= DATE_FORMAT(
+                CURDATE() - INTERVAL 4 month, '%Y-%m-01') AND v.Tipo_Venta = 'Credito'
+                AND v.Id_Vendedor = ${req.user.Id_Persona}
+            GROUP BY
+                DATE_FORMAT(v.Fecha_Venta, '%Y-%m')
+            ORDER BY
+                v.Fecha_Venta
+      `;
+
+      consultaVentasCredito = new Promise((resolve, reject) => 
+      {
+        conexion.query(query, (error, results) => 
+        { 
+          if (error) 
+          {
+            console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CREDITO => ' + error);
+            reject(error);
+          } 
+          else
+          {
+            VentaCredito = results;
+            resolve();
+          }
+        });
+      });
+    }
+    
+    if(req.user.Rol == 'Gerente')
+    {
+      consultaIngresos = new Promise((resolve, reject) => 
+      {
+        const queryIngresos = `Call IngresosVentasMensuales();`;
+  
+        conexion.query(queryIngresos, (error, results) => 
+        {
+          if (error) 
+          {
+            console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CONTADO => ' + error);
+            reject(error);
+          } 
+          else 
+          {
+            if(results[0][0].Ingresos == null)
+            { Ingresos = 0; }
+            else
+            { 
+              Ingresos = results[0][0].Ingresos; 
+            }
+            console.log('INGRESOS => C$ '+Ingresos);
+            console.log(results[0][0].Ingresos);
             resolve();
           }
         });                        
       });
+    }
+    else if(req.user.Rol == 'Vendedor')
+    {
+      consultaIngresos = new Promise((resolve, reject) => 
+      {
+        const queryIngresos = `Call IngresosVentasMensualesVendedor(${req.user.Id_Persona});`;
+  
+        conexion.query(queryIngresos, (error, results) => 
+        {
+          if (error) 
+          {
+            console.log('HUBO UN ERROR AL MOSTRAR EL GRAFICO DE LAS VENTAS AL CONTADO => ' + error);
+            reject(error);
+          } 
+          else 
+          {
+            if(results[0][0].Ingresos == null)
+            { Ingresos = 0; }
+            else
+            { 
+              Ingresos = results[0][0].Ingresos; 
+            }
+            console.log('INGRESOS => C$ '+Ingresos);
+            console.log(results[0][0].Ingresos);
+            resolve();
+          }
+        });                        
+      });
+    }
+    
+
+    
+
+    const consultaProductosAct = new Promise((resolve, reject) => 
+    {
+      const queryProductosAct = `SELECT COUNT(productos.Id_Producto) AS Total FROM productos where productos.Estado_Producto = 'Activo'`;
+
+      conexion.query(queryProductosAct, (error, results) => 
+      {
+        if (error) 
+        {
+          console.log('HUBO UN ERROR AL MOSTRAR EL Buscar los Productos Activos => ' + error);
+          reject(error);
+        } 
+        else 
+        {
+          ProductosAct = results;
+          resolve();
+        }
+      });                        
+    });
 
     const consultaClientes = new Promise((resolve, reject) => 
     {
@@ -173,86 +305,146 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
       });                        
     });
 
-    const consultaVentas = new Promise((resolve, reject) => 
+    if(req.user.Rol == 'Gerente')
     {
-      const queryVentas = `SELECT 
-                              v.Tipo_Venta, 
-                              v.Fecha_Venta, 
-                              v.Total_Venta, 
-                              CONCAT(c.Nombre,' ',c.Apellido) AS Cliente, 
-                              CONCAT(vdr.Nombre,' ',vdr.Apellido) AS Vendedor
-                            FROM 
-                                Venta v
-                            JOIN 
-                                Persona c ON v.Id_Cliente = c.Id_Persona
-                            JOIN 
-                                Persona vdr ON v.Id_Vendedor = vdr.Id_Persona
-                            WHERE 
-                                MONTH(v.Fecha_Venta) = MONTH(CURDATE()) 
-                                AND YEAR(v.Fecha_Venta) = YEAR(CURDATE())
-                            ORDER BY 
-                                v.Fecha_Venta DESC
-                            LIMIT 5;
-  
-      `;
-      
-      conexion.query(queryVentas, (error, results) => 
+      consultaVentas = new Promise((resolve, reject) => 
       {
-        if (error) 
-        {
-          console.log('HUBO UN ERROR AL  Buscar las ultimas Ventas => ' + error);
-          reject(error);
-        } 
-        else 
-        {
-          const VentasFormateadas = results.map(venta => 
-            {
-              const fecha = new Date(venta.Fecha_Venta);
-              const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-              const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-              
-              return {
-                ...venta,
-                Fecha_Venta: fechaFormateada
-              };
-          });
-
-          Ventas = VentasFormateadas;
-          resolve();
-        }
-      });                        
-    });
+        const queryVentas = `SELECT 
+                                v.Tipo_Venta, 
+                                v.Fecha_Venta, 
+                                v.Total_Venta, 
+                                CONCAT(c.Nombre,' ',c.Apellido) AS Cliente, 
+                                CONCAT(vdr.Nombre,' ',vdr.Apellido) AS Vendedor
+                              FROM 
+                                  Venta v
+                              JOIN 
+                                  Persona c ON v.Id_Cliente = c.Id_Persona
+                              JOIN 
+                                  Persona vdr ON v.Id_Vendedor = vdr.Id_Persona
+                              WHERE 
+                                  MONTH(v.Fecha_Venta) = MONTH(CURDATE()) 
+                                  AND YEAR(v.Fecha_Venta) = YEAR(CURDATE())
+                              ORDER BY 
+                                  v.Fecha_Venta DESC
+                              LIMIT 5;
     
-    const consultaEgresos = new Promise((resolve, reject) => 
-      {
-        const queryEgresos = `
-        SELECT SUM(Total_Compra) AS Egresos_Mes FROM Compras
-        WHERE 
-              MONTH(Fecha_Compra) = MONTH(CURDATE()) AND
-              YEAR(Fecha_Compra) = YEAR(CURDATE())
         `;
-  
-        conexion.query(queryEgresos, (error, results) => 
+        
+        conexion.query(queryVentas, (error, results) => 
         {
           if (error) 
           {
-            console.log('HUBO UN ERROR AL MOSTRAR LOS Egresos del Mes => ' + error);
+            console.log('HUBO UN ERROR AL  Buscar las ultimas Ventas => ' + error);
             reject(error);
           } 
           else 
           {
-            if(results[0].Egresos_Mes == null)
-            { Egresos = 0; }
-            else
-            { 
-              Egresos = results[0].Egresos_Mes; 
-            }
-            console.log('EGRESOS DEL MES => C$ '+Egresos);
-            console.log(results[0].Egresos_Mes);
+            const VentasFormateadas = results.map(venta => 
+              {
+                const fecha = new Date(venta.Fecha_Venta);
+                const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                
+                return {
+                  ...venta,
+                  Fecha_Venta: fechaFormateada
+                };
+            });
+  
+            Ventas = VentasFormateadas;
             resolve();
           }
         });                        
-    });
+      });
+    }
+    else if(req.user.Rol == 'Vendedor')
+    {
+      consultaVentas = new Promise((resolve, reject) => 
+        {
+          const queryVentas = `SELECT 
+                                  v.Tipo_Venta, 
+                                  v.Fecha_Venta, 
+                                  v.Total_Venta, 
+                                  CONCAT(c.Nombre,' ',c.Apellido) AS Cliente, 
+                                  CONCAT(vdr.Nombre,' ',vdr.Apellido) AS Vendedor
+                                FROM 
+                                    Venta v
+                                JOIN 
+                                    Persona c ON v.Id_Cliente = c.Id_Persona
+                                JOIN 
+                                    Persona vdr ON v.Id_Vendedor = vdr.Id_Persona
+                                WHERE 
+                                    MONTH(v.Fecha_Venta) = MONTH(CURDATE()) 
+                                    AND YEAR(v.Fecha_Venta) = YEAR(CURDATE())
+                                    AND v.Id_Vendedor = ${req.user.Id_Persona}
+                                ORDER BY 
+                                    v.Fecha_Venta DESC
+                                LIMIT 5;
+      
+          `;
+          
+          conexion.query(queryVentas, (error, results) => 
+          {
+            if (error) 
+            {
+              console.log('HUBO UN ERROR AL  Buscar las ultimas Ventas => ' + error);
+              reject(error);
+            } 
+            else 
+            {
+              const VentasFormateadas = results.map(venta => 
+                {
+                  const fecha = new Date(venta.Fecha_Venta);
+                  const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                  const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                  
+                  return {
+                    ...venta,
+                    Fecha_Venta: fechaFormateada
+                  };
+              });
+    
+              Ventas = VentasFormateadas;
+              resolve();
+            }
+          });                        
+        });
+    }
+    
+    if(req.user.Rol == 'Gerente')
+    {
+      consultaEgresos = new Promise((resolve, reject) => 
+        {
+          const queryEgresos = `
+          SELECT SUM(Total_Compra) AS Egresos_Mes FROM Compras
+          WHERE 
+                MONTH(Fecha_Compra) = MONTH(CURDATE()) AND
+                YEAR(Fecha_Compra) = YEAR(CURDATE())
+          `;
+    
+          conexion.query(queryEgresos, (error, results) => 
+          {
+            if (error) 
+            {
+              console.log('HUBO UN ERROR AL MOSTRAR LOS Egresos del Mes => ' + error);
+              reject(error);
+            } 
+            else 
+            {
+              if(results[0].Egresos_Mes == null)
+              { Egresos = 0; }
+              else
+              { 
+                Egresos = results[0].Egresos_Mes; 
+              }
+              console.log('EGRESOS DEL MES => C$ '+Egresos);
+              console.log(results[0].Egresos_Mes);
+              resolve();
+            }
+          });                        
+      });
+    }
+    
     
     const consultaVendedores = new Promise((resolve, reject) => 
     {
@@ -273,26 +465,8 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
       });                        
     });
 
-    const consultaTopProductos = new Promise((resolve, reject) => 
-    {
-      const queryTopProductos = `SELECT * FROM top_10_productos_mas_vendidos`;
-      
-      conexion.query(queryTopProductos, (error, results) => 
-      {
-        if (error) 
-        {
-          console.log('HUBO UN ERROR AL MOSTRAR LOS productos con mas ventas del Mes => ' + error);
-          reject(error);
-        } 
-        else 
-        {
-          TopProductos = results;
-          resolve();
-        }
-      });                        
-    });
-
-    Promise.all([consultaVentasContado, consultaVentasCredito, consultaIngresos,consultaProductosAct,consultaClientes,consultaVentas,consultaEgresos,consultaVendedores,consultaTopProductos])
+    
+    Promise.all([consultaFormato,consultaVentasContado, consultaVentasCredito, consultaIngresos,consultaProductosAct,consultaClientes,consultaVentas,consultaEgresos,consultaVendedores])
       .then(() => {
         
         const errorMessage = req.cookies.errorMessage;
@@ -321,8 +495,7 @@ router.get ("/inicio", crud.isAuthenticated, async (req, res) =>
           MensajeRespaldo:successMessage,
           MensajeRegistro:registerMessage,
           Egresos:Egresos,
-          Vendedores:Vendedores,
-          TopProductos: TopProductos
+          Vendedores:Vendedores
         }); 
 
         /* console.log(Ventas); */
@@ -1005,7 +1178,7 @@ router.get('/buscar-detallecompra', crud.isAuthenticated , crud.isGerente, (req,
 });
 
 
-router.get('/respaldar', (req, res) => 
+router.get('/respaldar',crud.isAuthenticated , crud.isGerente, (req, res) => 
 {
   // Ruta al ejecutable mysqldump
   const rutaMysqldump = 'C:/xampp/mysql/bin/mysqldump.exe'; // Ruta a mysqldump.exe en Windows
@@ -1034,6 +1207,23 @@ router.get('/respaldar', (req, res) =>
   });
 });
 
+router.get('/buscar-Compra',crud.isAuthenticated , crud.isGerente, (req,res) => 
+{
+  const id = req.query.id;
+  
+  conexion.query(`SELECT * FROM InfoProovedorCompra WHERE Id_Compra = ${id}`, [id], (error , results) => 
+  {
+    if(error)
+    {console.log('Hubo un error al buscar mas informacion de la Compra N° '+ id +' el error es => '+ error)}
+    else
+    {
+      //const detalles_Compras = results;
+      res.json({ Info: results }); 
+    }
+  }) 
+
+});
+
 // 6 -> METODOS POST
 
 router.post("/AddClient",crud.isAuthenticated, crud.AddClient);
@@ -1054,5 +1244,9 @@ router.get("/logout",crud.logout);
 
 //Reportes
 router.post("/ReporteVentas",crud.ReportVentas);
+router.post("/ReporteCompras",crud.ReportCompras);
+router.post("/ReporteVendedor",crud.ReportVendedor);
+router.get("/ReporteClientesDeuda",crud.ReportMorosos);
+
 module.exports = router;
 
