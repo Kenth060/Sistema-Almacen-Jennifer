@@ -658,8 +658,6 @@ document.addEventListener('DOMContentLoaded', function() {
     img.src = '/resources/images/Logo.png'; // Ruta de la imagen
 
     img.onload = function() {
-        // Añadir la imagen al PDF una vez que esté cargada
-        doc.addImage(img, 'PNG', 10, 10, 30, 30); // Ajusta las coordenadas y el tamaño de la imagen según sea necesario
 
         // Título centrado del documento y fecha que se generó el archivo PDF
         doc.setFont("times");
@@ -680,8 +678,8 @@ document.addEventListener('DOMContentLoaded', function() {
         doc.text("RUC: 004 160851 0001F", doc.internal.pageSize.getWidth() / 2, 49 + Y_desplazador, { align: 'center' });
         doc.setFontSize(12);
   
-        doc.text("Cliente: " + comprador, 20, 64);
-        doc.text("Vendedor: " + proveedor, 20, 70);
+        doc.text("Comprador: " + comprador, 20, 64);
+        doc.text("Proveedor: " + proveedor, 20, 70);
 
         const headers2 = ['Producto', 'Cantidad','Precio de Compra', 'Precio de Venta', 'SubTotal'];
       const data2 = filasAgregadas.map(fila => [fila.Producto,fila.cantidad,fila.precio_compra,fila.precio_venta,fila.subtotal]);
