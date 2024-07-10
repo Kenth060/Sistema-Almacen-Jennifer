@@ -56,13 +56,13 @@ function CerrarPanelProductoCompra()
     panel.style.display = "none";
     filasAgregadas=[];
 } 
-var proveedor;var comprador;
-function mostrarDetallesCompra(Id_Compra, Proveedor, Comprador, Fecha , Total,prov_nombre) 
+var fecha_compra, proveedor, comprador,comercio;
+function mostrarDetallesCompra(Id_Compra, Proveedor, Comprador, Fecha , Total,Comercio) 
 {
-  proveedor=prov_nombre;comprador=Comprador;
   var panel = document.getElementById("panelDetalleCompras");
   panel.style.display = "block";
   id_de_compra = Id_Compra;
+  fecha_compra = Fecha;proveedor = Proveedor;comprador = Comprador;comercio = Comercio;
 
   document.getElementById("DetalleCompraTitle").innerText = 'Detalles de la Compra N° '+Id_Compra;
   document.getElementById("ProveedorDetalle").textContent = Proveedor;
@@ -96,7 +96,7 @@ function cerrarDetallesCompra()
     
   while (tabla.firstChild) 
   { tabla.removeChild(tabla.firstChild);}
-  
+  filasAgregadas = [];
 }
 
 function mostrarProveedorCompras() 
@@ -647,25 +647,9 @@ document.addEventListener('DOMContentLoaded', function() {
   function genPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
+    const totalSubTotal = filasAgregadas.reduce((acumulador, fila) => acumulador + fila.subtotal, 0);
+    fechacompra= convertirFecha(fecha_compra);
 
-    // Obtener la fecha actual
-    var fechaActual = new Date();
-
-    // Obtener el día, mes y año
-    var dia = fechaActual.getDate();
-    var mes = fechaActual.getMonth() + 1; // Los meses empiezan desde 0, por lo que se suma 1
-    var año = fechaActual.getFullYear();
-
-    // Asegurarse de que el día y el mes tengan dos dígitos
-    if (dia < 10) {
-        dia = '0' + dia;
-    }
-    if (mes < 10) {
-        mes = '0' + mes;
-    }
-
-    // Formatear la fecha en dia/mes/año
-    var fechaFormateada = dia + '/' + mes + '/' + año;
 
     var Y_desplazador = 8;
 
@@ -682,18 +666,22 @@ document.addEventListener('DOMContentLoaded', function() {
         doc.setFontSize(18);
         doc.text("FACTURA COMPRA No " + id_de_compra, doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
         doc.setFontSize(12);
-        doc.text("Fecha: " + fechaFormateada, 180, 20, { align: 'center' });
+        doc.text("Fecha: " + fechacompra, 180, 20, { align: 'center' });
 
         // Info de la Empresa
         doc.setFont("times", "bold");
         doc.setFontSize(20);
-        doc.text("ALMACEN COMERCIAL JENNIFER", doc.internal.pageSize.getWidth() / 2, 34, { align: 'center' });
+        doc.text(`${comercio}`, doc.internal.pageSize.getWidth() / 2, 34, { align: 'center' });
         doc.setFontSize(12);
         doc.setFont("times", "normal");
         doc.text("De la Nestlé 1 cuadra al sur, 2 cuadras abajo 2 cuadras al sur", doc.internal.pageSize.getWidth() / 2, 36 + Y_desplazador, { align: 'center' });
         doc.setFontSize(12);
         doc.text("Número Telefónico: 2232-3159", doc.internal.pageSize.getWidth() / 2, 44 + Y_desplazador, { align: 'center' });
         doc.text("RUC: 004 160851 0001F", doc.internal.pageSize.getWidth() / 2, 49 + Y_desplazador, { align: 'center' });
+        doc.setFontSize(12);
+  
+        doc.text("Cliente: " + comprador, 20, 64);
+        doc.text("Vendedor: " + proveedor, 20, 70);
 
         const headers2 = ['Producto', 'Cantidad','Precio de Compra', 'Precio de Venta', 'SubTotal'];
       const data2 = filasAgregadas.map(fila => [fila.Producto,fila.cantidad,fila.precio_compra,fila.precio_venta,fila.subtotal]);
@@ -701,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function() {
       doc.autoTable({
         head: [headers2],
         body: data2,
-        startY: 70, // Añadir espacio entre las tablas
+        startY: 80, // Añadir espacio entre las tablas
         headStyles: {
           fillColor: [192, 192, 192], // Color gris para el encabezado
           textColor: [0, 0, 0], // Color negro para el texto del encabezado
@@ -723,10 +711,62 @@ document.addEventListener('DOMContentLoaded', function() {
           valign: "middle"
       }
     });
-        
-      
+    const finalY = doc.lastAutoTable.finalY;
+  
+    const x = 165; // Posición X del rectángulo
+    const y = 7 + finalY; // Posición Y del rectángulo
+    const width = 24; // Ancho del rectángulo
+    const height = 10; // Alto del rectángulo
+    const borderColor = [192, 192, 192];
+    const fillColor = [255, 255, 255]; // Color de relleno (blanco)
+
+    doc.setDrawColor(0,0,0); 
+    doc.setFillColor(...fillColor); 
+    doc.setLineWidth(0.5);
+    doc.rect(x, y, width, height, 'FD'); 
+    doc.setLineWidth(1);
+
+    doc.setFontSize(10);
+    doc.text(`Total C$:    ${totalSubTotal}`, 150, 13 + finalY);
+
+    doc.setDrawColor(0,0,0);
+    doc.setLineWidth(0.3);var linex=10; 
+    doc.line(25+linex, 255, 75+linex, 255);
+    doc.line(115+linex, 255, 165+linex, 255);
+    doc.text("RECIBI CONFORME                                                               ENTREGUE CONFORME",doc.internal.pageSize.getWidth() / 2,260,{ align: 'center' });
 
         // Guardar el PDF
-        doc.save('Factura_.pdf');
+        doc.save(`Factura_${comercio}.pdf`);
     }
 }
+
+function convertirFecha(fecha) {
+  // Crear un objeto con los meses en español y sus números correspondientes
+  const meses = {
+      "enero": "01",
+      "febrero": "02",
+      "marzo": "03",
+      "abril": "04",
+      "mayo": "05",
+      "junio": "06",
+      "julio": "07",
+      "agosto": "08",
+      "septiembre": "09",
+      "octubre": "10",
+      "noviembre": "11",
+      "diciembre": "12"
+  };
+
+  // Dividir la fecha en partes
+  let partes = fecha.toLowerCase().split(' ');
+
+  // Obtener el día, mes y año
+  let dia = partes[0].padStart(2, '0'); // Asegurarse de que el día tenga dos dígitos
+  let mes = meses[partes[2]]; // Obtener el número del mes
+  let año = partes[4]; // Obtener el año
+
+  // Construir la fecha en formato YYYY-MM-DD
+  let fechaFormateada = `${dia}/${mes}/${año}`;
+
+  return fechaFormateada;
+};

@@ -311,12 +311,13 @@ function EliminarProducto(boton,id) {
     productosSeleccionados = productosSeleccionados.filter(producto => producto.IdProducto !== id);
     actualizarTotalEnTabla() 
 }
-
+var fecha_venta;
 function mostrarDetallesVenta(Id_Venta, Cliente, Vendedor, Fecha , Total) 
 {
   var panel = document.getElementById("panelDetalleVentas");
   panel.style.display = "block";
   id_de_venta = Id_Venta;
+  fecha_venta = Fecha;
 
   document.getElementById("DetalleTitle").innerText = 'Detalles de la Venta N° '+Id_Venta;
   document.getElementById("ClienteDetalle").textContent = Cliente;
@@ -766,7 +767,7 @@ document.addEventListener('DOMContentLoaded', function() {
   {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-
+    fechaventa= convertirFecha(fecha_venta);
         // Obtener la fecha actual
     var fechaActual = new Date();
 
@@ -807,7 +808,7 @@ document.addEventListener('DOMContentLoaded', function() {
       doc.setFontSize(18);
       doc.text("FACTURA  No " + id_de_venta, doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
       doc.setFontSize(12);
-      doc.text("Fecha: " + fechaFormateada, 180, 20, { align: 'center' });
+      doc.text("Fecha: " +fechaventa, 180, 20, { align: 'center' });
   
       // Info de la Empresa
       doc.setFont("times","bold");
@@ -995,3 +996,34 @@ document.addEventListener('DOMContentLoaded', function () {
       }
   });
 });
+
+function convertirFecha(fecha) {
+  // Crear un objeto con los meses en español y sus números correspondientes
+  const meses = {
+      "enero": "01",
+      "febrero": "02",
+      "marzo": "03",
+      "abril": "04",
+      "mayo": "05",
+      "junio": "06",
+      "julio": "07",
+      "agosto": "08",
+      "septiembre": "09",
+      "octubre": "10",
+      "noviembre": "11",
+      "diciembre": "12"
+  };
+
+  // Dividir la fecha en partes
+  let partes = fecha.toLowerCase().split(' ');
+
+  // Obtener el día, mes y año
+  let dia = partes[0].padStart(2, '0'); // Asegurarse de que el día tenga dos dígitos
+  let mes = meses[partes[2]]; // Obtener el número del mes
+  let año = partes[4]; // Obtener el año
+
+  // Construir la fecha en formato YYYY-MM-DD
+  let fechaFormateada = `${dia}/${mes}/${año}`;
+
+  return fechaFormateada;
+}

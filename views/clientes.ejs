@@ -54,15 +54,15 @@
                         <!-- Telefono -->
                         <div class="mb-2">
                           <label for="Telefono" class="form-label fw-bold">Teléfono  del cliente</label>
-                          <input type="number" class="form-control" id="Telefono" name="Telefono_cl" placeholder="Teléfono del cliente"required/>
-                          <div class="invalid-feedback">Por favor ingrese el numero de teléfono del Cliente</div>
+                          <input type="number" class="form-control" id="Telefono" name="Telefono_cl" placeholder="Teléfono del cliente"  maxlength="8" pattern="\d{8}" required/>
+                          <div class="invalid-feedback">Por favor ingrese el número de teléfono de 8 dígitos</div>
                         </div>
 
                         <!-- Cedula -->
                         <div class="mb-2">
                           <label for="Cedula" class="form-label  fw-bold">Cédula  del cliente</label>
                           <input type="text" class="form-control" id="Cedula" name="Cedula_cl" placeholder="Cédula del cliente" required/>
-                          <div class="invalid-feedback">Por favor ingrese el número de cédula del cliente</div>
+                          <div class="invalid-feedback">Por favor ingrese la cédula con el formato XXX-XXXXXX-XXXXY</div>
                         </div>
 
                         <!-- Direccion -->

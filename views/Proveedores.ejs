@@ -35,7 +35,7 @@
                   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
 
-                      <form action="/AddProveedor" method="post" class="needs-validation" novalidate>
+                      <form action="/AddProveedor" method="post" class="needs-validation" id="form" novalidate>
 
                         <!-- Nombres -->
                         <div class="mt-2 mb-2">
@@ -57,20 +57,21 @@
                           <label for="Cedula" class="form-label"><b>Cedula del Proveedor</b></label>
                           <input type="text" class="form-control" id="Cedula" name="Cedula_pro" placeholder="Cedula del Proveedor" required/>
                           <div class="invalid-feedback">Por favor ingrese la cedula del proveedor</div>
+                          <p id="error-message" class="error"></p>
                         </div>
 
                         <!-- Telefono -->
                         <div class="mb-2">
                           <label for="Telefono" class="form-label"><b>Teléfono del Proveedor</b></label>
-                          <input type="number" class="form-control" id="Telefono" name="Telefono_pro" placeholder="Telefono" required/>
-                          <div class="invalid-feedback">Por favor ingrese el numero de teléfono del proveedor</div>
+                          <input type="number" class="form-control" id="Telefono" name="Telefono_pro" placeholder="Telefono" maxlength="8" pattern="\d{8}" required/>
+                          <div class="invalid-feedback">Por favor ingrese el número de teléfono de 8 dígitos</div>
                         </div>
 
                         <!-- Comercio -->
                         <div class="mb-2">
                           <label for="Comercio" class="form-label"><b>Comercio al que pertenece el Proveedor</b></label>
                           <input type="text" class="form-control" id="Comercio" name="Comercio_pro" placeholder="Comercio al que pertenece el Proveedor" required/>
-                          <div class="invalid-feedback">Por favor ingrese la cedula del proveedor</div>
+                          <div class="invalid-feedback">Por favor ingrese la cédula con el formato XXX-XXXXXX-XXXXY</div>
                         </div>
 
                         <!-- Distrito -->
