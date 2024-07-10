@@ -439,7 +439,10 @@ const inputLetra = document.querySelectorAll('input[type="text"]');
       if (input.id === 'Color' || input.id === 'Tipo') {
           
           expre = /^[a-zA-Z\sñÑ]+$/;
-      }else if(input.id === 'Modelo'|| input.id === 'Clasificacion') {
+      }else if(input.id === 'Modelo') {
+
+        expre = /^[a-zA-Z0-9\sñÑ.-]+$/;
+      }else if(input.id === 'Clasificacion') {
 
         expre = /^[a-zA-Z0-9\sñÑ]+$/;
       }else if(input.id === 'UnidadMedida') {

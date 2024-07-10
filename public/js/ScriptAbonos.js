@@ -53,14 +53,14 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante,fecha_venta
 
   Monto_Abonando.addEventListener('keypress', (e) => {
     // Obtener el valor actual del input como un número
-    const cantidadIngresada = parseInt(Monto_Abonando.value + e.key);
+    const cantidadIngresada = parseFloat(Monto_Abonando.value + e.key);
     
     if(fechaActualConvertida === fechaConvertida)
     {
       if(cantidadIngresada === (Saldo_Restante-1) || cantidadIngresada > (Saldo_Restante-1)){
         Swal.fire({
           title: "ADVERTENCIA",
-          text: "No puede abonar todo el mismo dia de la venta ",
+          text: "No puede abonar todo el mismo día de la venta.",
           icon: 'warning',
           showConfirmButton: true,
           timer: false,
@@ -71,19 +71,16 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante,fecha_venta
       }
       
     }
-
     if(cantidadIngresada > Saldo_Restante){
       e.preventDefault(); // Prevenir la entrada de más caracteres
       Swal.fire({
         title: "ADVERTENCIA",
-        text: "saldo excedido ",
+        text: `C$ "${Saldo_Restante}" Es el monto mínimo a ingresar.`,
         icon: 'warning',
         showConfirmButton: true,
         timer: false,
       });
     }
-    
-    
   });
 
   Monto_Abonando.onchange = function() 
@@ -93,23 +90,6 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante,fecha_venta
       // Si es negativa, establecer la cantidad a 1 (o al valor mínimo aceptable)
       Monto_Abonando.value = 1;
       Cantidad = 1;
-    }
-    Monto_Abonando.max = Saldo_Restante;
-    if (Cantidad > Saldo_Restante) {
-      if (Monto_Abonando.value < 1) {
-        // Si es negativa, establecer la cantidad a 1 (o al valor mínimo aceptable)
-        Monto_Abonando.value = 1;
-      }
-
-      Monto_Abonando.value = Saldo_Restante;
-      Cantidad = Saldo_Restante;
-      Swal.fire({
-        title: "Saldo restante Excedido",
-        text: "El monto no puede pasar a más de C$ "+Saldo_Restante,
-        icon: 'warning',
-        showConfirmButton: true,
-        timer: false,
-      });
     }
   };
 }
@@ -183,7 +163,7 @@ function mostrarPanelAbono(Id_Venta, Cliente,Vendedor,Saldo_Restante,fecha_venta
     input.addEventListener("keypress", (e) => {
       let expre;
   
-      expre = /^[0-9]+$/; // Solo números del 0-9
+      expre = /^[\d]+$/; // Solo números del 0-9
       
       // Verifica si la tecla presionada cumple con la expresión regular
       if (!expre.test(e.key)) {
