@@ -1,0 +1,14 @@
+# Dependencias de Node.js
+node_modules/
+
+# Variables de entorno y credenciales
+.env
+.env.*
+env/.env
+env/.env.*
+!.env.example
+!env/.env.example
+
+# Configuración local de editores
+.vscode/
+.idea/
